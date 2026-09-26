@@ -30,6 +30,30 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
     });
   };
 
+  const handleConvertToInitials = () => {
+    const trimmed = (profile.name || '').trim();
+    if (!trimmed) {
+      // If empty, generate random initials
+      const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+      const first = letters[Math.floor(Math.random() * letters.length)];
+      const last = letters[Math.floor(Math.random() * letters.length)];
+      handleFieldChange('name', `${first}. ${last}.`);
+      return;
+    }
+
+    // Convert full name into initials (e.g., "Klaus Schmidt" -> "K. S.")
+    const words = trimmed.split(/[\s-]+/).filter(Boolean);
+    if (words.length >= 2) {
+      const initials = words.map(w => `${w[0].toUpperCase()}.`).join(' ');
+      handleFieldChange('name', initials);
+    } else if (words.length === 1 && words[0].length > 1 && !words[0].includes('.')) {
+      handleFieldChange('name', `${words[0][0].toUpperCase()}.`);
+    } else {
+      // Keep existing initials with period
+      handleFieldChange('name', trimmed.endsWith('.') ? trimmed : `${trimmed}.`);
+    }
+  };
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       
@@ -85,11 +109,11 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
               </button>
               <button
                 type="button"
-                onClick={() => handleFieldChange('name', 'K. S.')}
+                onClick={handleConvertToInitials}
                 className="text-[11px] font-medium text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg border border-slate-200 transition"
-                title="Beispiel-Initialen einfuegen"
+                title={profile.name?.trim() ? 'Eingegebenen Namen in Initialen umwandeln' : 'Zufällige Initialen generieren'}
               >
-                Initialen (z.B. K. S.)
+                {profile.name?.trim() ? 'In Initialen umwandeln' : 'Initialen (z.B. K. S.)'}
               </button>
             </div>
           </div>

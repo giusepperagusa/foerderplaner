@@ -28,8 +28,9 @@ The application guides the teacher through a streamlined, multi-step process wit
 ```
 
 ### Step 1: Student Profile (`StudentProfileStep.tsx`)
-* Fields: First name, last name, date of birth, class/grade (1–6), school year, current support status (Lern- und Entwicklungsbericht, Feststellungsverfahren, Nachteilsausgleich, Förderschwerpunkte: *Lernen*, *Sprache*, *Emotionale und soziale Entwicklung*, etc.).
-* Date of diagnosis and target review date (e.g. 6-month interval).
+* Fields: Name/pseudonym/initials, date of birth, class/grade (1–6), school/school number, class teacher, legal guardians, support period (*von/bis*), primary and secondary support focus (*Förderschwerpunkt*: *Lernen*, *Sprache*, *Emotionale und soziale Entwicklung*, etc.), narrative baseline observations (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*).
+* Dynamic Initialen Tool: Transforms an entered pupil name into valid uppercase initials (e.g. "Klaus Schmidt" -> "K. S.") to protect student privacy under GDPR, or generates random initials if the field is empty, instead of static hardcoding.
+* Anonymous Random ID generator (`ID-YYYY-XXX`).
 * Local privacy guarantee badge reassuring the teacher that no data is transmitted.
 
 ### Step 2: Diagnostic Checklist (`ChecklistAssessmentStep.tsx`)
@@ -54,18 +55,20 @@ The application guides the teacher through a streamlined, multi-step process wit
   * System prompt enforces German educational jargon (SMART criteria, positive formulation, Berlin curriculum orientation).
 
 ### Step 4: Comprehensive Plan Editor (`PlanEditorStep.tsx`)
-* Structured editor dividing the plan into actionable pedagogical components:
-  1. **Ist-Stand / Ausgangslage & Ressourcen:** Strengths-based foundation.
-  2. **Konkrete Förderziele (SMART):** Short-term (4–8 weeks) and medium-term (half-year) measurable goals.
-  3. **Maßnahmen, Methoden & Differenzierung:** Concrete teaching adaptations, specialized materials, seating adjustments.
-  4. **Verantwortlichkeiten & Einbindung:** Class teacher, special educator (*Sonderpädagoge/in*), educator (*Erzieher/in*), parents, external therapists.
-  5. **Nachteilsausgleich (falls zutreffend):** Time extensions, modified task formats, assistive tools.
-  6. **Vereinbarungen zur Evaluation:** Review dates and criteria for success.
-* One-click adoption of recommendations into the active editor fields.
+* Structured 5-column official grid dividing each support measure:
+  1. **1. IST:** Beobachtung / Bedarf (= Stellungnahme)
+  2. **2. SOLL:** Ziele / Kompetenzerwerb (SMART formuliert)
+  3. **3. LERNWEG:** Pädagogische Angebote & Maßnahmen (Differenzierung, Anschauungsmaterial)
+  4. **4. Absprachen:** Wer? Wie? Mit wem? Bis wann?
+  5. **5. Reflexion:** Evaluation & Modifikation
+* Additional agreements (cooperation with educators, special educators, disadvantage compensation / *Nachteilsausgleich*).
+* Parent consultation documentation (meeting date, participants, notification confirmation).
 
 ### Step 5: Print & PDF Export (`PrintPreviewStep.tsx`)
-* Standardized, official DIN-A4 layout conforming to administrative school documentation standards.
-* Print CSS stylesheet (`@media print`) ensuring zero UI clutter, proper page breaks, signature fields for class teacher, special education teacher, school leadership, and parents/guardians.
+* **Official Berlin Template Replication (Pages 82 & 83 of Handreichung „Fördermaßnahmen konkret!“):**
+  * **Page 82 (Front):** Institutional header (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*), legal reference (*§ 19 SopädVO*), 2-column boxed pupil master data and school framework conditions, and narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*).
+  * **Page 83 (Form Table & Agreements):** Complete 5-column table (*IST*, *SOLL*, *LERNWEG*, *Absprachen*, *Reflexion*), structured section for *Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich*, conference documentation (*Gesprächsdurchführung*, *Beteiligte*, *Kenntnisnahme*), and three legal signature lines (*Klassenlehrkraft*, *Sonderpädagogin / Schulleitung*, *Erziehungsberechtigte*).
+* Print CSS stylesheet (`@media print` in `src/index.css`) with exact DIN-A4 page margins, black borders, forced page-break rules, and automatic UI toolbar stripping for vector PDF rendering.
 * Single-click browser print dialog triggering high-resolution vector PDF export.
 
 ---
@@ -75,6 +78,7 @@ The application guides the teacher through a streamlined, multi-step process wit
 * **IndexedDB Store (`planStorage.ts`):**
   * Auto-save on every change with debounce.
   * Multi-plan manager (`PlanManagerModal.tsx`): create, duplicate, switch between students, archive, and delete plans.
+  * **Strict Step Reset Rule:** Whenever a new plan is created, an existing plan is selected, or a plan is duplicated, the application state and top navigation breadcrumb strictly reset to **Step 1 ("Stammdaten & Schwerpunkt")**.
   * Complete JSON Backup & Restore: Import and export entire student databases in encrypted or plain JSON format for inter-device transfer without cloud sync.
 
 ---

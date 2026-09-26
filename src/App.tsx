@@ -151,6 +151,7 @@ export default function App() {
 
   const handleSelectPlan = (id: string) => {
     setActivePlanIdState(id);
+    setCurrentStep(1);
     setIsPlanManagerOpen(false);
   };
 
@@ -168,10 +169,12 @@ export default function App() {
       if (remaining.length === 0) {
         const fresh = createBlankPlan();
         setActivePlanIdState(fresh.id);
+        setCurrentStep(1);
         return [fresh];
       }
       if (activePlanId === id) {
         setActivePlanIdState(remaining[0].id);
+        setCurrentStep(1);
       }
       return remaining;
     });
@@ -181,6 +184,8 @@ export default function App() {
     const duplicated = duplicatePlan(plan);
     setPlans((prev) => [duplicated, ...prev]);
     setActivePlanIdState(duplicated.id);
+    setCurrentStep(1);
+    setIsPlanManagerOpen(false);
   };
 
   const handleToggleStatus = (id: string) => {
