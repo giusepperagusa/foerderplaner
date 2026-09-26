@@ -1,0 +1,6 @@
+{
+  "name": "Förderplan-Assistent Grundschule",
+  "description": "Offline-fähiger Assistent für Grundschullehrkräfte zur Erstellung individueller Förderpläne auf Basis der Berliner Richtlinien Fördermaßnahmen konkret.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
