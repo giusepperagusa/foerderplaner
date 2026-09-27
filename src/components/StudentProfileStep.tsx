@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Calendar, School, Award, ArrowRight, Info, ShieldCheck, Key, RefreshCw } from 'lucide-react';
+import { User, Calendar, School, Award, ArrowRight, Info, ShieldCheck, Key, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { StudentProfile, FoerderschwerpunktType } from '../types/foerderplan';
 import { generateAnonymousIdentifier } from '../utils/planStorage';
 import richtlinienRaw from '../data/richtlinien.json';
@@ -225,51 +225,142 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
 
       {/* Förderschwerpunkt Selection */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
-        <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-          <Award className="w-4 h-4 text-blue-600" />
-          Sonderpaedagogischer Foerderschwerpunkt
-        </h3>
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <Award className="w-4 h-4 text-blue-600" />
+            Sonderpaedagogischer Foerderschwerpunkt
+          </h3>
+          <span className="text-[11px] text-slate-500 font-medium">
+            5 offizielle Berliner Foerderschwerpunkte gemaess SopädVO
+          </span>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {(['Lernen', 'Sprache', 'Emotionale-soziale Entwicklung'] as FoerderschwerpunktType[]).map((sp) => {
-            const isSelected = profile.hauptschwerpunkt === sp;
-            const data = schwerpunkte[sp] || {};
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            {
+              id: 'Lernen' as FoerderschwerpunktType,
+              label: 'Lernen',
+              kuerzel: 'LE',
+              badgeBg: 'bg-blue-100 text-blue-800 border-blue-200',
+            },
+            {
+              id: 'Sprache' as FoerderschwerpunktType,
+              label: 'Sprache',
+              kuerzel: 'SP',
+              badgeBg: 'bg-purple-100 text-purple-800 border-purple-200',
+            },
+            {
+              id: 'Emotionale-soziale Entwicklung' as FoerderschwerpunktType,
+              label: 'Emotionale und soziale Entwicklung',
+              kuerzel: 'ES',
+              badgeBg: 'bg-amber-100 text-amber-800 border-amber-200',
+            },
+            {
+              id: 'Geistige Entwicklung' as FoerderschwerpunktType,
+              label: 'Geistige Entwicklung',
+              kuerzel: 'GE',
+              badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+            },
+            {
+              id: 'Koerperliche-motorische Entwicklung' as FoerderschwerpunktType,
+              label: 'Körperliche und motorische Entwicklung',
+              kuerzel: 'KME',
+              badgeBg: 'bg-rose-100 text-rose-800 border-rose-200',
+            },
+          ].map((item) => {
+            const isSelected = profile.hauptschwerpunkt === item.id || 
+              (item.id === 'Koerperliche-motorische Entwicklung' && profile.hauptschwerpunkt === 'Körperliche und motorische Entwicklung');
+            const data = schwerpunkte[item.id] || (item.id.includes('motorisch') ? schwerpunkte['Koerperliche-motorische Entwicklung'] : {}) || {};
+            
             return (
               <button
-                key={sp}
+                key={item.id}
                 type="button"
-                onClick={() => handleFieldChange('hauptschwerpunkt', sp)}
-                className={`p-4 rounded-xl text-left border-2 transition ${
+                onClick={() => handleFieldChange('hauptschwerpunkt', item.id)}
+                className={`p-4 rounded-xl text-left border-2 transition cursor-pointer flex flex-col justify-between ${
                   isSelected
-                    ? 'border-blue-600 bg-blue-50/50 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-blue-600 bg-blue-50/60 shadow-xs ring-2 ring-blue-500/20'
+                    : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-bold text-slate-900">{sp}</span>
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">
-                    {data.kuerzel || sp.substring(0, 2)}
-                  </span>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-slate-900 leading-snug">
+                      {item.label}
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${item.badgeBg}`}>
+                      {data.kuerzel || item.kuerzel}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-600 line-clamp-3 leading-relaxed mb-3">
+                    {data.definition}
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-500 line-clamp-3 leading-relaxed">
-                  {data.definition}
-                </p>
+
+                {data.foerderschwerpunkte_innerhalb && (
+                  <div className="pt-2 border-t border-slate-100 mt-auto">
+                    <span className="text-[10px] text-slate-400 block font-semibold mb-1">Kernbereiche:</span>
+                    <div className="flex flex-wrap gap-1">
+                      {data.foerderschwerpunkte_innerhalb.slice(0, 3).map((sub: string, sIdx: number) => (
+                        <span key={sIdx} className="text-[9px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded truncate max-w-[140px]">
+                          {sub}
+                        </span>
+                      ))}
+                      {data.foerderschwerpunkte_innerhalb.length > 3 && (
+                        <span className="text-[9px] text-slate-400 px-1 py-0.5">
+                          +{data.foerderschwerpunkte_innerhalb.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* Selected Schwerpunkt Info */}
+        {/* Selected Schwerpunkt Detailed Info from Reference PDF */}
         {currentDetails.bewertungskriterien && (
-          <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-            <h4 className="text-xs font-bold text-slate-700">
-              Amtliche Bewertungskriterien ({profile.hauptschwerpunkt}):
-            </h4>
-            <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
-              {currentDetails.bewertungskriterien.map((crit: string, idx: number) => (
-                <li key={idx}>{crit}</li>
-              ))}
-            </ul>
+          <div className="mt-4 p-4.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3.5">
+            <div>
+              <h4 className="text-xs font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span>Amtliche Bewertungskriterien ({profile.hauptschwerpunkt === 'Koerperliche-motorische Entwicklung' ? 'Körperliche und motorische Entwicklung' : profile.hauptschwerpunkt}):</span>
+              </h4>
+              <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
+                {currentDetails.bewertungskriterien.map((crit: string, idx: number) => (
+                  <li key={idx} className="leading-relaxed">{crit}</li>
+                ))}
+              </ul>
+            </div>
+
+            {currentDetails.foerderschwerpunkte_innerhalb && (
+              <div>
+                <h5 className="text-[11px] font-bold text-slate-700 mb-1.5">
+                  Gegenstandsbereiche & Entwicklungsfelder:
+                </h5>
+                <div className="flex flex-wrap gap-1.5">
+                  {currentDetails.foerderschwerpunkte_innerhalb.map((sub: string, idx: number) => (
+                    <span key={idx} className="text-[10px] font-medium bg-white text-slate-700 px-2.5 py-1 rounded-md border border-slate-200 shadow-2xs">
+                      {sub}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {currentDetails.empfohlene_foerdermassnahmen && (
+              <div>
+                <h5 className="text-[11px] font-bold text-slate-700 mb-1.5">
+                  Empfohlene Fördermethoden (Berliner Handreichung „Fördermaßnahmen konkret!“):
+                </h5>
+                <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
+                  {currentDetails.empfohlene_foerdermassnahmen.map((m: string, idx: number) => (
+                    <li key={idx} className="leading-relaxed">{m}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>

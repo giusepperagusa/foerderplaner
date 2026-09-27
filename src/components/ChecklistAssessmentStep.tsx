@@ -42,6 +42,16 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
     new Set(allCriteria.map((c: any) => c.unterbereich).filter(Boolean))
   );
 
+  // Count items qualifying as Förderbedarf (either rating deficit or flagged)
+  const deficitCriteriaCount = allCriteria.filter((crit: any) => {
+    if (filterSubcategory !== 'Alle' && crit.unterbereich !== filterSubcategory) {
+      return false;
+    }
+    const r = ratings[crit.id];
+    const flagged = flaggedForSupport[crit.id];
+    return flagged || r === 'trifft_eher_nicht_zu' || r === 'trifft_nicht_zu';
+  }).length;
+
   // Filter items
   const filteredCriteria = allCriteria.filter((crit: any) => {
     if (filterSubcategory !== 'Alle' && crit.unterbereich !== filterSubcategory) {
@@ -99,7 +109,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
                 setActiveChecklist(tab.key as any);
                 setFilterSubcategory('Alle');
               }}
-              className={`p-3 rounded-xl text-left border-2 transition ${
+              className={`p-3 rounded-xl text-left border-2 transition cursor-pointer ${
                 isActive
                   ? 'border-blue-600 bg-blue-50/50 shadow-xs'
                   : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -117,46 +127,91 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
       </div>
 
       {/* Filter and Legend Bar */}
-      <div className="bg-white rounded-xl border border-slate-200 p-3 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
-          <Filter className="w-3.5 h-3.5 text-slate-400" />
-          <span className="font-semibold text-slate-700">Teilbereich:</span>
-          <select
-            value={filterSubcategory}
-            onChange={(e) => setFilterSubcategory(e.target.value)}
-            className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-hidden"
-          >
-            <option value="Alle">Alle Unterbereiche</option>
-            {subcategories.map((sub) => (
-              <option key={sub} value={sub}>
-                {sub}
-              </option>
-            ))}
-          </select>
+      <div className="bg-white rounded-xl border border-slate-200 p-3.5 shadow-xs space-y-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex items-center gap-1.5">
+              <Filter className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-semibold text-slate-700">Teilbereich:</span>
+              <select
+                value={filterSubcategory}
+                onChange={(e) => setFilterSubcategory(e.target.value)}
+                className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-hidden"
+              >
+                <option value="Alle">Alle Unterbereiche</option>
+                {subcategories.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <label className="flex items-center gap-1.5 ml-3 cursor-pointer text-slate-600">
-            <input
-              type="checkbox"
-              checked={onlyDeficits}
-              onChange={(e) => setOnlyDeficits(e.target.checked)}
-              className="rounded text-blue-600 focus:ring-blue-500"
-            />
-            <span>Nur Foerderbedarf anzeigen</span>
-          </label>
+            {/* Clear, interactive filter toggle with live count */}
+            <button
+              type="button"
+              onClick={() => setOnlyDeficits(!onlyDeficits)}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border transition cursor-pointer ${
+                onlyDeficits
+                  ? 'bg-amber-100 text-amber-950 border-amber-300 ring-2 ring-amber-400/20 shadow-xs'
+                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+              }`}
+              title="Filtert die Ansicht: Zeigt ausschließlich Kriterien mit Unterstützungsbedarf oder gesetztem Förderfokus"
+            >
+              <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition ${
+                onlyDeficits ? 'bg-amber-600 border-amber-600' : 'border-slate-400 bg-white'
+              }`}>
+                {onlyDeficits && <CheckCircle2 className="w-3 h-3 text-white" />}
+              </div>
+              <span>Nur Förderbedarf filtern</span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                onlyDeficits ? 'bg-amber-200 text-amber-950' : 'bg-slate-200 text-slate-700'
+              }`}>
+                {deficitCriteriaCount} / {allCriteria.length}
+              </span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3 text-[11px] text-slate-500">
+            <span className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Stärke / trifft zu
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Förderbedarf / trifft nicht zu
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-sm border border-amber-500 bg-amber-100"></span> Förderfokus markiert
+            </span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3 text-[11px] text-slate-500">
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Stärke / trifft zu
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Förderbedarf / trifft nicht zu
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-sm border border-amber-500 bg-amber-100"></span> Förderfokus markiert
+        {/* Informative Explanation of the filter's effect */}
+        <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-start gap-2">
+          <HelpCircle className="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" />
+          <span>
+            <strong>Funktion des Filters:</strong> Blendet unauffällige Kompetenzen aus und konzentriert die Ansicht auf Kriterien, die entweder mit <strong className="text-amber-800">„eher nicht zu“</strong> / <strong className="text-rose-700">„trifft nicht zu“</strong> bewertet wurden oder bei denen die Checkbox <strong className="text-amber-800">„Förderfokus?“</strong> gesetzt ist.
           </span>
         </div>
       </div>
+
+      {/* Active Filter Notice Banner if active and items found */}
+      {onlyDeficits && filteredCriteria.length > 0 && (
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between text-xs text-amber-900">
+          <div className="flex items-center gap-2">
+            <Filter className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>
+              Filter aktiv: Es werden <strong>{filteredCriteria.length} Kriterien</strong> mit Unterstützungsbedarf oder Förderfokus angezeigt.
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setOnlyDeficits(false)}
+            className="text-[11px] font-bold text-amber-800 hover:text-amber-950 underline cursor-pointer shrink-0 ml-2"
+          >
+            Alle {allCriteria.length} anzeigen
+          </button>
+        </div>
+      )}
 
       {/* Checklist Table */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
@@ -166,16 +221,40 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
               <tr>
                 <th className="py-3 px-4 w-1/2">Kompetenz / Verhaltenskriterium</th>
                 <th className="py-3 px-2 text-center w-48">Häufigkeit des Verhaltens</th>
-                <th className="py-3 px-3 text-center w-28 bg-amber-50/60 border-l border-amber-100">
+                <th className="py-3 px-3 text-center w-36 bg-amber-50/60 border-l border-amber-100" title="Kriterium vorrangig für die Maßnahmenableitung im Förderplan vormerken">
                   Förderfokus?
+                  <span className="block text-[9px] font-normal text-amber-800">(in Plan aufnehmen)</span>
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredCriteria.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="py-8 text-center text-slate-500">
-                    Keine Kriterien entsprechen dem aktuellen Filter.
+                  <td colSpan={3} className="p-8">
+                    {onlyDeficits ? (
+                      <div className="max-w-md mx-auto text-center space-y-2.5">
+                        <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
+                          <AlertCircle className="w-5 h-5" />
+                        </div>
+                        <h4 className="text-xs font-bold text-amber-950">
+                          Kein Förderbedarf im Bereich „{currentListObj.bereich || activeChecklist}“ gefunden
+                        </h4>
+                        <p className="text-xs text-amber-800 leading-relaxed">
+                          Der Filter ist aktiv, aber bisher wurden noch keine Kriterien mit <strong>„eher nicht / trifft nicht zu“</strong> bewertet und kein Häkchen bei <strong>„Förderfokus?“</strong> gesetzt.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setOnlyDeficits(false)}
+                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-slate-700 hover:text-slate-900 border border-slate-300 rounded-lg text-xs font-semibold shadow-2xs hover:bg-slate-50 transition cursor-pointer"
+                        >
+                          <span>Filter ausschalten (alle {allCriteria.length} Kriterien anzeigen)</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="text-center text-slate-500 py-4">
+                        Keine Kriterien entsprechen dem aktuellen Filter.
+                      </div>
+                    )}
                   </td>
                 </tr>
               ) : (

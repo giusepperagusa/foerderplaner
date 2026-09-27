@@ -31,7 +31,7 @@ interface Props {
   onApplyUpdate?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.0-offline';
+export const APP_VERSION = 'v1.4.1-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 
 export const VersionInfoModal: React.FC<Props> = ({ 
@@ -262,6 +262,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Aenderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.1:</span>
+                <span>Förderschwerpunkte GE & KME & Diagnostik-Filter: Ergänzung der amtlichen Förderschwerpunkte „Geistige Entwicklung“ (GE) und „Körperliche und motorische Entwicklung“ (KME) in Schritt 1 mit Kriterien, Gegenstandsbereichen und Richtlinien-Maßnahmen. Vollständige Überarbeitung und transparente Erklärung des Filters „Nur Förderbedarf filtern“ in Schritt 2 mit Live-Zähler, Erläuterungs-Banner und interaktivem Leerzustand.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.0:</span>
                 <span>Wllama WebAssembly CPU-Engine: Ersatz von WebLLM durch Wllama zur Ausführung von Qwen2.5-0.5B-Instruct auf allen Geräten (ohne WebGPU-Zwang). Vollständige Umstellung der Modell-Speicherung auf OPFS und IndexedDB (vollständiger Verzicht auf die Cache API). Sofort-Regelmodus als eleganter Fallback.</span>

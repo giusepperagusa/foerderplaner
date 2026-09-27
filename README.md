@@ -114,11 +114,11 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.0-offline`) and official guidelines edition.
+  * Shows app version (`v1.4.1-offline`) and official guidelines edition.
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.0-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.0-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.1-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.1-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 
 ---
@@ -219,6 +219,9 @@ npm run build
 
 ### Historical Changelog
 
+* **v1.4.1 (2026-09-27):**
+  * **Erweiterung der Förderschwerpunkte (GE & KME):** Ergänzung der beiden amtlichen Berliner Förderschwerpunkte *„Geistige Entwicklung“ (GE)* und *„Körperliche und motorische Entwicklung“ (KME)* in Schritt 1 mit vollständigen Kriterien, Entwicklungsfeldern, Richtlinienmaßnahmen und integrierten Bausteinen aus *„Fördermaßnahmen konkret!“*.
+  * **Klarstellung & Überarbeitung der Förderbedarfs-Filterung:** Umfassende Überarbeitung des Filters *„Nur Förderbedarf filtern“* in Schritt 2: Live-Zähler (`{count} / {total}`), erklärender Hinweiskasten zu den Filterkriterien (Bewertung „eher nicht / trifft nicht zu“ oder aktiver Förderfokus), aktiver Status-Banner mit Schnell-Reset und verständlicher Leerzustand bei 0 Treffern.
 * **v1.4.0 (2026-09-27):**
   * **Wllama WebAssembly CPU Engine:** Replaced the WebGPU-only `@mlc-ai/web-llm` engine with Wllama (`@wllama/wllama`), enabling on-device execution of `Qwen2.5-0.5B-Instruct` (GGUF) on all CPUs via WebAssembly SIMD without requiring WebGPU support.
   * **OPFS & IndexedDB Storage Architecture:** Completely eliminated reliance on the Cache Storage API (`window.caches`). Model weights are now stored and streamed exclusively via OPFS (Origin Private File System) with an automatic IndexedDB fallback.

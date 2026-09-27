@@ -3,6 +3,7 @@ export type FoerderschwerpunktType =
   | 'Sprache'
   | 'Emotionale-soziale Entwicklung'
   | 'Geistige Entwicklung'
+  | 'Körperliche und motorische Entwicklung'
   | 'Koerperliche-motorische Entwicklung';
 
 export type RatingValue = 'trifft_zu' | 'trifft_eher_zu' | 'trifft_eher_nicht_zu' | 'trifft_nicht_zu' | 'nicht_beurteilt';

@@ -1256,20 +1256,82 @@
         "Verlangsamte Entwicklung in Selbststaendigkeit und Sozialverhalten"
       ],
       "foerderschwerpunkte_innerhalb": [
-        "Kognitive Entwicklung",
-        "Selbststaendigkeit im Alltag",
-        "Sozial-emotionale Entwicklung",
-        "Motorische Entwicklung"
+        "Kognitive Entwicklung & Wahrnehmung",
+        "Selbststaendigkeit & Lebenspraxis im Alltag",
+        "Unterstuetzte Kommunikation (UK)",
+        "Sozial-emotionale Entwicklung & Teilhabe"
       ],
       "empfohlene_foerdermassnahmen": [
         "Individueller Lehrplan mit basalen, lebenspraktischen Lernzielen",
         "Handlungsorientiertes und lebensnahes Lernen mit Realgegenstaenden",
         "Unterstuetzte Kommunikation (Gebaerden, Bildsymbole, elektronische Talker)",
         "Foerderung der Selbststaendigkeit bei alltaeglichen Routinen im Schulalltag"
+      ],
+      "kategorien": [
+        {
+          "kategorie": "Kognitive Entwicklung & Wahrnehmung",
+          "beschreibung": "Gezielte Foerderung basaler kognitiver Prozesse, der Wahrnehmungsverarbeitung und des handelnden Lernens.",
+          "eintraege": [
+            {
+              "ist": "Zeigt erhebliche Schwierigkeiten beim Erfassen abstrakter Lerninhalte; benoetigt konkrete Anschauung und Realgegenstaende.",
+              "soll": "Erfasst grundlegende handlungsbezogene Aufgabenstellungen anhand konkreter Anschauung und Realgegenstaenden.",
+              "lernweg": [
+                "Lernen nach dem EIS-Prinzip (enaktiv - ikonisch - symbolisch) mit greifbaren Realobjekten.",
+                "Kleinschrittige Zerlegung von Handlungsablaeufen (Chaining / Teilschritte).",
+                "Strukturierung des Tagesablaufs mit visualisierten Bildkarten (METACOM / PECS)."
+              ]
+            }
+          ]
+        },
+        {
+          "kategorie": "Selbststaendigkeit & Lebenspraxis",
+          "beschreibung": "Bewaeltigung taeglicher Routinen, Orientierung und alltagspraktische Handlungsfaehigkeit.",
+          "eintraege": [
+            {
+              "ist": "Benoetigt bei alltaeglichen Routinen (Garderobe, Orientierung, Materialorganisation) durchgehend Begleitung.",
+              "soll": "Bewaeltigt ausgewaehlte alltagspraktische Routinen im Klassenraum mit visuellen Bildkarten zunehmend selbststaendig.",
+              "lernweg": [
+                "Visuelle Handlungsplaene mit Piktogrammen an Garderobe und Arbeitsplatz.",
+                "Feste Bezugspersonen und ritualisierte Tages- und Pausenablaeufe.",
+                "Schrittweiser Abbau von Hilfestellungen (Fading) und Lob bei Teilerfolgen."
+              ]
+            }
+          ]
+        },
+        {
+          "kategorie": "Unterstuetzte Kommunikation (UK)",
+          "beschreibung": "Foerderung alternativer und ergaenzender Kommunikationsformen fuer Schueler mit eingeschraenkter Lautsprache.",
+          "eintraege": [
+            {
+              "ist": "Kann eigene Beduerfnisse, Wuensche oder Befindlichkeiten verbal nur sehr eingeschraenkt mitteilen.",
+              "soll": "Teilt elementare Beduerfnisse und Wahlentscheidungen verlaesslich ueber Bildkarten, Gebaerden oder Kommunikationshilfen mit.",
+              "lernweg": [
+                "Einfuehrung von Bild- und Symbolkarten fuer elementare Beduerfnisse (Essen, Trinken, Pause, Hilfe).",
+                "Begleitender Einsatz von lautsprachunterstuetzenden Gebaerden (LBG).",
+                "Bereitstellung und Einbindung eines sprechenden Tasters / Talkers im Morgenkreis."
+              ]
+            }
+          ]
+        },
+        {
+          "kategorie": "Sozial-emotionale Teilhabe",
+          "beschreibung": "Integration in Gruppenaktivitaeten und Entwicklung von Regulationsstrategien im Klassenverband.",
+          "eintraege": [
+            {
+              "ist": "Zeigt Unsicherheit bei Gruppenaktivitaeten und zieht sich bei Ueberreizung zurueck oder reagiert impulsiv.",
+              "soll": "Nimmt mit paedagogischer Begleitung an gemeinsamen Ritualen teil und nutzt vereinbarte Rueckzugszeiten bei Bedarf.",
+              "lernweg": [
+                "Etablierung einer geschuetzten Ruheecke im Klassenraum.",
+                "Vorhersehbare Zeitspannen mit Time-Timer visualisieren.",
+                "Gezielte Partnerarbeit mit verlaesslichen Mitschuelern."
+              ]
+            }
+          ]
+        }
       ]
     },
     "Koerperliche-motorische Entwicklung": {
-      "kuerzel": "KM",
+      "kuerzel": "KME",
       "definition": "Beeintraechtigungen der Bewegungsfaehigkeit und koerperlichen Entwicklung, die die schulische Teilhabe und motorische Handlungsfaehigkeit erschweren.",
       "bewertungskriterien": [
         "Eingeschraenkte Grob- oder Feinmotorik sowie Koordination",
@@ -1278,16 +1340,78 @@
         "Erhoehte Ermuedbarkeit und eingeschraenkte koerperliche Belastbarkeit"
       ],
       "foerderschwerpunkte_innerhalb": [
-        "Grobmotorische Entwicklung",
-        "Feinmotorische Entwicklung",
-        "Koerperliche Belastbarkeit",
-        "Raum- und Lagereflexe"
+        "Grobmotorik, Mobilitaet & Raumorientierung",
+        "Fein- und Graphomotorik & Schreibhaltung",
+        "Ergonomie, Belastbarkeit & Ermuedung",
+        "Arbeitsplatzorganisation & Hilfsmittel"
       ],
       "empfohlene_foerdermassnahmen": [
         "Barrierefreie Gestaltung des Klassenraums und Schulgebaeudes",
         "Angepasste Arbeitsmittel, Spezialstifte, Stehpulte und Sitzmoebel",
         "Motopaedische, physiotherapeutische oder ergotherapeutische Foerderung",
         "Ruecksichtnahme auf Ermuedung und individuelle Belastungsgrenzen"
+      ],
+      "kategorien": [
+        {
+          "kategorie": "Grobmotorik & Mobilitaet",
+          "beschreibung": "Sichere Fortbewegung, Haltungskontrolle und Raumorientierung im Schulalltag.",
+          "eintraege": [
+            {
+              "ist": "Hat erhebliche Schwierigkeiten beim sicheren Bewegen im Klassenraum und Schulgebaeude; stolpert leicht.",
+              "soll": "Bewegt sich auf bekannten Schulwegen und im Klassenraum mit adaptiven Hilfsmitteln sicher und unfallfrei.",
+              "lernweg": [
+                "Barrierefreie Wegeplanung im Klassenraum und Schulgelaende.",
+                "Fester, ebenerdiger Arbeitsplatz mit ausreichend Bewegungsspielraum.",
+                "Gezielte motopaedische Uebungen und Kooperation mit Therapeuten."
+              ]
+            }
+          ]
+        },
+        {
+          "kategorie": "Fein- und Graphomotorik",
+          "beschreibung": "Entspannte Stifthaltung, Schreibbewegungen und Handhabung von Arbeitsmitteln.",
+          "eintraege": [
+            {
+              "ist": "Verkrampft bei Schreib- und Schneidearbeiten rasch; Schriftbild ist unleserlich oder das Schreiben bricht schnell ab.",
+              "soll": "Haelt Schreib- und Arbeitsgeraete mit ergonomischen Hilfsmitteln entspannt und bewaeltigt angepasste Schreibportionen.",
+              "lernweg": [
+                "Einsatz ergonomischer Schreibhilfen (Griffverdickungen, Dreikantstifte, rutschfeste Unterlagen).",
+                "Schraegstellbares Stehpult oder geneigte Schreibplatte zur Entlastung des Schulterguertels.",
+                "Zulassung alternativer digitaler Eingabemittel (Tablet mit Tastatur oder Spracheingabe)."
+              ]
+            }
+          ]
+        },
+        {
+          "kategorie": "Ergonomie & Belastbarkeit",
+          "beschreibung": "Anpassung der Sitzhaltung, Pausenregime und Vorbeugung vorzeitiger koerperlicher Erschoepfung.",
+          "eintraege": [
+            {
+              "ist": "Ermuedet im Unterricht rasch durch hohen Haltungsaufwand und verliert nach 15-20 Minuten die Konzentrationsfaehigkeit.",
+              "soll": "Haelt eine stabile, ergonomisch gestuetzte Sitzhaltung ueber Arbeitsphasen von 20-25 Minuten aufrecht und nutzt Entlastungsphasen.",
+              "lernweg": [
+                "Individuell angepasster Therapiestuhl mit Pelotten, Fussstuetze und Beckengurt.",
+                "Regelmaessige Haltungswechsel (Arbeiten im Stehen, Sitzen oder am Boden).",
+                "Gezielte Bewegungspausen und Dehnuebungen im Tagesablauf."
+              ]
+            }
+          ]
+        },
+        {
+          "kategorie": "Arbeitsplatzorganisation & Hilfsmittel",
+          "beschreibung": "Nutzung angepasster Arbeitsmaterialien und Unterstuetzung bei feinmotorischer Handhabung.",
+          "eintraege": [
+            {
+              "ist": "Kann Arbeitsmaterialien auf dem Tisch motorisch nur schwer ordnen; Hefte und Stifte fallen haeufig herunter.",
+              "soll": "Organisiert den Arbeitsplatz selbstaendig mithilfe rutschfester Halterungen und angepasster Arbeitsmappen.",
+              "lernweg": [
+                "Rutschfeste Dycem-Unterlagen und Buchstaender.",
+                "Klettband- und Magnetbefestigungen fuer Stifte und Lineale.",
+                "Gezielte Unterstuetzung durch Integrationshelfer bei komplexen Handlungen."
+              ]
+            }
+          ]
+        }
       ]
     }
   },
