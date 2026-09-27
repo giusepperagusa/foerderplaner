@@ -31,7 +31,7 @@ interface Props {
   onApplyUpdate?: () => void;
 }
 
-export const APP_VERSION = 'v1.3.1-offline';
+export const APP_VERSION = 'v1.4.0-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 
 export const VersionInfoModal: React.FC<Props> = ({ 
@@ -248,10 +248,10 @@ export const VersionInfoModal: React.FC<Props> = ({
           <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
             <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-              Datenschutz & Lokale Engine
+              Datenschutz & Lokale Engine (Wllama CPU + OPFS/IndexedDB)
             </span>
             <p className="text-[11px] text-slate-600 leading-relaxed">
-              Die App verarbeitet Schuelerdaten ausschliesslich lokal im Browser (LocalStorage & On-Device Web Worker). Es findet keine serverseitige Speicherung von personenbezogenen Foerderdaten statt.
+              Die App verarbeitet Schülerdaten ausschließlich lokal im Browser (LocalStorage & On-Device WebAssembly). Das KI-Modell (Qwen2.5-0.5B) läuft direkt auf der CPU ohne WebGPU-Zwang. Die Speicherung erfolgt geschützt im OPFS (Origin Private File System) oder IndexedDB – die instabile Cache API wird nicht genutzt.
             </p>
           </div>
 
@@ -262,6 +262,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Aenderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.0:</span>
+                <span>Wllama WebAssembly CPU-Engine: Ersatz von WebLLM durch Wllama zur Ausführung von Qwen2.5-0.5B-Instruct auf allen Geräten (ohne WebGPU-Zwang). Vollständige Umstellung der Modell-Speicherung auf OPFS und IndexedDB (vollständiger Verzicht auf die Cache API). Sofort-Regelmodus als eleganter Fallback.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.3.1:</span>
                 <span>Optimierter amtlicher Formulardruck: Unterdrückung von Browser-Kopf-/Fußzeilen (URL, Datum, Webseiten-Titel) via CSS `@page`, Beibehaltung von Seitenzahlen, präzise Versionsangabe („Förderplan-Assistent Berlin 1.3.1“) im Dokument-Kleingedruckten unter Beibehaltung der amtlichen Angaben.</span>

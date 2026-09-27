@@ -57,11 +57,12 @@ export const AiAssistantStep: React.FC<Props> = ({
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
 
-  // WebLLM State
+  // Wllama State
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>({
     isSupported: true,
     isCached: false,
     isLoaded: false,
+    storageBackend: 'OPFS',
     cacheKeys: [],
   });
   const [isGenerating, setIsGenerating] = useState(false);
@@ -208,14 +209,14 @@ export const AiAssistantStep: React.FC<Props> = ({
               </h2>
             </div>
             <p className="text-xs text-blue-200 leading-relaxed max-w-2xl">
-              Waehlen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen oder nutzen Sie das integrierte lokale KI-Sprachmodell (Qwen2.5-0.5B via Web Worker), um passgenaue Formulierungen offline direkt im Browser zu generieren.
+              Waehlen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen oder nutzen Sie das integrierte lokale KI-Sprachmodell (Qwen2.5-0.5B via Wllama WebAssembly & OPFS/IndexedDB), um passgenaue Formulierungen offline direkt im Browser zu generieren.
             </p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => setShowPromptModal(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold backdrop-blur-xs border border-white/20 transition whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold backdrop-blur-xs border border-white/20 transition whitespace-nowrap cursor-pointer"
               title="Vollstaendigen, normalisierten Prompt fuer externe lokale Runner einsehen"
             >
               <FileText className="w-4 h-4 text-blue-300" />
@@ -224,11 +225,11 @@ export const AiAssistantStep: React.FC<Props> = ({
 
             <button
               onClick={() => setShowConsentModal(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs whitespace-nowrap cursor-pointer"
               title="Modell-Status und Download-Manager oeffnen"
             >
               <Cpu className="w-4 h-4 text-indigo-200" />
-              <span>WebLLM Status</span>
+              <span>Lokale KI (Wllama)</span>
             </button>
           </div>
         </div>
@@ -238,7 +239,7 @@ export const AiAssistantStep: React.FC<Props> = ({
       <div className="flex border-b border-slate-200 bg-white rounded-t-2xl px-3 pt-2 gap-2 shadow-xs">
         <button
           onClick={() => setActiveTab('rules')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition cursor-pointer ${
             activeTab === 'rules'
               ? 'border-blue-600 text-blue-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -253,16 +254,16 @@ export const AiAssistantStep: React.FC<Props> = ({
 
         <button
           onClick={() => setActiveTab('webllm')}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition cursor-pointer ${
             activeTab === 'webllm'
               ? 'border-indigo-600 text-indigo-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
           <Cpu className="w-4 h-4" />
-          <span>Lokales Sprachmodell (Qwen2.5-0.5B Web Worker)</span>
+          <span>Lokales Sprachmodell (Qwen2.5-0.5B Wllama CPU/OPFS)</span>
           <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-50 text-purple-700 font-normal">
-            WebGPU • Offline
+            Wasm • CPU • Offline
           </span>
         </button>
       </div>
@@ -384,19 +385,19 @@ export const AiAssistantStep: React.FC<Props> = ({
                   {CURRENT_MODEL_CONFIG.name}
                 </span>
                 <span className="text-[10px] font-mono bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full font-bold">
-                  Web Worker Inferenz
+                  Wllama Wasm CPU Inferenz
                 </span>
               </div>
               <p className="text-xs text-purple-800 leading-relaxed">
-                Fuehrt Inferenz parallel im Hintergrund aus, damit Ihre Eingaben und das Scrollen im Browser vollstaendig fluessig bleiben.
+                Fuehrt Inferenz direkt ueber WebAssembly auf der CPU aus. Speicherung erfolgt geschuetzt im OPFS/IndexedDB (ohne Cache API).
               </p>
             </div>
 
             <button
               onClick={() => setShowConsentModal(true)}
-              className="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto"
+              className="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto cursor-pointer"
             >
-              Modell-Cache verwalten
+              Modellspeicher verwalten
             </button>
           </div>
 
@@ -406,12 +407,12 @@ export const AiAssistantStep: React.FC<Props> = ({
               {webLlmManager.isEngineReady() ? (
                 <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Modell ist im Web Worker geladen & bereit fuer Inferenz.
+                  Modell ist im Speicher initialisiert & bereit fuer Inferenz.
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-slate-500">
                   <AlertCircle className="w-4 h-4 text-amber-500" />
-                  Modell noch nicht im Arbeitsspeicher initialisiert (~360 MB Cache erforderlich).
+                  Modell noch nicht geladen (~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
                 </span>
               )}
             </div>
@@ -419,12 +420,12 @@ export const AiAssistantStep: React.FC<Props> = ({
             <button
               onClick={handleRunLocalLlm}
               disabled={isGenerating}
-              className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {isGenerating ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Inferenz laeuft im Web Worker...</span>
+                  <span>Inferenz laeuft via WebAssembly...</span>
                 </>
               ) : webLlmManager.isEngineReady() ? (
                 <>
@@ -434,7 +435,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               ) : (
                 <>
                   <DownloadCloud className="w-4 h-4" />
-                  <span>Modell laden / Zustimmen (~360 MB)</span>
+                  <span>Modell laden / Zustimmen (~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB)</span>
                 </>
               )}
             </button>

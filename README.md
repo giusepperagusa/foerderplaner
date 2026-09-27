@@ -21,7 +21,7 @@ You are tasked with building or recreating the **Förderplan-Assistent Grundschu
 1. **100% Local / Zero Server Dependency:** All data storage (IndexedDB), NLP matching, PDF/print rendering, and optional on-device AI generation must run entirely in the user's browser. No student data, notes, or assessments ever leave the client.
 2. **Dual-Engine Pedagogical Matching:**
    * **Local Deterministic Rules Engine (Instant & Offline):** Keyword, competency, and domain matching against structured official guidelines (`src/data/richtlinien.json`). Functions instantly without any AI/LLM download.
-   * **Optional In-Browser Neural Engine (WebLLM via Web Workers):** WebGPU-accelerated local SLM (e.g. `SmolLM2-360M-Instruct-q4f16_1-MLC` or `Qwen2.5-0.5B-Instruct-q4f16_1-MLC`) with WebAssembly/CPU fallback running inside a dedicated Web Worker (`src/workers/llm.worker.ts`). Strict opt-in modal with explicit download sizing, memory checks, and full progress reporting.
+   * **Optional In-Browser Neural Engine (Wllama WebAssembly & OPFS/IndexedDB):** CPU-accelerated local GGUF model (`Qwen2.5-0.5B-Instruct-Q4_K_M.gguf`, ~397 MB) running via Wllama WebAssembly inside dedicated worker threads. Runs universally on any desktop or mobile browser without WebGPU requirement. Model weights are stored securely in OPFS (Origin Private File System) with IndexedDB fallback, completely bypassing the Cache Storage API. Strict opt-in modal with explicit download sizing, storage selection, and live progress reporting. Instant deterministic rules engine functions as immediate zero-download fallback.
 3. **PWA Compliance:** Service Worker via `vite-plugin-pwa` with precached assets, runtime caching, offline indicators, update toasts, and installation triggers.
 4. **Self-Hosting Portability:** Capable of being deployed on any static web host, Apache, Nginx, or subfolder without backend or Node.js runtime. Built-in versioned `.tar.gz` export utilities.
 
@@ -57,9 +57,10 @@ The application guides the teacher through a streamlined, multi-step process wit
 
 ### Step 3: Recommendations & Optional AI Assistant (`AiAssistantStep.tsx`)
 * **Instant Deterministic Recommendations:** Generated instantly from `src/utils/localMatchingEngine.ts` by mapping identified deficits to matched interventions, materials, and concrete pedagogical methods from `richtlinien.json`.
-* **Optional On-Device Assistant (`webLlmManager.ts` & `llm.worker.ts`):**
+* **Optional On-Device Assistant (`webLlmManager.ts` & `wllamaStorage.ts`):**
   * Teacher can request customized formulation proposals, differentiation strategies, or parent-communication talking points.
-  * WebGPU hardware capability detection with automatic worker isolation.
+  * Powered by Wllama (`@wllama/wllama`) executing GGUF models directly on the CPU via WebAssembly SIMD.
+  * Storage strictly utilizes OPFS (Origin Private File System) and IndexedDB, completely avoiding Cache Storage API eviction risks.
   * System prompt enforces German educational jargon (SMART criteria, positive formulation, Berlin curriculum orientation).
 
 ### Step 4: Comprehensive Plan Editor (`PlanEditorStep.tsx`)
@@ -113,11 +114,11 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.3.1-offline`) and official guidelines edition.
+  * Shows app version (`v1.4.0-offline`) and official guidelines edition.
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.3.1-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.3.1-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.0-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.0-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 
 ---
@@ -218,6 +219,11 @@ npm run build
 
 ### Historical Changelog
 
+* **v1.4.0 (2026-09-27):**
+  * **Wllama WebAssembly CPU Engine:** Replaced the WebGPU-only `@mlc-ai/web-llm` engine with Wllama (`@wllama/wllama`), enabling on-device execution of `Qwen2.5-0.5B-Instruct` (GGUF) on all CPUs via WebAssembly SIMD without requiring WebGPU support.
+  * **OPFS & IndexedDB Storage Architecture:** Completely eliminated reliance on the Cache Storage API (`window.caches`). Model weights are now stored and streamed exclusively via OPFS (Origin Private File System) with an automatic IndexedDB fallback.
+  * **Persistent Quota Protection:** Integrated `navigator.storage.persist()` to safeguard downloaded model weights from browser storage eviction.
+  * **Graceful Deterministic Fallback:** Maintained the instant rule-based matching engine (`localMatchingEngine.ts`) as the primary zero-download fallback whenever model download is skipped or deferred.
 * **v1.3.1 (2026-09-26):**
   * **Optimierter amtlicher Formulardruck:** Unterdrückung automatischer Browser-Kopf- und Fußzeilen (URL, Datum, Uhrzeit, Webseitentitel) mittels `@page { margin: 0 }` und internem `.print-document-sheet`-Layoutcontainer.
   * **Bereinigte Fußzeile & Versionsanzeige:** Einbindung der Anwendungsversion (`Förderplan-Assistent Berlin 1.3.1`) im Kleingedruckten der finalen Druckansicht bei vollständiger Beibehaltung der amtlichen Referenzangaben.

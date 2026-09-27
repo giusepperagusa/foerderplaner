@@ -1,19 +1,30 @@
 /**
- * WebLLM Manager & Lifecycle Controller
- * Manages Qwen2.5-0.5B-Instruct in a background Web Worker via WebGPU.
+ * Wllama Manager & Lifecycle Controller (CPU WebAssembly + OPFS/IndexedDB)
+ * Replaces WebLLM/WebGPU with Wllama running Qwen 2.5 0.5B Instruct (GGUF).
+ * Stores model weights strictly in OPFS and IndexedDB (zero Cache API usage).
  */
-import { CreateWebWorkerMLCEngine, MLCEngineInterface, InitProgressReport } from '@mlc-ai/web-llm';
+import { Wllama, CacheManager } from '@wllama/wllama';
+import {
+  createWllamaCacheManager,
+  getActiveStorageType,
+  ensureStoragePersistence,
+  purgeAllWllamaStorage,
+} from './wllamaStorage';
 
 export const CURRENT_MODEL_CONFIG = {
-  id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',
-  name: 'Qwen 2.5 (0.5B Instruct - 4-bit Quantisiert)',
-  shortName: 'Qwen2.5-0.5B',
-  downloadSizeMB: 360,
-  vramRequiredMB: 945,
+  id: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
+  name: 'Qwen 2.5 (0.5B Instruct GGUF - Q4_K_M)',
+  shortName: 'Qwen2.5-0.5B-GGUF',
+  downloadSizeMB: 397,
+  ramRequiredMB: 600,
   contextWindow: 4096,
-  estimatedTimeFast: 'ca. 20–45 Sekunden (WLAN / Breitband)',
+  estimatedTimeFast: 'ca. 25–45 Sekunden (WLAN / Breitband)',
   estimatedTimeSlow: 'ca. 2–4 Minuten (mobiles Internet)',
-  description: 'Leichtgewichtiges Modell für lokale Inferenz direkt im Browser über WebGPU. Respektiert 100% Datenschutz (kein Serverkontakt).'
+  description:
+    'Leichtgewichtiges GGUF-Modell für lokale CPU-Inferenz via WebAssembly (Wllama) mit OPFS/IndexedDB-Speicherung. Läuft auf jedem Gerät ohne WebGPU-Zwang und respektiert 100% Datenschutz (kein Serverkontakt, kein Cache API).',
+  hfRepo: 'Qwen/Qwen2.5-0.5B-Instruct-GGUF',
+  hfFile: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
+  url: 'https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf',
 };
 
 export interface ModelCacheStatus {
@@ -21,130 +32,131 @@ export interface ModelCacheStatus {
   isCached: boolean;
   isLoaded: boolean;
   cachedBytes?: number;
+  storageBackend: 'OPFS' | 'IndexedDB' | 'None';
   cacheKeys: string[];
+}
+
+export interface InitProgressReport {
+  progress: number;
+  text: string;
+  timeElapsed?: number;
 }
 
 export type ProgressCallback = (report: InitProgressReport) => void;
 
-class WebLlmManager {
-  private engine: MLCEngineInterface | null = null;
-  private worker: Worker | null = null;
+class WllamaManager {
+  private wllama: Wllama | null = null;
+  private cacheManager: CacheManager | null = null;
   private isLoading = false;
   private currentLoadedModelId: string | null = null;
 
   /**
-   * Checks if browser supports WebGPU
+   * Checks if browser supports WebAssembly execution (available on all modern browsers).
+   */
+  public async isSupported(): Promise<boolean> {
+    if (typeof window === 'undefined') return false;
+    return typeof WebAssembly !== 'undefined' && typeof WebAssembly.instantiate === 'function';
+  }
+
+  /**
+   * Alias for backward compatibility with previous WebGPU checks.
+   * Returns true because Wllama runs on CPU and does not require WebGPU.
    */
   public async isWebGpuSupported(): Promise<boolean> {
-    if (typeof window === 'undefined' || !navigator) return false;
-    if (!('gpu' in navigator)) return false;
-    try {
-      const adapter = await (navigator as any).gpu.requestAdapter();
-      return !!adapter;
-    } catch {
-      return false;
-    }
+    return this.isSupported();
   }
 
   /**
-   * Check whether model weights are already in browser CacheStorage
+   * Returns an initialized CacheManager using OPFS and IndexedDB
+   */
+  private getCacheManager(): CacheManager {
+    if (!this.cacheManager) {
+      this.cacheManager = createWllamaCacheManager();
+    }
+    return this.cacheManager;
+  }
+
+  /**
+   * Check whether model weights are already in OPFS or IndexedDB (without Cache API)
    */
   public async checkCacheStatus(): Promise<ModelCacheStatus> {
-    const isSupported = await this.isWebGpuSupported();
-    if (typeof window === 'undefined' || !('caches' in window)) {
-      return { isSupported, isCached: false, isLoaded: !!this.engine, cacheKeys: [] };
+    const isSupported = await this.isSupported();
+    const storageBackend = await getActiveStorageType();
+
+    if (!isSupported) {
+      return {
+        isSupported: false,
+        isCached: false,
+        isLoaded: false,
+        storageBackend: 'None',
+        cacheKeys: [],
+      };
     }
 
     try {
-      const keys = await window.caches.keys();
-      // WebLLM cache typically contains "webllm" or model name in cache keys
-      const modelKeys = keys.filter(k => 
-        k.toLowerCase().includes('webllm') || 
-        k.toLowerCase().includes('qwen') || 
-        k.toLowerCase().includes('mlc')
+      const cm = this.getCacheManager();
+      const files = await cm.list();
+      const modelFiles = files.filter(
+        (f) =>
+          f.name.toLowerCase().includes('qwen') ||
+          f.name.toLowerCase().includes('0.5b') ||
+          f.name.toLowerCase().includes('.gguf')
       );
 
-      const isCached = modelKeys.length > 0;
+      const isCached = modelFiles.some((f) => f.size > 50 * 1024 * 1024); // at least 50MB
+      const cachedBytes = modelFiles.reduce((acc, f) => acc + (f.size || 0), 0);
+
       return {
-        isSupported,
+        isSupported: true,
         isCached,
-        isLoaded: !!this.engine,
-        cacheKeys: modelKeys
+        isLoaded: !!this.wllama && this.currentLoadedModelId === CURRENT_MODEL_CONFIG.id,
+        cachedBytes: cachedBytes > 0 ? cachedBytes : undefined,
+        storageBackend,
+        cacheKeys: modelFiles.map((f) => f.name),
       };
     } catch (e) {
-      console.warn('Could not inspect CacheStorage:', e);
-      return { isSupported, isCached: false, isLoaded: !!this.engine, cacheKeys: [] };
+      console.warn('Could not inspect OPFS/IndexedDB storage:', e);
+      return {
+        isSupported: true,
+        isCached: false,
+        isLoaded: !!this.wllama && this.currentLoadedModelId === CURRENT_MODEL_CONFIG.id,
+        storageBackend,
+        cacheKeys: [],
+      };
     }
   }
 
   /**
-   * Clears old/cached model weights to free up browser storage space
+   * Clears cached model weights from OPFS and IndexedDB to free up browser storage space
    */
   public async purgeModelCache(): Promise<boolean> {
-    // Unload current engine first if active
-    if (this.engine) {
+    if (this.wllama) {
       try {
-        await this.engine.unload();
+        await this.wllama.exit();
       } catch (e) {
-        console.warn('Error unloading engine:', e);
+        console.warn('Error exiting wllama:', e);
       }
-      this.engine = null;
+      this.wllama = null;
       this.currentLoadedModelId = null;
     }
 
-    if (this.worker) {
-      this.worker.terminate();
-      this.worker = null;
-    }
-
-    if (typeof window === 'undefined' || !('caches' in window)) return false;
-
-    try {
-      const keys = await window.caches.keys();
-      for (const key of keys) {
-        if (
-          key.toLowerCase().includes('webllm') || 
-          key.toLowerCase().includes('qwen') || 
-          key.toLowerCase().includes('mlc')
-        ) {
-          await window.caches.delete(key);
-        }
-      }
-      return true;
-    } catch (e) {
-      console.error('Failed to purge model cache:', e);
-      return false;
-    }
+    this.cacheManager = null;
+    return await purgeAllWllamaStorage();
   }
 
   /**
-   * Checks if an older model exists in cache and purges it to save space
+   * Checks and purges outdated model caches from older versions
    */
   public async purgeOutdatedModelCaches(): Promise<void> {
-    if (typeof window === 'undefined' || !('caches' in window)) return;
-    try {
-      const keys = await window.caches.keys();
-      for (const key of keys) {
-        // If there's an old model cache that isn't the current model
-        if (
-          (key.toLowerCase().includes('webllm') || key.toLowerCase().includes('mlc')) &&
-          !key.includes('Qwen2.5-0.5B')
-        ) {
-          await window.caches.delete(key);
-          console.info('Purged outdated model cache:', key);
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to clean outdated caches:', e);
-    }
+    // Wllama storage isolation automatically keys by URL / ETag
   }
 
   /**
-   * Initialize or load the model in the worker thread
+   * Initialize or load the GGUF model in the Wllama engine
    */
-  public async initModel(onProgress?: ProgressCallback): Promise<MLCEngineInterface> {
-    if (this.engine && this.currentLoadedModelId === CURRENT_MODEL_CONFIG.id) {
-      return this.engine;
+  public async initModel(onProgress?: ProgressCallback): Promise<Wllama> {
+    if (this.wllama && this.currentLoadedModelId === CURRENT_MODEL_CONFIG.id) {
+      return this.wllama;
     }
 
     if (this.isLoading) {
@@ -154,66 +166,103 @@ class WebLlmManager {
     this.isLoading = true;
 
     try {
-      // Purge any outdated models first to save space
-      await this.purgeOutdatedModelCaches();
+      // Request persistent storage protection for OPFS / IndexedDB
+      await ensureStoragePersistence();
 
-      // Create Web Worker
-      if (!this.worker) {
-        this.worker = new Worker(
-          new URL('../workers/llm.worker.ts', import.meta.url),
-          { type: 'module' }
-        );
-      }
+      const cm = this.getCacheManager();
 
-      // Initialize WebWorker engine
-      this.engine = await CreateWebWorkerMLCEngine(
-        this.worker,
-        CURRENT_MODEL_CONFIG.id,
+      // Configure Wllama with local wasm asset and OPFS/IDB cache manager
+      this.wllama = new Wllama(
         {
-          initProgressCallback: (report) => {
+          default: '/wllama.wasm',
+          'single-thread/wllama.wasm': '/wllama.wasm',
+          'multi-thread/wllama.wasm': '/wllama.wasm',
+        },
+        {
+          suppressNativeLog: true,
+          allowOffline: true,
+          cacheManager: cm,
+        }
+      );
+
+      const startTime = Date.now();
+
+      // Load model from Hugging Face or cached OPFS/IDB storage
+      await this.wllama.loadModelFromHF(
+        {
+          repo: CURRENT_MODEL_CONFIG.hfRepo,
+          file: CURRENT_MODEL_CONFIG.hfFile,
+        },
+        {
+          useCache: true,
+          progressCallback: ({ loaded, total }) => {
+            const progress = total > 0 ? loaded / total : 0;
+            const elapsed = Math.round((Date.now() - startTime) / 1000);
+            const loadedMB = Math.round(loaded / (1024 * 1024));
+            const totalMB = Math.round(total / (1024 * 1024));
+
             if (onProgress) {
-              onProgress(report);
+              onProgress({
+                progress,
+                text: total > 0
+                  ? `Lade GGUF-Modell in OPFS/IndexedDB (${loadedMB} MB von ${totalMB} MB)...`
+                  : `Lade Daten (${loadedMB} MB)...`,
+                timeElapsed: elapsed,
+              });
             }
-          }
+          },
         }
       );
 
       this.currentLoadedModelId = CURRENT_MODEL_CONFIG.id;
       this.isLoading = false;
-      return this.engine;
+
+      if (onProgress) {
+        onProgress({
+          progress: 1,
+          text: 'Modell erfolgreich geladen und im OPFS/IndexedDB initialisiert!',
+          timeElapsed: Math.round((Date.now() - startTime) / 1000),
+        });
+      }
+
+      return this.wllama;
     } catch (err: any) {
       this.isLoading = false;
-      this.engine = null;
-      if (this.worker) {
-        this.worker.terminate();
-        this.worker = null;
+      this.currentLoadedModelId = null;
+      if (this.wllama) {
+        try {
+          await this.wllama.exit();
+        } catch {
+          // ignore
+        }
+        this.wllama = null;
       }
       throw err;
     }
   }
 
   /**
-   * Stream a completion using the local worker engine
+   * Stream a completion using Wllama CPU inference
    */
   public async generateStreaming(
     systemPrompt: string,
     userPrompt: string,
     onToken: (token: string, fullText: string) => void
   ): Promise<string> {
-    if (!this.engine) {
+    if (!this.wllama) {
       throw new Error('Modell ist noch nicht geladen. Bitte Modell zuerst initialisieren.');
     }
 
     let fullText = '';
 
-    const stream = await this.engine.chat.completions.create({
+    const stream = await this.wllama.createChatCompletion({
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
+        { role: 'user', content: userPrompt },
       ],
       stream: true,
-      temperature: 0.2, // Low temperature for precise guideline-aligned output
-      max_tokens: 1024
+      temperature: 0.2,
+      max_tokens: 1024,
     });
 
     for await (const chunk of stream) {
@@ -228,8 +277,9 @@ class WebLlmManager {
   }
 
   public isEngineReady(): boolean {
-    return !!this.engine;
+    return !!this.wllama && this.currentLoadedModelId === CURRENT_MODEL_CONFIG.id;
   }
 }
 
-export const webLlmManager = new WebLlmManager();
+export const webLlmManager = new WllamaManager();
+export const wllamaManager = webLlmManager;

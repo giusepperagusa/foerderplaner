@@ -64,8 +64,8 @@ export default defineConfig(() => {
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff,woff2}'],
-          // Allow precaching of the WebLLM engine & web worker bundle
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff,woff2,wasm}'],
+          // Allow precaching of the Wllama wasm engine & web worker bundle
           maximumFileSizeToCacheInBytes: 16 * 1024 * 1024,
           cleanupOutdatedCaches: true,
           clientsClaim: true,
@@ -110,6 +110,7 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': path.resolve('.'),
+        '@wllama/wllama': path.resolve('node_modules/@wllama/wllama/esm/index.js'),
       },
     },
     server: {
