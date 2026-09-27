@@ -1,7 +1,15 @@
 # Förderplan-Assistent Grundschule (Berlin) — System Specification & Blueprint
 
 > **CRITICAL MAINTENANCE DIRECTIVE FOR FUTURE SESSIONS / AGENTS:**  
-> This `README.md` must be kept strictly up to date with any and all future architectural changes, features, bug fixes, data schema updates, and dependency additions. Whenever modifications are made to this codebase, update this document before completing the task.
+> 1. **Continuous Documentation Sync:** This `README.md` must be kept strictly up to date with any and all future architectural changes, features, bug fixes, data schema updates, and dependency additions. Whenever modifications are made to this codebase, update this document before completing the task.
+> 2. **Strict Semantic Versioning & Changelog Protocol:** Every time any change, feature, or bug fix is made to the codebase:
+>    * **Increment the App Version:** Bump the version in `package.json` and sync the `APP_VERSION` constant in `src/components/VersionInfoModal.tsx` following SemVer (`MAJOR.MINOR.PATCH`).
+>      * `PATCH` (e.g. `1.2.1` -> `1.2.2`): Small bug fixes, CSS/layout tweaks, minor wording revisions.
+>      * `MINOR` (e.g. `1.2.1` -> `1.3.0`): New features, template adaptations, new steps, new export formats, guideline data refreshes.
+>      * `MAJOR` (e.g. `1.x.x` -> `2.0.0`): Breaking data migrations, architecture overhauls.
+>    * **Augment the Changelog:** Add a new entry to the `Aenderungshistorie (Changelog)` list inside `src/components/VersionInfoModal.tsx` detailing what was changed/added in the new version.
+>    * **Re-bundle Offline Archives:** Re-generate the versioned web distribution and source code archives (`foerderplaner-vX.Y.Z-web-dist.tar.gz` and `foerderplaner-vX.Y.Z-source-code.tar.gz`) in both `public/` and `dist/`.
+>    * **Sync README:** Document the new version number and notable updates in Section 9 (Changelog) of this `README.md`.
 
 ---
 
@@ -66,9 +74,13 @@ The application guides the teacher through a streamlined, multi-step process wit
 
 ### Step 5: Print & PDF Export (`PrintPreviewStep.tsx`)
 * **Official Berlin Template Replication (Pages 82 & 83 of Handreichung „Fördermaßnahmen konkret!“):**
-  * **Page 82 (Front):** Institutional header (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*), legal reference (*§ 19 SopädVO*), 2-column boxed pupil master data and school framework conditions, and narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*).
+  * **Page 82 (Front):** Institutional header (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*), legal reference (*§ 19 SopädVO*), 2-column boxed pupil master data and school framework conditions, narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*), and explicit *Seite 1 / 2* footer.
   * **Page 83 (Form Table & Agreements):** Complete 5-column table (*IST*, *SOLL*, *LERNWEG*, *Absprachen*, *Reflexion*), structured section for *Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich*, conference documentation (*Gesprächsdurchführung*, *Beteiligte*, *Kenntnisnahme*), and three legal signature lines (*Klassenlehrkraft*, *Sonderpädagogin / Schulleitung*, *Erziehungsberechtigte*).
-* Print CSS stylesheet (`@media print` in `src/index.css`) with exact DIN-A4 page margins, black borders, forced page-break rules, and automatic UI toolbar stripping for vector PDF rendering.
+* **Clean Document Print Styling:**
+  * Uses CSS `@page { margin: 0 }` to completely suppress browser-injected header elements (URL, browser page title) and footer elements (system date/time), avoiding clutter.
+  * Internal DIN-A4 page sheet layout container (`.print-document-sheet`) provides physical 12mm/14mm margins for printer hardware.
+  * Clear and consistent page indicators (*Seite 1 / 2* and *Seite 2 / 2*).
+  * Fine print at the document bottom includes the application version immediately after the application name (e.g. `Förderplan-Assistent Berlin 1.3.1 • Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018`).
 * Single-click browser print dialog triggering high-resolution vector PDF export.
 
 ---
@@ -101,11 +113,11 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.2.1-offline`) and official guidelines edition.
+  * Shows app version (`v1.3.1-offline`) and official guidelines edition.
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.2.1-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.2.1-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.3.1-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.3.1-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 
 ---
@@ -191,3 +203,40 @@ npm run lint
 # Compile production bundle
 npm run build
 ```
+
+---
+
+## 9. Versioning Strategy & Project Changelog
+
+### Versioning Rules
+* **Format:** Strict Semantic Versioning (`vMAJOR.MINOR.PATCH[-modifier]`).
+* **Trigger Conditions:**
+  * **MAJOR (`+1.0.0`):** Incompatible data model changes, breaking database migrations, complete UI paradigm redesigns.
+  * **MINOR (`+0.1.0`):** New functional steps, compliance template restructuring, new matching engines, export format additions, significant pedagogical enhancements.
+  * **PATCH (`+0.0.1`):** Bug fixes, visual/CSS adjustments, typographical fixes, dependency patches.
+* **Synchronization Mandate:** `package.json`, `VersionInfoModal.tsx`, `README.md`, and distribution archive names (`foerderplaner-vX.Y.Z-*.tar.gz`) must always share the exact same version number.
+
+### Historical Changelog
+
+* **v1.3.1 (2026-09-26):**
+  * **Optimierter amtlicher Formulardruck:** Unterdrückung automatischer Browser-Kopf- und Fußzeilen (URL, Datum, Uhrzeit, Webseitentitel) mittels `@page { margin: 0 }` und internem `.print-document-sheet`-Layoutcontainer.
+  * **Bereinigte Fußzeile & Versionsanzeige:** Einbindung der Anwendungsversion (`Förderplan-Assistent Berlin 1.3.1`) im Kleingedruckten der finalen Druckansicht bei vollständiger Beibehaltung der amtlichen Referenzangaben.
+  * **Seitennummerierung:** Durchgängige und präzise Darstellung der Seitenzahlen (*Seite 1 / 2* auf der Vorderseite und *Seite 2 / 2* auf der Rückseite/Rasterseite).
+* **v1.3.0 (2026-09-26):**
+  * **Official Form Template Integration:** Replaced generic web print preview in Step 5 (`PrintPreviewStep.tsx`) with the official 2-page ministerial template from pages 82–83 of *„Fördermaßnahmen konkret!“* (Berlin Senatsverwaltung für Bildung, Jugend und Familie / § 19 SopädVO Berlin).
+  * **5-Column Standard Grid:** Front page master data with narrative baseline, followed by the official 5-column grid (*1. IST*, *2. SOLL*, *3. LERNWEG*, *4. Absprachen*, *5. Reflexion*) and multidisciplinary conference sign-off blocks.
+  * **DIN-A4 Print Stylesheet:** Added precise `@page` CSS print definitions with clean page-break splits, hidden UI chrome, and vector PDF rendering.
+  * **Flow & Breadcrumb Reset:** Creating a new plan or selecting/duplicating an existing plan now consistently resets the navigation state back to Step 1 (*Stammdaten & Schwerpunkt*).
+  * **Dynamic Initials Converter:** Enhanced Step 1 "Initialen" feature to dynamically convert entered names (e.g. "Klaus Schmidt" -> "K. S.") or generate pseudonyms instead of hardcoded placeholder text.
+  * **Versioning Directive:** Formalized semantic versioning protocol and changelog maintenance rules in `README.md`.
+* **v1.2.1:**
+  * PWA Offline-Unterstützung (Service Worker Precaching via `vite-plugin-pwa`).
+  * Viewport-Fixes für alle Modale (Höhenanpassung, `min-h-0`, Scrollcontainer & Esc-Dismissal).
+  * Webserver-Export (`.tar.gz` Bundles) und aktiver PWA-Update-Prüfer.
+* **v1.2.0:**
+  * WebLLM Web Worker-Integration (`Qwen2.5-0.5B-Instruct-q4f16_1-MLC`) mit Hardware-Erkennung und Opt-In-Modal.
+* **v1.1.0:**
+  * Mehrfach-Planverwaltung im LocalStorage / IndexedDB (Entwurf/Abgeschlossen, Duplizieren, Archivieren).
+* **v1.0.0:**
+  * Initiale Veröffentlichung des Förderplan-Assistenten Grundschule Berlin basierend auf *„Fördermaßnahmen konkret!“*.
+

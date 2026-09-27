@@ -13,6 +13,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { FoerderplanDocument } from '../types/foerderplan';
+import { APP_VERSION } from './VersionInfoModal';
 
 interface Props {
   planDoc: FoerderplanDocument;
@@ -133,7 +134,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           OFFICIAL FORMULAR: HANDREICHUNG „FÖRDERMASSNAHMEN KONKRET!“ (S. 82-83)
           Strictly formatted for DIN-A4 print reproduction
           ========================================================================= */}
-      <div className="bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black print:border-none print:shadow-none print:p-0 print:m-0 space-y-6 font-serif">
+      <div className="bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black print-document-sheet print:border-none print:shadow-none print:m-0 space-y-6 font-serif">
         
         {/* =====================================================================
             SEITE 1 (Vorderseite / S. 82):
@@ -250,6 +251,12 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
               </p>
             </div>
           </div>
+
+          {/* Page 1 Official Footer: Page number only */}
+          <div className="text-[10px] text-neutral-600 flex justify-between border-t border-black pt-1 font-sans">
+            <span className="font-semibold text-neutral-800">Senatsverwaltung für Bildung, Jugend und Familie Berlin</span>
+            <span className="font-bold text-neutral-900">Seite 1 / 2</span>
+          </div>
         </div>
 
         {/* =====================================================================
@@ -257,13 +264,13 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
             DAS AMTLICHE 5-SPALTEN-RASTER („FÖRDERMASSNAHMEN KONKRET!“, S. 83)
             IST | SOLL | LERNWEG | ABSPRACHEN | REFLEXION / EVALUATION
             ===================================================================== */}
-        <div className="space-y-2 pt-2">
+        <div className="space-y-3 pt-2 page-break-before">
           <div className="flex items-baseline justify-between border-b border-black pb-1">
             <h2 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
               2. Amtliches Förderplan-Raster: Pädagogische Fördermaßnahmen & Lernwege
             </h2>
-            <span className="text-[10px] text-neutral-600 italic font-sans">
-              Handreichung S. 83 (Spalten 1–5)
+            <span className="text-[10px] font-bold text-neutral-900 font-sans">
+              Seite 2 / 2
             </span>
           </div>
 
@@ -402,10 +409,12 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           </div>
         </div>
 
-        {/* Footer print meta */}
+        {/* Footer print meta: Version added after 'Förderplan-Assistent Berlin', keeping rest of fine print as is */}
         <div className="text-[9px] text-neutral-500 flex justify-between border-t border-neutral-300 pt-1 font-sans">
-          <span>Förderplan-Assistent Berlin &bull; Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018</span>
-          <span>Erstellt am: {planDoc.erstelltAm} &bull; Letzte Änderung: {planDoc.aktualisiertAm}</span>
+          <span>
+            Förderplan-Assistent Berlin {APP_VERSION.replace('-offline', '').replace(/^v/, '')} &bull; Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018
+          </span>
+          <span className="font-semibold text-neutral-700">Seite 2 / 2</span>
         </div>
 
       </div>

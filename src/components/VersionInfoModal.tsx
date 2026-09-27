@@ -31,7 +31,7 @@ interface Props {
   onApplyUpdate?: () => void;
 }
 
-export const APP_VERSION = 'v1.2.1-offline';
+export const APP_VERSION = 'v1.3.1-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 
 export const VersionInfoModal: React.FC<Props> = ({ 
@@ -262,6 +262,14 @@ export const VersionInfoModal: React.FC<Props> = ({
               Aenderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.3.1:</span>
+                <span>Optimierter amtlicher Formulardruck: Unterdrückung von Browser-Kopf-/Fußzeilen (URL, Datum, Webseiten-Titel) via CSS `@page`, Beibehaltung von Seitenzahlen, präzise Versionsangabe („Förderplan-Assistent Berlin 1.3.1“) im Dokument-Kleingedruckten unter Beibehaltung der amtlichen Angaben.</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.3.0:</span>
+                <span>Offizielles Berliner Formular nach S. 82-83 („Fördermaßnahmen konkret!“), automatischer Flow-Reset auf Schritt 1 bei Neuerstellung/Wechsel, dynamische Namens-zu-Initialen-Konvertierung, DIN-A4 Druck-Stylesheets.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.2.1:</span>
                 <span>PWA-Offline-Unterstuetzung (Service Worker Caching), Viewport-Fixes fuer alle Dialoge (Hoehenanpassung & Dismissal), Webserver-Export (.tar.gz), aktiver Update-Pruefer.</span>
