@@ -18,6 +18,7 @@ import {
   Download,
   Globe,
   FileCode2,
+  Scale,
 } from 'lucide-react';
 import richtlinienData from '../data/richtlinien.json';
 
@@ -29,9 +30,10 @@ interface Props {
   lastCheckResult?: string | null;
   needRefresh?: boolean;
   onApplyUpdate?: () => void;
+  onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.1-offline';
+export const APP_VERSION = 'v1.4.2-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 
 export const VersionInfoModal: React.FC<Props> = ({ 
@@ -42,6 +44,7 @@ export const VersionInfoModal: React.FC<Props> = ({
   lastCheckResult,
   needRefresh = false,
   onApplyUpdate,
+  onOpenLicense,
 }) => {
   // Close on Escape key press
   useEffect(() => {
@@ -255,6 +258,28 @@ export const VersionInfoModal: React.FC<Props> = ({
             </p>
           </div>
 
+          {/* License & Copyright Info Card */}
+          <div className="p-3 bg-indigo-50/60 border border-indigo-200 rounded-xl flex items-center justify-between gap-3">
+            <div>
+              <span className="text-xs font-bold text-indigo-950 flex items-center gap-1.5">
+                <Scale className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                Lizenz: GNU General Public License v3.0 (GPLv3)
+              </span>
+              <p className="text-[11px] text-indigo-900 mt-0.5">
+                Freie Software. Ausdrücklicher Ausschluss separat geladener KI-Modellgewichte.
+              </p>
+            </div>
+            {onOpenLicense && (
+              <button
+                type="button"
+                onClick={onOpenLicense}
+                className="px-2.5 py-1.5 bg-white hover:bg-indigo-50 text-indigo-700 font-semibold rounded-lg text-[11px] border border-indigo-300 transition shadow-2xs cursor-pointer shrink-0"
+              >
+                Lizenzdetails
+              </button>
+            )}
+          </div>
+
           {/* Changelog section */}
           <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
             <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
@@ -262,6 +287,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Aenderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.2:</span>
+                <span>GPLv3 Lizenzierung & KI-Gewichte-Ausschluss: Vollständige Umstellung der Anwendungssoftware auf die GNU General Public License v3.0 (GPLv3). Dedizierter Lizenzdialog mit Kompatibilitätsprüfung aller statisch einkompilierten Komponenten (MIT, ISC, BSD-2, Apache-2.0) sowie expliziter Klarstellung zum Ausschluss separat heruntergeladener Modellgewichte (Apache-2.0 / Qwen Team).</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.1:</span>
                 <span>Förderschwerpunkte GE & KME & Diagnostik-Filter: Ergänzung der amtlichen Förderschwerpunkte „Geistige Entwicklung“ (GE) und „Körperliche und motorische Entwicklung“ (KME) in Schritt 1 mit Kriterien, Gegenstandsbereichen und Richtlinien-Maßnahmen. Vollständige Überarbeitung und transparente Erklärung des Filters „Nur Förderbedarf filtern“ in Schritt 2 mit Live-Zähler, Erläuterungs-Banner und interaktivem Leerzustand.</span>

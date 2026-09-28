@@ -1,6 +1,14 @@
 /**
  * @license
- * SPDX-License-Identifier: Apache-2.0
+ * Förderplan-Assistent Berlin
+ * Copyright (C) 2024-2026 Giuseppe Ragusa
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -14,6 +22,7 @@ import { GuidelinesManagerModal } from './components/GuidelinesManagerModal';
 import { PlanManagerModal } from './components/PlanManagerModal';
 import { ModelConsentModal } from './components/ModelConsentModal';
 import { VersionInfoModal, APP_VERSION, GUIDELINE_VERSION } from './components/VersionInfoModal';
+import { LicenseModal } from './components/LicenseModal';
 import { PWAUpdateToast } from './components/PWAUpdateToast';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { usePWAUpdate } from './hooks/usePWAUpdate';
@@ -26,7 +35,7 @@ import {
   createBlankPlan,
   duplicatePlan,
 } from './utils/planStorage';
-import { ShieldCheck, Tag, Cpu, BookOpen, ArrowUpCircle } from 'lucide-react';
+import { ShieldCheck, Tag, Cpu, BookOpen, ArrowUpCircle, Scale } from 'lucide-react';
 
 export default function App() {
   // PWA update management
@@ -59,6 +68,7 @@ export default function App() {
   const [isPlanManagerOpen, setIsPlanManagerOpen] = useState<boolean>(false);
   const [isConsentModalOpen, setIsConsentModalOpen] = useState<boolean>(false);
   const [isVersionInfoModalOpen, setIsVersionInfoModalOpen] = useState<boolean>(false);
+  const [isLicenseModalOpen, setIsLicenseModalOpen] = useState<boolean>(false);
 
   // Active plan document
   const activePlan = useMemo(() => {
@@ -311,7 +321,7 @@ export default function App() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsGuidelinesModalOpen(true)}
-              className="hover:text-blue-600 transition flex items-center gap-1"
+              className="hover:text-blue-600 transition flex items-center gap-1 cursor-pointer"
             >
               <BookOpen className="w-3.5 h-3.5 text-slate-400" />
               <span>Richtlinien: {GUIDELINE_VERSION}</span>
@@ -319,15 +329,24 @@ export default function App() {
 
             <button
               onClick={() => setIsConsentModalOpen(true)}
-              className="hover:text-indigo-600 transition flex items-center gap-1"
+              className="hover:text-indigo-600 transition flex items-center gap-1 cursor-pointer"
             >
               <Cpu className="w-3.5 h-3.5 text-slate-400" />
-              <span>WebLLM (Qwen2.5-0.5B)</span>
+              <span>Lokale KI (Wllama Wasm)</span>
+            </button>
+
+            <button
+              onClick={() => setIsLicenseModalOpen(true)}
+              className="hover:text-indigo-600 transition flex items-center gap-1 cursor-pointer"
+              title="Lizenz- und Urheberrechtsinformationen (GPLv3)"
+            >
+              <Scale className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-semibold text-slate-700 hover:text-indigo-600">GPLv3</span>
             </button>
 
             <button
               onClick={() => setIsVersionInfoModalOpen(true)}
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium border transition-colors ${
+              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium border transition-colors cursor-pointer ${
                 needRefresh
                   ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-200'
@@ -380,6 +399,16 @@ export default function App() {
         lastCheckResult={lastCheckResult}
         needRefresh={needRefresh}
         onApplyUpdate={() => updateServiceWorker(true)}
+        onOpenLicense={() => {
+          setIsVersionInfoModalOpen(false);
+          setIsLicenseModalOpen(true);
+        }}
+      />
+
+      {/* Dedicated GPLv3 License & Model Exclusion Modal */}
+      <LicenseModal
+        isOpen={isLicenseModalOpen}
+        onClose={() => setIsLicenseModalOpen(false)}
       />
 
       {/* Background Update Notification Toast */}

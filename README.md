@@ -114,11 +114,11 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.1-offline`) and official guidelines edition.
+  * Shows app version (`v1.4.2-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.1-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.1-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.2-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.2-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 
 ---
@@ -130,7 +130,8 @@ The application guides the teacher through a streamlined, multi-step process wit
 * **Styling:** Tailwind CSS 4 (`@import "tailwindcss";` in `src/index.css`)
 * **Icons:** `lucide-react`
 * **Offline PWA:** `vite-plugin-pwa`, `workbox-window`
-* **On-Device AI Engine:** `@mlc-ai/web-llm`
+* **On-Device AI Engine:** `@wllama/wllama` (WebAssembly CPU SIMD execution of GGUF models) with OPFS / IndexedDB storage
+* **License:** GNU General Public License v3.0 (`GPL-3.0-or-later`), see `LICENSE`
 
 ---
 
@@ -207,7 +208,29 @@ npm run build
 
 ---
 
-## 9. Versioning Strategy & Project Changelog
+## 9. License, Legal Framework & AI Model Weights Exclusion
+
+### Software Licensing (GNU GPLv3)
+The entire application source code, user interface, build scripts, and local matching algorithms of **Förderplan-Assistent Berlin** are licensed under the **GNU General Public License Version 3 (GPLv3)** (or, at your option, any later version). See the [`LICENSE`](./LICENSE) file in the root directory for the complete license terms.
+
+* **Permissive Copyleft:** You are free to run, study, share, and modify this software. Any distributed modified versions must also be released under the GPLv3.
+* **Component License Compatibility:** All statically bundled and linked dependencies (React, `@wllama/wllama`, Lucide Icons, Tailwind CSS, Motion, Vite, Express, Dotenv) use permissive open-source licenses (MIT, ISC, BSD-2-Clause, Apache-2.0). Under Free Software Foundation (FSF) guidelines, these licenses are 100% compatible with GNU GPLv3.
+
+### Explicit Exclusion of Runtime-Downloaded AI Model Weights
+* **Independent Creative Parameter Sets:** The optional neural language model (e.g. `Qwen2.5-0.5B-Instruct-Q4_K_M.gguf`, ~397 MB) downloaded interactively by the user at runtime into browser OPFS/IndexedDB storage is **NOT** part of the application source code or build output, and constitutes an independent creative work.
+* **Model Upstream License:** The pre-trained weights are created by Alibaba Cloud / Qwen Team and released under the **Apache License 2.0**.
+* **Scope of GPLv3:** The application's GPLv3 license applies solely to the software source code and logic. It does not govern, relicense, or modify the terms of third-party model weights downloaded independently by the end user.
+* **Zero-Download Guarantee:** The application is fully functional offline without downloading any neural model, relying on the built-in deterministic pedagogical rules engine.
+
+### Official Berlin Educational Reference Material
+The diagnostic checklists, developmental domains, and pedagogical support measures are based on the official guidelines:
+> *„Fördermaßnahmen konkret! Eine Handreichung für pädagogische Fachkräfte zur Entwicklung von Fördermaßnahmen“*  
+> Herausgeber: Senatsverwaltung für Bildung, Jugend und Familie Berlin (Stand: November 2018).  
+> Gemäß § 19 SopädVO Berlin.
+
+---
+
+## 10. Versioning Strategy & Project Changelog
 
 ### Versioning Rules
 * **Format:** Strict Semantic Versioning (`vMAJOR.MINOR.PATCH[-modifier]`).
@@ -219,6 +242,11 @@ npm run build
 
 ### Historical Changelog
 
+* **v1.4.2 (2026-09-28):**
+  * **GPLv3 Lizenzierung & KI-Gewichte-Ausschluss:** Vollständige Umstellung der Anwendungssoftware unter die *GNU General Public License v3.0 (GPLv3)* mit Bereitstellung der `LICENSE`-Datei im Repository-Stammverzeichnis sowie SPDX-Lizenzheadern in den Quellcodedateien.
+  * **Dedizierter Lizenz- & Rechtsdialog (`LicenseModal.tsx`):** Übersichtliche Darstellung der Software-Lizenzrechte (GPLv3), Bestätigung der 100%igen Kompatibilität aller statisch einkompilierten Bibliotheken (MIT, ISC, BSD-2, Apache-2.0) und direkter Einsicht des Lizenzvolltexts.
+  * **Rechtliche Klarstellung zu Runtime-Modellgewichten:** Expliziter Ausschluss von optional zur Laufzeit nach interaktiver Zustimmung heruntergeladenen neuronalen Sprachmodell-Gewichten (Qwen2.5-0.5B-Instruct / Apache-2.0) vom Geltungsbereich der Software-GPLv3.
+  * **Amtliche Referenzangaben:** Dokumentation der Berliner Handreichung *„Fördermaßnahmen konkret!“* (SenBJF Berlin) als pädagogische Referenzgrundlage.
 * **v1.4.1 (2026-09-27):**
   * **Erweiterung der Förderschwerpunkte (GE & KME):** Ergänzung der beiden amtlichen Berliner Förderschwerpunkte *„Geistige Entwicklung“ (GE)* und *„Körperliche und motorische Entwicklung“ (KME)* in Schritt 1 mit vollständigen Kriterien, Entwicklungsfeldern, Richtlinienmaßnahmen und integrierten Bausteinen aus *„Fördermaßnahmen konkret!“*.
   * **Klarstellung & Überarbeitung der Förderbedarfs-Filterung:** Umfassende Überarbeitung des Filters *„Nur Förderbedarf filtern“* in Schritt 2: Live-Zähler (`{count} / {total}`), erklärender Hinweiskasten zu den Filterkriterien (Bewertung „eher nicht / trifft nicht zu“ oder aktiver Förderfokus), aktiver Status-Banner mit Schnell-Reset und verständlicher Leerzustand bei 0 Treffern.
