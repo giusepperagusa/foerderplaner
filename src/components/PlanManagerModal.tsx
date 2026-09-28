@@ -30,7 +30,7 @@ interface Props {
   onDeletePlan: (planId: string) => void;
   onDuplicatePlan: (plan: FoerderplanDocument) => void;
   onToggleStatus: (planId: string) => void;
-  onImportPlans: (imported: FoerderplanDocument[]) => void;
+  onImportPlans: (imported: FoerderplanDocument[], mode?: 'copy' | 'overwrite') => void;
 }
 
 export const PlanManagerModal: React.FC<Props> = ({
@@ -92,7 +92,21 @@ export const PlanManagerModal: React.FC<Props> = ({
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(plans, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `foerderplaene_backup_${new Date().toISOString().split('T')[0]}.json`);
+    downloadAnchor.setAttribute('download', `foerderplaene_gesamtsicherung_${new Date().toISOString().split('T')[0]}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  const handleExportSingle = (plan: FoerderplanDocument) => {
+    const safeName = (plan.profil.name || 'unbenannter_foerderplan')
+      .trim()
+      .replace(/[^a-zA-Z0-9äöüÄÖÜß_-]/g, '_')
+      .substring(0, 30);
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(plan, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `foerderplan_${safeName}_${plan.id.slice(-6)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -106,18 +120,45 @@ export const PlanManagerModal: React.FC<Props> = ({
     reader.onload = (event) => {
       try {
         const parsed = JSON.parse(event.target?.result as string);
+        let importedList: FoerderplanDocument[] = [];
         if (Array.isArray(parsed) && parsed.length > 0) {
-          onImportPlans(parsed);
-          alert(`Erfolgreich ${parsed.length} Foerderplaene aus dem Backup importiert.`);
-        } else if (parsed && parsed.profil) {
-          // Single plan imported
-          onImportPlans([parsed]);
-          alert('1 Foerderplan erfolgreich importiert.');
+          importedList = parsed;
+        } else if (parsed && (parsed.profil || parsed.id)) {
+          importedList = [parsed];
         } else {
-          alert('Ungueltiges Dateiformat. Es konnte kein Foerderplan erkannt werden.');
+          alert('Ungültiges Dateiformat. Es konnte kein gültiger Förderplan erkannt werden.');
+          return;
+        }
+
+        // Check for collision with existing local database plans
+        const existingIds = new Set(plans.map((p) => p.id));
+        const colliding = importedList.filter((imp) => existingIds.has(imp.id));
+
+        if (colliding.length > 0) {
+          const collidingNames = colliding
+            .map((c) => c.profil?.name?.trim() || 'Unbenannt')
+            .join(', ');
+
+          const shouldOverwrite = window.confirm(
+            `Kollisionsprüfung beim Import:\n\n` +
+            `${colliding.length} Förderplan/Pläne (${collidingNames}) sind mit identischer ID bereits in Ihrer lokalen Datenbank vorhanden.\n\n` +
+            `• Klicken Sie auf [OK], um bestehende Pläne zu AKTUALISIEREN / ZU ÜBERSCHREIBEN.\n` +
+            `• Klicken Sie auf [Abbrechen], um die Pläne als NEUE KOPIEN anzulegen (bestehende Pläne bleiben erhalten).`
+          );
+
+          if (shouldOverwrite) {
+            onImportPlans(importedList, 'overwrite');
+            alert(`Erfolgreich ${importedList.length} Förderplan/Pläne importiert (${colliding.length} bestehende Pläne aktualisiert).`);
+          } else {
+            onImportPlans(importedList, 'copy');
+            alert(`Erfolgreich ${importedList.length} Förderplan/Pläne importiert (${colliding.length} als separate Kopie/Kopien angelegt).`);
+          }
+        } else {
+          onImportPlans(importedList, 'copy');
+          alert(`Erfolgreich ${importedList.length} Förderplan/Pläne importiert.`);
         }
       } catch (err) {
-        alert('Fehler beim Lesen der Backup-Datei.');
+        alert('Fehler beim Lesen oder Parsen der JSON-Datei.');
       }
     };
     reader.readAsText(file);
@@ -381,6 +422,14 @@ export const PlanManagerModal: React.FC<Props> = ({
                         <Copy className="w-4 h-4" />
                       </button>
 
+                      <button
+                        onClick={() => handleExportSingle(plan)}
+                        className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition border border-slate-200"
+                        title="Diesen Foerderplan einzeln als .json exportieren"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+
                       {confirmDeleteId === plan.id ? (
                         <div className="flex items-center gap-1 bg-rose-50 p-1 rounded-lg border border-rose-200">
                           <button
@@ -422,17 +471,19 @@ export const PlanManagerModal: React.FC<Props> = ({
             <button
               onClick={handleExportAll}
               className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 transition shadow-xs"
+              title="Alle Foerderplaene als gemeinsame JSON-Sicherungsdatei herunterladen"
             >
               <Download className="w-3.5 h-3.5 text-slate-600" />
-              <span>Alle Plaene exportieren (JSON-Backup)</span>
+              <span>Gesamtsicherung exportieren (.json)</span>
             </button>
 
             <button
               onClick={() => fileInputRef.current?.click()}
               className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 transition shadow-xs"
+              title="Einzelnen Foerderplan oder Gesamtsicherung (.json) importieren"
             >
               <Upload className="w-3.5 h-3.5 text-slate-600" />
-              <span>Backup importieren</span>
+              <span>Foerderplan(e) importieren (.json)</span>
             </button>
             <input
               type="file"

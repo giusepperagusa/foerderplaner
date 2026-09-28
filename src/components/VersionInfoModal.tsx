@@ -33,7 +33,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.2-offline';
+export const APP_VERSION = 'v1.4.3-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 
 export const VersionInfoModal: React.FC<Props> = ({ 
@@ -287,6 +287,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Aenderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.3:</span>
+                <span>Einzelplan-Export & Kollisionsaufloesung beim Import: Direkter Export individueller Foerderplaene (.json) je Schueler/in aus der Planverwaltung. Intelligente Duplikats- & Kollisionserkennung beim Import mit interaktiver Auswahl (bestehenden Plan aktualisieren vs. separate Kopie anlegen). Praezisierung der Dokumentation zur Speichersicherheit und zu OS-/Geraete-Verschluesselung nach DSGVO.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.2:</span>
                 <span>GPLv3 Lizenzierung & KI-Gewichte-Ausschluss: Vollständige Umstellung der Anwendungssoftware auf die GNU General Public License v3.0 (GPLv3). Dedizierter Lizenzdialog mit Kompatibilitätsprüfung aller statisch einkompilierten Komponenten (MIT, ISC, BSD-2, Apache-2.0) sowie expliziter Klarstellung zum Ausschluss separat heruntergeladener Modellgewichte (Apache-2.0 / Qwen Team).</span>

@@ -92,7 +92,11 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Auto-save on every change with debounce.
   * Multi-plan manager (`PlanManagerModal.tsx`): create, duplicate, switch between students, archive, and delete plans.
   * **Strict Step Reset Rule:** Whenever a new plan is created, an existing plan is selected, or a plan is duplicated, the application state and top navigation breadcrumb strictly reset to **Step 1 ("Stammdaten & Schwerpunkt")**.
-  * Complete JSON Backup & Restore: Import and export entire student databases in encrypted or plain JSON format for inter-device transfer without cloud sync.
+  * **Individual & Bulk JSON Backup / Restore:**
+    * **Bulk Backup (`.json`):** Export all student plans in standard, human-readable JSON format for archiving or transfer between school computers without cloud sync.
+    * **Individual Plan Export:** Export a single pupil's support plan (`foerderplan_<Name>_<ID>.json`) directly from each plan card in the plan manager.
+    * **Intelligent Collision Detection on Import:** When importing plans whose IDs already exist locally, the app detects the collision and prompts the teacher to either **update / overwrite** the existing local plan or **create a separate copy** (appending `(Kopie)`), preventing accidental data loss or duplication.
+    * **Security & Storage Hygiene:** The application uses clean, standard JSON without proprietary file-level encryption. In school and public administration environments, security and GDPR compliance are guaranteed through full-disk encryption at rest (BitLocker, FileVault, LUKS) on client workstations and encrypted physical transfer media (e.g. encrypted USB drives). This avoids the risk of catastrophic data loss caused by forgotten passwords while ensuring long-term auditability, transparency, and zero vendor lock-in.
 
 ---
 
@@ -114,11 +118,11 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.2-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.3-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.2-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.2-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.3-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.3-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 
 ---
@@ -242,6 +246,10 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
 
 ### Historical Changelog
 
+* **v1.4.3 (2026-09-28):**
+  * **Einzelplan-Export (`.json`):** Direkter Export individueller Förderpläne je Schüler/in (`foerderplan_<Name>_<ID>.json`) über das Download-Symbol direkt auf jeder Plankarte in der Plan-Verwaltung.
+  * **Kollisionserkennung & Importauswahl:** Interaktive Prüfung beim Import von Förderplänen mit bereits existierender ID; Lehrkräfte können wählen zwischen *Bestehenden Plan aktualisieren/überschreiben* (z.B. nach externer Bearbeitung) oder *Als neue Kopie anlegen* (`(Kopie)`).
+  * **Bereinigung & Präzisierung der Sicherheitsdokumentation:** Korrektur des irreführenden Hinweises auf In-App-Dateiverschlüsselung; transparente Erläuterung der Best-Practice-Architektur (offenes, auditierbares Standard-JSON und DSGVO-konforme Absicherung durch Betriebssystem- und Speichermedien-Verschlüsselung wie BitLocker, FileVault oder LUKS).
 * **v1.4.2 (2026-09-28):**
   * **GPLv3 Lizenzierung & KI-Gewichte-Ausschluss:** Vollständige Umstellung der Anwendungssoftware unter die *GNU General Public License v3.0 (GPLv3)* mit Bereitstellung der `LICENSE`-Datei im Repository-Stammverzeichnis sowie SPDX-Lizenzheadern in den Quellcodedateien.
   * **Dedizierter Lizenz- & Rechtsdialog (`LicenseModal.tsx`):** Übersichtliche Darstellung der Software-Lizenzrechte (GPLv3), Bestätigung der 100%igen Kompatibilität aller statisch einkompilierten Bibliotheken (MIT, ISC, BSD-2, Apache-2.0) und direkter Einsicht des Lizenzvolltexts.

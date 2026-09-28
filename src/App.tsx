@@ -212,16 +212,31 @@ export default function App() {
     );
   };
 
-  const handleImportPlans = (imported: FoerderplanDocument[]) => {
+  const handleImportPlans = (imported: FoerderplanDocument[], mode: 'copy' | 'overwrite' = 'copy') => {
     setPlans((prev) => {
-      const existingIds = new Set(prev.map((p) => p.id));
-      const sanitized = imported.map((imp) => {
-        if (existingIds.has(imp.id)) {
-          return { ...imp, id: `plan_${Date.now()}_${Math.random().toString(36).substring(2, 6)}` };
-        }
-        return imp;
-      });
-      return [...sanitized, ...prev];
+      if (mode === 'overwrite') {
+        const importedMap = new Map(imported.map((p) => [p.id, p]));
+        const updated = prev.map((p) => importedMap.get(p.id) || p);
+        const existingIds = new Set(prev.map((p) => p.id));
+        const brandNew = imported.filter((p) => !existingIds.has(p.id));
+        return [...brandNew, ...updated];
+      } else {
+        const existingIds = new Set(prev.map((p) => p.id));
+        const sanitized = imported.map((imp) => {
+          if (existingIds.has(imp.id)) {
+            return {
+              ...imp,
+              id: `plan_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              profil: {
+                ...imp.profil,
+                name: imp.profil.name ? `${imp.profil.name} (Kopie)` : 'Importierte Kopie',
+              },
+            };
+          }
+          return imp;
+        });
+        return [...sanitized, ...prev];
+      }
     });
   };
 
