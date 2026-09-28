@@ -73,8 +73,8 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
               </span>
             </div>
             <p className="text-xs text-emerald-800 mt-1 leading-relaxed">
-              Alle Angaben werden ausschliesslich lokal im Speicher Ihres Browsers abgelegt und verlassen zu keinem Zeitpunkt Ihr Geraet. 
-              Sie koennen fuer die Schuelerin / den Schueler <strong>Initialen</strong> (z.B. <code className="bg-emerald-100/70 px-1 py-0.5 rounded font-mono">M. K.</code>) oder eine <strong>pseudonymisierte Kennung / ID</strong> (z.B. <code className="bg-emerald-100/70 px-1 py-0.5 rounded font-mono">ID-2024-04</code>) verwenden. Ein Klarname ist nicht erforderlich.
+              Alle Angaben werden ausschließlich lokal im Speicher Ihres Browsers abgelegt und verlassen zu keinem Zeitpunkt Ihr Gerät. 
+              Sie können für die Schülerin / den Schüler <strong>Initialen</strong> (z. B. <code className="bg-emerald-100/70 px-1 py-0.5 rounded font-mono">M. K.</code>) oder eine <strong>pseudonymisierte Kennung / ID</strong> (z. B. <code className="bg-emerald-100/70 px-1 py-0.5 rounded font-mono">ID-2024-04</code>) verwenden. Ein Klarname ist nicht erforderlich.
             </p>
           </div>
         </div>
@@ -85,10 +85,10 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
             <User className="w-4 h-4 text-blue-600" />
-            Schueleridentifikation & Basisangaben
+            Schüleridentifikation & Basisangaben
           </h3>
           <span className="text-xs text-slate-400">
-            * Pflichtfeld fuer die Zuordnung
+            * Pflichtfeld für die Zuordnung
           </span>
         </div>
 
@@ -96,7 +96,7 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-              <span>Schueler-Kennung / Initialen / Name *</span>
+              <span>Schüler-Kennung / Initialen / Name *</span>
             </label>
             <div className="flex items-center gap-2">
               <button
@@ -113,7 +113,7 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
                 className="text-[11px] font-medium text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg border border-slate-200 transition"
                 title={profile.name?.trim() ? 'Eingegebenen Namen in Initialen umwandeln' : 'Zufällige Initialen generieren'}
               >
-                {profile.name?.trim() ? 'In Initialen umwandeln' : 'Initialen (z.B. K. S.)'}
+                {profile.name?.trim() ? 'In Initialen umwandeln' : 'Initialen (z. B. K. S.)'}
               </button>
             </div>
           </div>
@@ -122,11 +122,11 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
             type="text"
             value={profile.name}
             onChange={(e) => handleFieldChange('name', e.target.value)}
-            placeholder="z.B. L. H. oder ID-24-03 oder Vorname"
+            placeholder="z. B. L. H. oder ID-24-03 oder Vorname"
             className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium"
           />
           <p className="text-[11px] text-slate-500">
-            Verwenden Sie Kuerzel oder eine Ziffernkennung, um personenbezogene Klarnamen vollstaendig zu vermeiden.
+            Verwenden Sie Kürzel oder eine Ziffernkennung, um personenbezogene Klarnamen vollständig zu vermeiden.
           </p>
         </div>
 
@@ -172,13 +172,13 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
 
           <div>
             <label className="text-xs font-semibold text-slate-700 block mb-1">
-              Verantwortliche Lehrkraft / Kuerzel
+              Verantwortliche Lehrkraft / Kürzel
             </label>
             <input
               type="text"
               value={profile.lehrkraft}
               onChange={(e) => handleFieldChange('lehrkraft', e.target.value)}
-              placeholder="z.B. Klassenleitung / Fr. W."
+              placeholder="z. B. Klassenleitung / Fr. W."
               className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
             />
           </div>
@@ -191,7 +191,7 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
               type="text"
               value={profile.erziehungsberechtigte}
               onChange={(e) => handleFieldChange('erziehungsberechtigte', e.target.value)}
-              placeholder="z.B. Eltern / Mutter / Vater"
+              placeholder="z. B. Eltern / Mutter / Vater"
               className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
             />
           </div>
@@ -199,7 +199,7 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-xs font-semibold text-slate-700 block mb-1">
-                Foerderzeitraum von
+                Förderzeitraum von
               </label>
               <input
                 type="date"
@@ -228,10 +228,10 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
             <Award className="w-4 h-4 text-blue-600" />
-            Sonderpaedagogischer Foerderschwerpunkt
+            Sonderpädagogischer Förderschwerpunkt
           </h3>
           <span className="text-[11px] text-slate-500 font-medium">
-            5 offizielle Berliner Foerderschwerpunkte gemaess SopädVO
+            5 offizielle Berliner Förderschwerpunkte gemäß SopädVO
           </span>
         </div>
 
@@ -368,16 +368,16 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
       {/* Ausgangslage & Pädagogische Notizen */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-3">
         <label className="text-sm font-bold text-slate-900 block">
-          Ausgangslage & Paedagogische Beobachtung (Freitext)
+          Ausgangslage & Pädagogische Beobachtung (Freitext)
         </label>
         <p className="text-xs text-slate-500">
-          Beschreiben Sie kurz den aktuellen Lernstand, besondere Staerken sowie vorrangige Foerderbedarfe. Diese Notiz unterstuetzt spaeter die Zuordnung passgenauer Massnahmen.
+          Beschreiben Sie kurz den aktuellen Lernstand, besondere Stärken sowie vorrangige Förderbedarfe. Diese Notiz unterstützt später die Zuordnung passgenauer Maßnahmen.
         </p>
         <textarea
           rows={3}
           value={profile.ausgangslageNotiz}
           onChange={(e) => handleFieldChange('ausgangslageNotiz', e.target.value)}
-          placeholder="z.B. Zeigt Unsicherheiten bei der Laut-Synthese im Silbenlesen. In Gruppenphasen aufmerksam, bei laengeren Stillarbeiten schnell abgelenkt..."
+          placeholder="z. B. Zeigt Unsicherheiten bei der Laut-Synthese im Silbenlesen. In Gruppenphasen aufmerksam, bei längeren Stillarbeiten schnell abgelenkt..."
           className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
         />
       </div>
@@ -386,9 +386,9 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
       <div className="flex justify-end pt-2">
         <button
           onClick={onNext}
-          className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs"
+          className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
         >
-          <span>Weiter zum Einschaetzungsbogen</span>
+          <span>Weiter zum Einschätzungsbogen</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

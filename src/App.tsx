@@ -241,7 +241,7 @@ export default function App() {
   };
 
   const handleResetActivePlan = () => {
-    if (window.confirm('Moechten Sie alle Angaben dieses Foerderplans wirklich leeren?')) {
+    if (window.confirm('Möchten Sie alle Angaben dieses Förderplans wirklich leeren?')) {
       const blank = createBlankPlan(activePlanId);
       updateActivePlan(() => blank);
       setCurrentStep(1);
@@ -321,16 +321,26 @@ export default function App() {
         )}
       </main>
 
-      {/* Unobtrusive Footer with version tag and privacy notice */}
-      <footer className="bg-white border-t border-slate-200 py-4 px-4 sm:px-6 lg:px-8 text-xs text-slate-500">
+      {/* Unobtrusive Footer with version tag, GitHub repo and privacy notice - STRICTLY HIDDEN ON PRINT */}
+      <footer className="print:hidden no-print bg-white border-t border-slate-200 py-4 px-4 sm:px-6 lg:px-8 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2 flex-wrap text-slate-500">
-            <span className="font-medium text-slate-700">Foerderplan-Assistent Grundschule</span>
+            <span className="font-medium text-slate-700">Förderplan-Assistent Grundschule</span>
             <span>&bull;</span>
             <span className="flex items-center gap-1 text-emerald-700">
               <ShieldCheck className="w-3.5 h-3.5" />
               100% Client-seitig im Browser (PWA, LocalStorage & Web Worker)
             </span>
+            <span>&bull;</span>
+            <a
+              href="https://github.com/giusepperagusa/foerderplaner"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-600 hover:text-indigo-600 transition underline underline-offset-2"
+              title="Quellcode-Entwicklung auf GitHub ansehen"
+            >
+              GitHub (Quellcode)
+            </a>
           </div>
 
           <div className="flex items-center gap-3">
@@ -366,7 +376,7 @@ export default function App() {
                   ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-200'
               }`}
-              title="Version, Changelog & PWA Update-Status oeffnen"
+              title="Version, Changelog & PWA Update-Status öffnen"
             >
               {needRefresh ? (
                 <ArrowUpCircle className="w-3 h-3 text-amber-600" />

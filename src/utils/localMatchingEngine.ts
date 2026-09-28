@@ -181,7 +181,7 @@ export function convertProposalToPlanRow(proposal: RecommendationProposal, defau
     ist: proposal.ist,
     soll: proposal.soll,
     lernweg: proposal.lernweg.join('\n• '),
-    absprachen: `Verantwortlich: ${normalizeGermanText(defaultTeacher)}, 2x woechentlich in Kleingruppe und Stillarbeit, Evaluation zum Schulhalbjahr`,
-    reflexion: 'Wird im Rahmen des naechsten Beratungsgespraechs anhand des Beobachtungsbogens ueberprueft.',
+    absprachen: `Verantwortlich: ${defaultTeacher}, 2x wöchentlich in Kleingruppe und Stillarbeit, Evaluation zum Schulhalbjahr`,
+    reflexion: 'Wird im Rahmen des nächsten Beratungsgesprächs anhand des Beobachtungsbogens überprüft.',
   };
 }

@@ -129,7 +129,7 @@ export function setActivePlanId(id: string): void {
 export function duplicatePlan(source: FoerderplanDocument): FoerderplanDocument {
   const now = new Date().toISOString().split('T')[0];
   const newId = `plan_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-  const identifier = source.profil.name ? `${source.profil.name} (Folgeplan)` : 'Neuer Foerderplan';
+  const identifier = source.profil.name ? `${source.profil.name} (Folgeplan)` : 'Neuer Förderplan';
 
   return {
     ...JSON.parse(JSON.stringify(source)),

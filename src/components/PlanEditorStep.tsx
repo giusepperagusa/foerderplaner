@@ -70,13 +70,13 @@ export const PlanEditorStep: React.FC<Props> = ({
             Schritt 4: Amtliche 5-Spalten Förderplan-Tabelle
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Gemaess amtlichem Raster: IST &bull; SOLL &bull; LERNWEG &bull; Absprachen &bull; Reflexion/Evaluation.
+            Gemäß amtlichem Raster: IST &bull; SOLL &bull; LERNWEG &bull; Absprachen &bull; Reflexion/Evaluation.
           </p>
         </div>
 
         <button
           onClick={handleAddBlankRow}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs border border-blue-200 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs border border-blue-200 transition cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Eigene Maßnahme hinzufügen</span>
@@ -209,13 +209,13 @@ export const PlanEditorStep: React.FC<Props> = ({
 
         <div>
           <label className="text-xs font-semibold text-slate-700 block mb-1">
-            Weitere Vereinbarungen (z.B. Kooperation Ganztag, Sonderpädagoge, Nachteilsausgleich)
+            Weitere Vereinbarungen (z. B. Kooperation Ganztag, Sonderpädagoge, Nachteilsausgleich)
           </label>
           <textarea
             rows={3}
             value={weitereVereinbarungen}
             onChange={(e) => onUpdateField('weitereVereinbarungen', e.target.value)}
-            placeholder="z.B. Nachteilsausgleich: Zeitzugabe bei schriftlichen Klassenarbeiten; wöchentlicher Austausch mit dem Erzieherteam..."
+            placeholder="z. B. Nachteilsausgleich: Zeitzugabe bei schriftlichen Klassenarbeiten; wöchentlicher Austausch mit dem Erzieherteam..."
             className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden"
           />
         </div>
@@ -241,7 +241,7 @@ export const PlanEditorStep: React.FC<Props> = ({
               type="text"
               value={anwesendePersonen}
               onChange={(e) => onUpdateField('anwesendePersonen', e.target.value)}
-              placeholder="z.B. Fr. Müller (Klassenleitung), Hr. Dr. Klein (Sonderpädagoge), Fr. Meyer (Mutter)"
+              placeholder="z. B. Fr. Müller (Klassenleitung), Hr. Dr. Klein (Sonderpädagoge), Fr. Meyer (Mutter)"
               className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden"
             />
           </div>

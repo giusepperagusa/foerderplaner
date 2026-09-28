@@ -155,14 +155,14 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
             <div>
               <h2 className="text-base sm:text-lg font-bold">Richtlinien-Manager & Aktualisierungs-Werkzeug</h2>
               <p className="text-[11px] sm:text-xs text-slate-300">
-                Verwaltung & Normalisierung der amtlichen Handreichung "Foerdermassnahmen konkret!"
+                Verwaltung & Normalisierung der amtlichen Handreichung „Fördermaßnahmen konkret!“
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleDownloadActiveJson}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition cursor-pointer"
               title="Aktuelle richtlinien.json herunterladen"
             >
               <Download className="w-3.5 h-3.5" />
@@ -170,7 +170,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+              className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -181,7 +181,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
         <div className="flex border-b border-slate-200 bg-slate-50 px-4 sm:px-6 gap-2 pt-2 shrink-0 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveTab('explorer')}
-            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition ${
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'explorer'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -192,7 +192,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
           </button>
           <button
             onClick={() => setActiveTab('normalizer')}
-            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition ${
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'normalizer'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -203,25 +203,25 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
           </button>
           <button
             onClick={() => setActiveTab('parser')}
-            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition ${
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'parser'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <FileText className="w-4 h-4" />
-            PDF-OCR Text-Parser fuer Neuauflagen
+            PDF-OCR Text-Parser für Neuauflagen
           </button>
           <button
             onClick={() => setActiveTab('validator')}
-            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition ${
+            className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'validator'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <CheckCircle className="w-4 h-4 text-emerald-600" />
-            Schema- & Integritaetspruefung
+            Schema- & Integritätsprüfung
           </button>
         </div>
 
@@ -248,7 +248,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                     onChange={(e) => setSelectedSchwerpunkt(e.target.value)}
                     className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                   >
-                    <option value="Alle">Alle Foerderschwerpunkte</option>
+                    <option value="Alle">Alle Förderschwerpunkte</option>
                     {schwerpunkteList.map((sp) => (
                       <option key={sp} value={sp}>
                         {sp}
@@ -261,7 +261,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
               <div className="space-y-4">
                 {filteredCategories.length === 0 ? (
                   <div className="p-8 text-center bg-white rounded-xl border border-slate-200 text-slate-500">
-                    Keine Eintraege fuer die aktuellen Suchkriterien gefunden.
+                    Keine Einträge für die aktuellen Suchkriterien gefunden.
                   </div>
                 ) : (
                   filteredCategories.map((group, idx) => (
@@ -274,7 +274,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                           <span className="font-semibold text-slate-800 text-sm">{group.kategorie}</span>
                         </div>
                         <span className="text-xs text-slate-500">
-                          {group.entries.length} {group.entries.length === 1 ? 'Eintrag' : 'Eintraege'}
+                          {group.entries.length} {group.entries.length === 1 ? 'Eintrag' : 'Einträge'}
                         </span>
                       </div>
                       <div className="divide-y divide-slate-100">
@@ -291,7 +291,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                               </div>
                             </div>
                             <div className="p-2.5 bg-blue-50/50 border border-blue-100 rounded-lg">
-                              <span className="font-bold text-blue-900 block mb-1">LERNWEG (Empfohlene Massnahmen):</span>
+                              <span className="font-bold text-blue-900 block mb-1">LERNWEG (Empfohlene Maßnahmen):</span>
                               <ul className="list-disc list-inside space-y-1 text-slate-700">
                                 {entry.lernweg.map((item: string, i: number) => (
                                   <li key={i}>{item}</li>
@@ -313,7 +313,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
             <div className="space-y-4">
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
                 <span className="font-bold block mb-1">Hintergrund der Normalisierung:</span>
-                Um ressourcenarmen lokalen Sprachmodellen auf mobilen Endgeraeten und Offline-Geraeten (wie Tablets in Grundschulen) das Matching zu erleichtern und Zeichenfehler zu vermeiden, werden alle Umlaute und das Eszett nach deutschen Transkriptionsregeln substituiert:
+                Um ressourcenarmen lokalen Sprachmodellen auf mobilen Endgeräten und Offline-Geräten (wie Tablets in Grundschulen) das Matching zu erleichtern und Zeichenfehler zu vermeiden, werden alle Umlaute und das Eszett nach deutschen Transkriptionsregeln substituiert:
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 font-mono font-semibold">
                   <span className="bg-white p-1 rounded border border-blue-200">ä &rarr; ae / Ä &rarr; Ae</span>
                   <span className="bg-white p-1 rounded border border-blue-200">ö &rarr; oe / Ö &rarr; Oe</span>
@@ -330,19 +330,19 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                     value={normInput}
                     onChange={(e) => setNormInput(e.target.value)}
                     className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
-                    placeholder="Text hier einfuegen..."
+                    placeholder="Text hier einfügen..."
                   />
                   <div className="text-[11px] text-slate-500">
-                    Enthaelt noch: {findRemainingUmlauts(normInput).join(', ') || 'Keine Umlaute mehr'}
+                    Enthält noch: {findRemainingUmlauts(normInput).join(', ') || 'Keine Umlaute mehr'}
                   </div>
                 </div>
 
                 <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-700 block">Normalisierter Text (fuer LLM & Matcher):</label>
+                    <label className="text-xs font-bold text-slate-700 block">Normalisierter Text (für LLM & Matcher):</label>
                     <button
                       onClick={handleTestNormalize}
-                      className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-semibold"
+                      className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       {copiedNorm ? 'Kopiert!' : 'Kopieren'}
@@ -352,7 +352,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                     {normalizeGermanText(normInput)}
                   </div>
                   <div className="text-[11px] text-emerald-700 font-medium">
-                    ✓ Bereit fuer Modell-Inferenz ohne Sonderzeichen-Kollisionen.
+                    ✓ Bereit für Modell-Inferenz ohne Sonderzeichen-Kollisionen.
                   </div>
                 </div>
               </div>
@@ -364,7 +364,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
             <div className="space-y-4">
               <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
                 <span className="font-bold block mb-1">Neuauflagen-Extractor:</span>
-                Kopieren Sie Textabschnitte aus kuenftigen Ueberarbeitungen des amtlichen PDF-Dokuments hier hinein. Das Tool erkennt automatisch die IST/SOLL/LERNWEG-Abschnitte, normalisiert die Umlaute und erzeugt saubere Datenobjekte fuer die richtlinien.json.
+                Kopieren Sie Textabschnitte aus künftigen Überarbeitungen des amtlichen PDF-Dokuments hier hinein. Das Tool erkennt automatisch die IST/SOLL/LERNWEG-Abschnitte, normalisiert die Umlaute und erzeugt saubere Datenobjekte für die richtlinien.json.
               </div>
 
               <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
@@ -376,13 +376,13 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                       value={targetCategory}
                       onChange={(e) => setTargetCategory(e.target.value)}
                       className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg"
-                      placeholder="z.B. Auditive Wahrnehmung"
+                      placeholder="z. B. Auditive Wahrnehmung"
                     />
                   </div>
                   <div className="flex items-end">
                     <button
                       onClick={handleRunParser}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition shadow-xs cursor-pointer"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                       Text parsen & normalisieren
@@ -391,7 +391,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Roh-Text (z.B. aus PDF OCR kopiert):</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Roh-Text (z. B. aus PDF OCR kopiert):</label>
                   <textarea
                     rows={6}
                     value={rawTextToParse}
@@ -405,11 +405,11 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                 <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
                   <div className="flex items-center justify-between">
                     <h4 className="text-xs font-bold text-slate-800">
-                      Erfolgreich extrahiert ({parsedEntries.length} Eintraege):
+                      Erfolgreich extrahiert ({parsedEntries.length} Einträge):
                     </h4>
                     <button
                       onClick={handleDownloadParsedEntries}
-                      className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-semibold"
+                      className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
                       Als JSON exportieren
@@ -434,14 +434,14 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                   <div>
                     <h3 className="font-bold text-slate-900 text-sm">Richtlinien-Validierung erfolgreich</h3>
                     <p className="text-xs text-slate-500">
-                      Die aktive Konfigurationsdatei entspricht zu 100% dem Modell-Schema und enthaelt null Roh-Umlaute.
+                      Die aktive Konfigurationsdatei entspricht zu 100% dem Modell-Schema und enthält null Roh-Umlaute.
                     </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                    <span className="text-[11px] text-slate-500 block">Foerderschwerpunkte</span>
+                    <span className="text-[11px] text-slate-500 block">Förderschwerpunkte</span>
                     <span className="text-lg font-bold text-slate-800">
                       {validationResult.stats?.foerderschwerpunkteCount}
                     </span>
@@ -476,7 +476,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                     <span className="text-slate-600">{currentData.herausgeber}</span>
                   </div>
                   <div>
-                    <span className="font-semibold text-slate-700">Gueltig ab:</span>{' '}
+                    <span className="font-semibold text-slate-700">Gültig ab:</span>{' '}
                     <span className="text-slate-600">{currentData.gueltigAb} (Version {currentData.version})</span>
                   </div>
                   <div>
@@ -495,9 +495,9 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
           <span>Stand der Berliner Richtlinien: November 2018 (SenBJF)</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition"
+            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition cursor-pointer"
           >
-            Schliessen
+            Schließen
           </button>
         </div>
 

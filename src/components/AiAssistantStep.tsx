@@ -153,7 +153,7 @@ export const AiAssistantStep: React.FC<Props> = ({
       });
     } catch (err: any) {
       console.error('LLM Generation Error:', err);
-      setGenerationError(err.message || 'Fehler waehrend der lokalen Inferenz.');
+      setGenerationError(err.message || 'Fehler während der lokalen Inferenz.');
     } finally {
       setIsGenerating(false);
     }
@@ -165,8 +165,8 @@ export const AiAssistantStep: React.FC<Props> = ({
     
     // Parse rudimentary sections if possible, else structured row
     const lines = generatedText.split('\n').filter(l => l.trim().length > 0);
-    const istLine = lines.find(l => l.toUpperCase().includes('IST')) || lines[0] || 'Beobachtung gemaess lokaler Analyse';
-    const sollLine = lines.find(l => l.toUpperCase().includes('SOLL')) || lines[1] || 'Foerderziel gemaess Empfehlung';
+    const istLine = lines.find(l => l.toUpperCase().includes('IST')) || lines[0] || 'Beobachtung gemäß lokaler Analyse';
+    const sollLine = lines.find(l => l.toUpperCase().includes('SOLL')) || lines[1] || 'Förderziel gemäß Empfehlung';
     const lernwegLines = lines.filter(l => l.toUpperCase().includes('LERNWEG') || l.startsWith('-') || l.startsWith('*'));
     
     const newRow: PlanRow = {
@@ -178,12 +178,12 @@ export const AiAssistantStep: React.FC<Props> = ({
       lernweg: lernwegLines.length > 0 
         ? lernwegLines.map(l => l.replace(/^[-*]\s*/, '').trim()).join('\n• ') 
         : generatedText.slice(0, 200),
-      absprachen: `Klassenlehrkraft • Umsetzung im Unterricht • Pruefung in 8 Wochen`,
+      absprachen: `Klassenlehrkraft • Umsetzung im Unterricht • Prüfung in 8 Wochen`,
       reflexion: '',
     };
 
     onAddPlanRow(newRow);
-    alert('Der KI-Vorschlag wurde erfolgreich in Ihren Foerderplan uebernommen!');
+    alert('Der KI-Vorschlag wurde erfolgreich in Ihren Förderplan übernommen!');
   };
 
   const filteredProposals = proposals.filter((p) => {
@@ -205,11 +205,11 @@ export const AiAssistantStep: React.FC<Props> = ({
                 <Sparkles className="w-5 h-5 text-blue-300" />
               </span>
               <h2 className="text-base font-bold">
-                Schritt 3: Lokale Foerderempfehlungen & KI-Generierung
+                Schritt 3: Lokale Förderempfehlungen & KI-Generierung
               </h2>
             </div>
             <p className="text-xs text-blue-200 leading-relaxed max-w-2xl">
-              Waehlen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen oder nutzen Sie das integrierte lokale KI-Sprachmodell (Qwen2.5-0.5B via Wllama WebAssembly & OPFS/IndexedDB), um passgenaue Formulierungen offline direkt im Browser zu generieren.
+              Wählen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen oder nutzen Sie das integrierte lokale KI-Sprachmodell (Qwen2.5-0.5B via Wllama WebAssembly & OPFS/IndexedDB), um passgenaue Formulierungen offline direkt im Browser zu generieren.
             </p>
           </div>
 
@@ -217,7 +217,7 @@ export const AiAssistantStep: React.FC<Props> = ({
             <button
               onClick={() => setShowPromptModal(true)}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold backdrop-blur-xs border border-white/20 transition whitespace-nowrap cursor-pointer"
-              title="Vollstaendigen, normalisierten Prompt fuer externe lokale Runner einsehen"
+              title="Vollständigen, normalisierten Prompt für externe lokale Runner einsehen"
             >
               <FileText className="w-4 h-4 text-blue-300" />
               <span>Prompt einsehen</span>
@@ -226,7 +226,7 @@ export const AiAssistantStep: React.FC<Props> = ({
             <button
               onClick={() => setShowConsentModal(true)}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs whitespace-nowrap cursor-pointer"
-              title="Modell-Status und Download-Manager oeffnen"
+              title="Modell-Status und Download-Manager öffnen"
             >
               <Cpu className="w-4 h-4 text-indigo-200" />
               <span>Lokale KI (Wllama)</span>
@@ -275,13 +275,13 @@ export const AiAssistantStep: React.FC<Props> = ({
           <div className="bg-white rounded-xl border border-slate-200 p-3 shadow-xs flex items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
               <Filter className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-semibold text-slate-700">Foerderschwerpunkt filtern:</span>
+              <span className="font-semibold text-slate-700">Förderschwerpunkt filtern:</span>
               <select
                 value={selectedSchwerpunktFilter}
                 onChange={(e) => setSelectedSchwerpunktFilter(e.target.value)}
                 className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-hidden"
               >
-                <option value="Alle">Alle Foerderbereiche</option>
+                <option value="Alle">Alle Förderbereiche</option>
                 <option value="Lernen">Lernen (LE)</option>
                 <option value="Sprache">Sprache (SP)</option>
                 <option value="Emotionale-soziale Entwicklung">Emotionale-soziale Entwicklung (ES)</option>
@@ -289,7 +289,7 @@ export const AiAssistantStep: React.FC<Props> = ({
             </div>
 
             <div className="text-slate-500 font-medium">
-              {filteredProposals.length} Empfehlungen verfuegbar &bull; {existingRows.length} im Foerderplan
+              {filteredProposals.length} Empfehlungen verfügbar &bull; {existingRows.length} im Förderplan
             </div>
           </div>
 
@@ -297,7 +297,7 @@ export const AiAssistantStep: React.FC<Props> = ({
           <div className="space-y-4">
             {filteredProposals.length === 0 ? (
               <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-xs">
-                Keine spezifischen Empfehlungen fuer diesen Filter. Markieren Sie im Einschaetzungsbogen Kriterien mit Foerderbedarf.
+                Keine spezifischen Empfehlungen für diesen Filter. Markieren Sie im Einschätzungsbogen Kriterien mit Förderbedarf.
               </div>
             ) : (
               filteredProposals.map((prop) => {
@@ -322,18 +322,18 @@ export const AiAssistantStep: React.FC<Props> = ({
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                           isAdded
                             ? 'bg-emerald-100 text-emerald-800 cursor-default'
-                            : 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
+                            : 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs cursor-pointer'
                         }`}
                       >
                         {isAdded ? (
                           <>
                             <Check className="w-3.5 h-3.5" />
-                            <span>Uebernommen</span>
+                            <span>Übernommen</span>
                           </>
                         ) : (
                           <>
                             <PlusCircle className="w-3.5 h-3.5" />
-                            <span>In Foerderplan uebernehmen</span>
+                            <span>In Förderplan übernehmen</span>
                           </>
                         )}
                       </button>
@@ -350,7 +350,7 @@ export const AiAssistantStep: React.FC<Props> = ({
 
                       <div className="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl space-y-1">
                         <span className="font-bold text-emerald-900 block text-[11px] uppercase tracking-wider">
-                          SOLL (Individuelles Foerderziel):
+                          SOLL (Individuelles Förderziel):
                         </span>
                         <p className="text-slate-800">{prop.soll}</p>
                       </div>
@@ -358,7 +358,7 @@ export const AiAssistantStep: React.FC<Props> = ({
 
                     <div className="p-3 bg-blue-50/50 border border-blue-100 rounded-xl space-y-1 text-xs">
                       <span className="font-bold text-blue-900 block text-[11px] uppercase tracking-wider">
-                        LERNWEG (Paedagogische Massnahmen & Vereinbarungen):
+                        LERNWEG (Pädagogische Maßnahmen & Vereinbarungen):
                       </span>
                       <ul className="list-disc list-inside space-y-1 text-slate-700">
                         {prop.lernweg.map((item, idx) => (
@@ -389,7 +389,7 @@ export const AiAssistantStep: React.FC<Props> = ({
                 </span>
               </div>
               <p className="text-xs text-purple-800 leading-relaxed">
-                Fuehrt Inferenz direkt ueber WebAssembly auf der CPU aus. Speicherung erfolgt geschuetzt im OPFS/IndexedDB (ohne Cache API).
+                Führt Inferenz direkt über WebAssembly auf der CPU aus. Speicherung erfolgt geschützt im OPFS/IndexedDB (ohne Cache API).
               </p>
             </div>
 
@@ -407,7 +407,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               {webLlmManager.isEngineReady() ? (
                 <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Modell ist im Speicher initialisiert & bereit fuer Inferenz.
+                  Modell ist im Speicher initialisiert & bereit für Inferenz.
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-slate-500">
@@ -425,12 +425,12 @@ export const AiAssistantStep: React.FC<Props> = ({
               {isGenerating ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Inferenz laeuft via WebAssembly...</span>
+                  <span>Inferenz läuft via WebAssembly...</span>
                 </>
               ) : webLlmManager.isEngineReady() ? (
                 <>
                   <Play className="w-4 h-4" />
-                  <span>Passgenaue Foerderbausteine generieren</span>
+                  <span>Passgenaue Förderbausteine generieren</span>
                 </>
               ) : (
                 <>
@@ -458,7 +458,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5 font-mono">
                   <Cpu className="w-3.5 h-3.5" />
-                  Generierte Foerderbausteine (Qwen2.5-0.5B Lokal):
+                  Generierte Förderbausteine (Qwen2.5-0.5B Lokal):
                 </span>
                 
                 {isGenerating && (
@@ -480,16 +480,16 @@ export const AiAssistantStep: React.FC<Props> = ({
                       navigator.clipboard.writeText(generatedText);
                       alert('Text in Zwischenablage kopiert!');
                     }}
-                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition"
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition cursor-pointer"
                   >
                     Text kopieren
                   </button>
                   <button
                     onClick={handleInsertGeneratedAsRow}
-                    className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                    className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
                   >
                     <PlusCircle className="w-3.5 h-3.5" />
-                    <span>In Foerderplan uebernehmen</span>
+                    <span>In Förderplan übernehmen</span>
                   </button>
                 </div>
               )}
@@ -515,13 +515,13 @@ export const AiAssistantStep: React.FC<Props> = ({
               <div className="flex items-center gap-2">
                 <Cpu className="w-5 h-5 text-blue-600 shrink-0" />
                 <h3 className="text-sm font-bold text-slate-900">
-                  Normalisierter Prompt fuer lokales LLM
+                  Normalisierter Prompt für lokales LLM
                 </h3>
               </div>
               <button
                 onClick={() => setShowPromptModal(false)}
-                className="text-slate-400 hover:text-slate-600 text-xs font-semibold p-1"
-                aria-label="Schliessen"
+                className="text-slate-400 hover:text-slate-600 text-xs font-semibold p-1 cursor-pointer"
+                aria-label="Schließen"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -529,7 +529,7 @@ export const AiAssistantStep: React.FC<Props> = ({
 
             <div className="flex-1 min-h-0 overflow-y-auto space-y-3 py-3">
               <p className="text-xs text-slate-500">
-                Dieser Prompt wurde automatisch mit den normalisierten deutschen Umlauten (ae, oe, ue, ss) aufbereitet, um maximale Kompatibilitaet mit ressourcenarmen Offline-Modellen (z.B. Ollama, LM Studio, Qwen, Gemma, Llama) zu garantieren.
+                Dieser Prompt wurde automatisch mit den normalisierten deutschen Umlauten (ae, oe, ue, ss) aufbereitet, um maximale Kompatibilität mit ressourcenarmen Offline-Modellen (z. B. Ollama, LM Studio, Qwen, Gemma, Llama) zu garantieren.
               </p>
 
               <textarea
@@ -543,13 +543,13 @@ export const AiAssistantStep: React.FC<Props> = ({
             <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 shrink-0">
               <button
                 onClick={() => setShowPromptModal(false)}
-                className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition"
+                className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition cursor-pointer"
               >
-                Schliessen
+                Schließen
               </button>
               <button
                 onClick={handleCopyPrompt}
-                className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs"
+                className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
               >
                 <Copy className="w-3.5 h-3.5" />
                 <span>{copiedPrompt ? 'In Zwischenablage kopiert!' : 'Prompt kopieren'}</span>
@@ -576,17 +576,17 @@ export const AiAssistantStep: React.FC<Props> = ({
       <div className="flex items-center justify-between pt-2">
         <button
           onClick={onPrev}
-          className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition"
+          className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Zurueck zur Einschaetzung</span>
+          <span>Zurück zur Einschätzung</span>
         </button>
 
         <button
           onClick={onNext}
-          className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition"
+          className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer"
         >
-          <span>Weiter zum Foerderplan-Editor ({existingRows.length})</span>
+          <span>Weiter zum Förderplan-Editor ({existingRows.length})</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

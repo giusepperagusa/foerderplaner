@@ -19,6 +19,7 @@ import {
   Globe,
   FileCode2,
   Scale,
+  ExternalLink,
 } from 'lucide-react';
 import richtlinienData from '../data/richtlinien.json';
 
@@ -33,8 +34,9 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.3-offline';
+export const APP_VERSION = 'v1.4.4-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
+export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
 export const VersionInfoModal: React.FC<Props> = ({ 
   isOpen, 
@@ -128,7 +130,7 @@ export const VersionInfoModal: React.FC<Props> = ({
             type="button"
             onClick={onClose}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-            title="Schliessen (Esc)"
+            title="Schließen (Esc)"
           >
             <X className="w-4 h-4" />
           </button>
@@ -152,6 +154,39 @@ export const VersionInfoModal: React.FC<Props> = ({
             </div>
           </div>
 
+          {/* GitHub Repository Card */}
+          <div className="p-3.5 bg-slate-900 text-white rounded-xl space-y-2 border border-slate-800 shadow-xs">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FileCode2 className="w-4 h-4 text-indigo-400 shrink-0" />
+                <span className="font-bold text-xs text-white">Quellcode & Entwicklung auf GitHub</span>
+              </div>
+              <a
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold transition shadow-xs"
+                title="GitHub-Repository in neuem Tab öffnen"
+              >
+                <span>Repository öffnen</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+            <p className="text-[11px] text-slate-300 leading-relaxed">
+              Die Entwicklung des Förderplan-Assistenten erfolgt quelloffen unter der GNU GPLv3 auf GitHub. Sie können dort den Code einsehen, Fehler melden oder Verbesserungen beitragen:
+            </p>
+            <div className="p-2 bg-slate-950/80 rounded-lg border border-slate-800 text-[11px] font-mono text-indigo-300 select-all truncate">
+              <a 
+                href={GITHUB_REPO_URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:underline flex items-center gap-1"
+              >
+                <span>{GITHUB_REPO_URL}</span>
+              </a>
+            </div>
+          </div>
+
           {/* Download Entire Project for Self-Hosting */}
           <div className="p-3.5 bg-indigo-50/70 border border-indigo-200/80 rounded-xl space-y-2.5">
             <div className="flex items-center gap-2">
@@ -159,7 +194,7 @@ export const VersionInfoModal: React.FC<Props> = ({
               <span className="font-bold text-indigo-950 text-xs">Eigenes Webhosting / Selbst hosten</span>
             </div>
             <p className="text-[11px] text-indigo-900/80 leading-relaxed">
-              Sie koennen die fertige Web-App oder den vollstaendigen Quellcode als Archiv herunterladen und direkt in ein beliebiges Verzeichnis auf Ihrem eigenen Webserver (Apache, Nginx, cPanel etc.) hochladen.
+              Sie können die fertige Web-App oder den vollständigen Quellcode als Archiv herunterladen und direkt in ein beliebiges Verzeichnis auf Ihrem eigenen Webserver (Apache, Nginx, cPanel etc.) hochladen.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
               <button
@@ -195,7 +230,7 @@ export const VersionInfoModal: React.FC<Props> = ({
                 • Dateinamen: <code className="text-indigo-800 font-semibold">{webDistFilename}</code> (~4.3 MB) und <code className="text-indigo-800 font-semibold">{sourceCodeFilename}</code> (~200 KB)
               </span>
               <span>
-                • Tipp fuer Ihren Webserver: Entpacken Sie das Web-Build-Archiv direkt im Zielordner. Keine Datenbank oder Node.js auf dem Server erforderlich!
+                • Tipp für Ihren Webserver: Entpacken Sie das Web-Build-Archiv direkt im Zielordner. Keine Datenbank oder Node.js auf dem Server erforderlich!
               </span>
             </div>
           </div>
@@ -204,8 +239,8 @@ export const VersionInfoModal: React.FC<Props> = ({
           <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
             <div className="flex items-center justify-between">
               <div>
-                <span className="font-bold text-slate-900 text-xs block">PWA & Offline-Cache Update-Pruefung</span>
-                <span className="text-[11px] text-slate-500">Prueft, ob eine neue Version auf dem Server verfuegbar ist</span>
+                <span className="font-bold text-slate-900 text-xs block">PWA & Offline-Cache Update-Prüfung</span>
+                <span className="text-[11px] text-slate-500">Prüft, ob eine neue Version auf dem Server verfügbar ist</span>
               </div>
               {onCheckForUpdates && (
                 <button
@@ -215,7 +250,7 @@ export const VersionInfoModal: React.FC<Props> = ({
                   className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-xs disabled:opacity-50 shrink-0"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${isCheckingUpdates ? 'animate-spin' : ''}`} />
-                  <span>{isCheckingUpdates ? 'Pruefe...' : 'Jetzt pruefen'}</span>
+                  <span>{isCheckingUpdates ? 'Prüfe...' : 'Jetzt prüfen'}</span>
                 </button>
               )}
             </div>
@@ -225,7 +260,7 @@ export const VersionInfoModal: React.FC<Props> = ({
               <div className="p-2.5 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 text-xs font-medium">
                   <ArrowUpCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span>Neues Update verfuegbar!</span>
+                  <span>Neues Update verfügbar!</span>
                 </div>
                 {onApplyUpdate && (
                   <button
@@ -284,12 +319,16 @@ export const VersionInfoModal: React.FC<Props> = ({
           <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
             <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
               <History className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              Aenderungshistorie (Changelog)
+              Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
               <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.4:</span>
+                <span>GitHub-Repository-Verlinkung, orthografische Korrektur & bereinigter Druck: Sichtbare GitHub-Repository-Verlinkung (https://github.com/giusepperagusa/foerderplaner) in der UI; vollständige Überprüfung aller UI-Texte auf standardkonforme deutsche Umlaute (ä, ö, ü) und Eszett (ß) gemäß Rechtschreibung; Entfernung des App-Footers und der Client-Erklärung aus dem finalen Druckausdruck (nur amtliche Zeile mit fortlaufender Seitenzahl verbleibt).</span>
+              </div>
+              <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.3:</span>
-                <span>Einzelplan-Export & Kollisionsaufloesung beim Import: Direkter Export individueller Foerderplaene (.json) je Schueler/in aus der Planverwaltung. Intelligente Duplikats- & Kollisionserkennung beim Import mit interaktiver Auswahl (bestehenden Plan aktualisieren vs. separate Kopie anlegen). Praezisierung der Dokumentation zur Speichersicherheit und zu OS-/Geraete-Verschluesselung nach DSGVO.</span>
+                <span>Einzelplan-Export & Kollisionsauflösung beim Import: Direkter Export individueller Förderpläne (.json) je Schüler/in aus der Planverwaltung. Intelligente Duplikats- & Kollisionserkennung beim Import mit interaktiver Auswahl (bestehenden Plan aktualisieren vs. separate Kopie anlegen). Präzisierung der Dokumentation zur Speichersicherheit und zu OS-/Geräte-Verschlüsselung nach DSGVO.</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.2:</span>
@@ -313,7 +352,7 @@ export const VersionInfoModal: React.FC<Props> = ({
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.2.1:</span>
-                <span>PWA-Offline-Unterstuetzung (Service Worker Caching), Viewport-Fixes fuer alle Dialoge (Hoehenanpassung & Dismissal), Webserver-Export (.tar.gz), aktiver Update-Pruefer.</span>
+                <span>PWA-Offline-Unterstützung (Service Worker Caching), Viewport-Fixes für alle Dialoge (Höhenanpassung & Dismissal), Webserver-Export (.tar.gz), aktiver Update-Prüfer.</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.2.0:</span>
@@ -321,11 +360,11 @@ export const VersionInfoModal: React.FC<Props> = ({
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.1.0:</span>
-                <span>LocalStorage Mehrfach-Planverwaltung (Entwurf/Abgeschlossen), Pseudonym-/Initialen-Unterstuetzung.</span>
+                <span>LocalStorage Mehrfach-Planverwaltung (Entwurf/Abgeschlossen), Pseudonym-/Initialen-Unterstützung.</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.0.0:</span>
-                <span>Vollstaendige Extraktion aus "Foerdermassnahmen konkret.pdf", Umlaut-Normalisierung, 5-Spalten-Editor.</span>
+                <span>Vollständige Extraktion aus „Fördermaßnahmen konkret!“, 5-Spalten-Editor.</span>
               </div>
             </div>
           </div>
@@ -340,7 +379,7 @@ export const VersionInfoModal: React.FC<Props> = ({
             onClick={onClose}
             className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors shadow-xs"
           >
-            Schliessen
+            Schließen
           </button>
         </div>
 

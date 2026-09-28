@@ -80,7 +80,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
             Schritt 2: Amtliche Einschätzungsbögen (Diagnostik)
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Gemaess den amtlichen Beobachtungsboegen (Berlin SenBJF). Beurteilen Sie das Auftreten der Faehigkeiten.
+            Gemäß den amtlichen Beobachtungsbögen (Berlin SenBJF). Beurteilen Sie das Auftreten der Fähigkeiten.
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
             {totalAssessed} beurteilt
           </div>
           <div className="px-3 py-1.5 bg-amber-50 text-amber-800 rounded-lg font-medium border border-amber-200">
-            {totalFlagged} im Foerderfokus
+            {totalFlagged} im Förderfokus
           </div>
         </div>
       </div>
@@ -320,7 +320,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
                           checked={isFlagged}
                           onChange={() => onFlagToggle(crit.id)}
                           className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
-                          title="Als Foerderbereich fuer diesen Foerderplan auswaehlen"
+                          title="Als Förderbereich für diesen Förderplan auswählen"
                         />
                       </td>
                     </tr>

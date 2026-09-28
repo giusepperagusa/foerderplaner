@@ -16,8 +16,8 @@ export const PWAInstallButton: React.FC = () => {
     return (
       <button
         onClick={install}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition shadow-xs"
-        title="App lokal auf diesem Computer oder Tablet installieren (100% Offline-faehig)"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition shadow-xs cursor-pointer"
+        title="App lokal auf diesem Computer oder Tablet installieren (100% offline-fähig)"
       >
         <Download className="w-3.5 h-3.5" />
         <span className="hidden sm:inline">App installieren</span>
@@ -31,8 +31,8 @@ export const PWAInstallButton: React.FC = () => {
       <>
         <button
           onClick={() => setShowIOSGuide(true)}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-lg transition"
-          title="App zum iOS Home-Bildschirm hinzufuegen"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-lg transition cursor-pointer"
+          title="App zum iOS-Home-Bildschirm hinzufügen"
         >
           <Smartphone className="w-3.5 h-3.5 text-blue-600" />
           <span className="hidden sm:inline">Als App speichern</span>
@@ -77,7 +77,7 @@ export const PWAInstallButton: React.FC = () => {
                   </div>
                   <div>
                     <span className="font-bold text-slate-800 block">2. 'Zum Home-Bildschirm'</span>
-                    Waehlen Sie in der Liste den Punkt <strong>Zum Home-Bildschirm</strong> aus.
+                    Wählen Sie in der Liste den Punkt <strong>Zum Home-Bildschirm</strong> aus.
                   </div>
                 </div>
 
@@ -87,14 +87,14 @@ export const PWAInstallButton: React.FC = () => {
                   </div>
                   <div>
                     <span className="font-bold text-slate-800 block">3. Fertigstellen</span>
-                    Tippen Sie oben rechts auf <strong>Hinzufuegen</strong>. Die App funktioniert nun vollstaendig offline wie eine native App.
+                    Tippen Sie oben rechts auf <strong>Hinzufügen</strong>. Die App funktioniert nun vollständig offline wie eine native App.
                   </div>
                 </div>
               </div>
 
               <button
                 onClick={() => setShowIOSGuide(false)}
-                className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition"
+                className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition cursor-pointer"
               >
                 Verstanden
               </button>

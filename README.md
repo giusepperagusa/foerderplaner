@@ -118,11 +118,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.3-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.4-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.3-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.3-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.4-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.4-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 
 ---
@@ -246,6 +247,10 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
 
 ### Historical Changelog
 
+* **v1.4.4 (2026-09-28):**
+  * **GitHub-Repository-Verlinkung:** Prominente und direkte Verlinkung des Quellcode-Repositories ([https://github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner)) sowohl im App-Footer als auch mit dedizierter Info-Karte im Dialog *„Versionsinfo & Bereitstellung“*.
+  * **Orthografische Prüfung & Umlaute-Standardisierung:** Vollständige Überprüfung sämtlicher für Lehrkräfte sichtbarer UI-Texte, Beschriftungen, Dialoghinweise, Schrittüberschriften und Platzhalter auf standardkonforme deutsche Umlaute (ä, ö, ü) und Eszett (ß); die Normalisierung auf Doppelzeichen (ae, oe, ue, ss) ist strikt auf Texte beschränkt, die für das lokale KI-Modell aufbereitet und von diesem konsumiert werden.
+  * **Bereinigter Druckausdruck (Seite 2):** Vollständige Unterdrückung des App-Footers und der Client-Erklärung im Ausdruck (durch gezielte `@media print`-Regeln); auf der zweiten Seite verbleibt ausschließlich die amtliche Zeile mit der fortlaufenden Seitenzahl als letzte Druckzeile.
 * **v1.4.3 (2026-09-28):**
   * **Einzelplan-Export (`.json`):** Direkter Export individueller Förderpläne je Schüler/in (`foerderplan_<Name>_<ID>.json`) über das Download-Symbol direkt auf jeder Plankarte in der Plan-Verwaltung.
   * **Kollisionserkennung & Importauswahl:** Interaktive Prüfung beim Import von Förderplänen mit bereits existierender ID; Lehrkräfte können wählen zwischen *Bestehenden Plan aktualisieren/überschreiben* (z.B. nach externer Bearbeitung) oder *Als neue Kopie anlegen* (`(Kopie)`).

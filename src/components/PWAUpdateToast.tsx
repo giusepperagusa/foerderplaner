@@ -20,7 +20,7 @@ export const PWAUpdateToast: React.FC<Props> = ({ needRefresh, onUpdate, onDismi
         <div className="flex items-center justify-between">
           <span className="font-bold text-xs text-indigo-200 uppercase tracking-wider flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-amber-400" />
-            Neues Update verfuegbar
+            Neues Update verfügbar
           </span>
           <button 
             onClick={onDismiss}

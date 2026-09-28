@@ -25,7 +25,7 @@
       width: 100% !important;
     }
 
-    .no-print, header, nav, .print-hidden {
+    .no-print, header, nav, footer, .print-hidden {
       display: none !important;
     }
 

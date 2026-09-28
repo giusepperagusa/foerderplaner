@@ -247,7 +247,7 @@ export function parseRawGuidelineText(rawText: string, defaultKategorie = 'Allge
       entries.push({
         ist: istPart.replace(/^\.\.\.\s*/, '').trim(),
         soll: sollPart.replace(/^\.\.\.\s*/, '').trim(),
-        lernweg: bullets.length > 0 ? bullets : [lernwegPart || 'Individuelle Foerderung gemaess Richtlinie.'],
+        lernweg: bullets.length > 0 ? bullets : [lernwegPart || 'Individuelle Förderung gemäß Richtlinie.'],
       });
     }
   }
