@@ -9,7 +9,7 @@
 >      * `MAJOR` (e.g. `1.x.x` -> `2.0.0`): Breaking data migrations, architecture overhauls.
 >    * **Augment the Changelog:** Add a new entry to the `Aenderungshistorie (Changelog)` list inside `src/components/VersionInfoModal.tsx` detailing what was changed/added in the new version.
 >    * **Re-bundle Offline Archives:** Re-generate the versioned web distribution and source code archives (`foerderplaner-vX.Y.Z-web-dist.tar.gz` and `foerderplaner-vX.Y.Z-source-code.tar.gz`) in both `public/` and `dist/`.
->    * **Sync README:** Document the new version number and notable updates in Section 9 (Changelog) of this `README.md`.
+>    * **Sync README:** Document the new version number and notable updates in Section 11 (Changelog) of this `README.md`.
 
 ---
 
@@ -23,7 +23,9 @@ You are tasked with building or recreating the **Förderplan-Assistent Grundschu
    * **Local Deterministic Rules Engine (Instant & Offline):** Keyword, competency, and domain matching against structured official guidelines (`src/data/richtlinien.json`). Functions instantly without any AI/LLM download.
    * **Optional In-Browser Neural Engine (Wllama WebAssembly & OPFS/IndexedDB):** CPU-accelerated local GGUF model (`Qwen2.5-0.5B-Instruct-Q4_K_M.gguf`, ~397 MB) running via Wllama WebAssembly inside dedicated worker threads. Runs universally on any desktop or mobile browser without WebGPU requirement. Model weights are stored securely in OPFS (Origin Private File System) with IndexedDB fallback, completely bypassing the Cache Storage API. Strict opt-in modal with explicit download sizing, storage selection, and live progress reporting. Instant deterministic rules engine functions as immediate zero-download fallback.
 3. **PWA Compliance:** Service Worker via `vite-plugin-pwa` with precached assets, runtime caching, offline indicators, update toasts, and installation triggers.
-4. **Self-Hosting Portability:** Capable of being deployed on any static web host, Apache, Nginx, or subfolder without backend or Node.js runtime. Built-in versioned `.tar.gz` export utilities.
+4. **Universal Accessibility & Legal Compliance (EN 301 549 & WCAG 2.2 Level AA):** Full conformance with European standard EN 301 549, the German Federal Ordinance on Accessible Information Technology (BITV 2.0 / BGG), and W3C WCAG 2.2 Level AA. Comprehensive keyboard navigation, high-contrast visible focus indicators (`:focus-visible`), modal focus trapping (`useFocusTrap.ts`), semantic landmarks and ARIA states, text contrast ratios exceeding 4.5:1, and 200% zoom resiliency without horizontal clipping.
+5. **DIN 1450 & Accessible Document Legibility:** Adherence to German standard DIN 1450 (*Schriften – Leserlichkeit*) in all exported and printed documents. Clean sans-serif administrative typography, minimum 11pt continuous font size (10.5pt in tables), generous 1.40–1.45 line height, high-contrast monochrome printing (`1.5pt solid #000` / `1pt solid #000` borders with zero muddy background tints), and semantic PDF/UA-ready HTML5 hierarchy.
+6. **Self-Hosting Portability:** Capable of being deployed on any static web host, Apache, Nginx, or subfolder without backend or Node.js runtime. Built-in versioned `.tar.gz` export utilities.
 
 ---
 
@@ -35,11 +37,18 @@ The application guides the teacher through a streamlined, multi-step process wit
 [1. Schüler-Stammdaten] ➔ [2. Diagnostische Checkliste] ➔ [3. Pädagogische Empfehlungen / KI] ➔ [4. Förderplan-Editor] ➔ [5. Drucken & PDF-Export]
 ```
 
+### Global Accessibility Infrastructure
+* **Skip Navigation Link:** Accessible skip link (*„Zum Hauptinhalt springen“*) focused on first tab press, jumping immediately to `#main-content`.
+* **Keyboard-First Design:** All wizards, modal dialogs, tab selectors, and buttons are operable solely via keyboard (`Tab`, `Shift+Tab`, `Enter`, `Space`, `Esc`).
+* **Visible Focus Indicators:** Prominent 2px solid blue outlines with 2px offsets ensure clear visibility for keyboard navigators.
+* **Modal Dialog Focus Trapping (`useFocusTrap.ts`):** Tab cycles are locked within active modals and focus is automatically restored to the calling button upon closing.
+
 ### Step 1: Student Profile (`StudentProfileStep.tsx`)
-* Fields: Name/pseudonym/initials, date of birth, class/grade (1–6), school/school number, class teacher, legal guardians, support period (*von/bis*), primary and secondary support focus (*Förderschwerpunkt*: *Lernen*, *Sprache*, *Emotionale und soziale Entwicklung*, etc.), narrative baseline observations (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*).
-* Dynamic Initialen Tool: Transforms an entered pupil name into valid uppercase initials (e.g. "Klaus Schmidt" -> "K. S.") to protect student privacy under GDPR, or generates random initials if the field is empty, instead of static hardcoding.
+* Fields: Name/pseudonym/initials, date of birth, class/grade (1–6), school/school number, class teacher, legal guardians, support period (*von/bis*), primary and secondary support focus (*Förderschwerpunkt*: *Lernen*, *Sprache*, *Emotionale und soziale Entwicklung*, *Geistige Entwicklung*, *Körperliche und motorische Entwicklung*, etc.), narrative baseline observations (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*).
+* Dynamic Initialen Tool: Transforms an entered pupil name into valid uppercase initials (e.g. "Klaus Schmidt" -> "K. S.") to protect student privacy under GDPR, or generates random initials if the field is empty.
 * Anonymous Random ID generator (`ID-YYYY-XXX`).
 * Local privacy guarantee badge reassuring the teacher that no data is transmitted.
+* Full accessibility: All form controls explicitly coupled with `<label>` elements via `htmlFor`/`id`.
 
 ### Step 2: Diagnostic Checklist (`ChecklistAssessmentStep.tsx`)
 * Structured evaluation across primary developmental & scholastic competencies:
@@ -54,6 +63,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * `leichter Förderbedarf`
   * `hoher Förderbedarf`
 * Free-form observation notes per competency area.
+* Diagnostic Filter: Filter toggle (*„Nur Förderbedarf filtern“*) with real-time match counter, explanatory guideline banner, active reset pill, and clear empty state.
 
 ### Step 3: Recommendations & Optional AI Assistant (`AiAssistantStep.tsx`)
 * **Instant Deterministic Recommendations:** Generated instantly from `src/utils/localMatchingEngine.ts` by mapping identified deficits to matched interventions, materials, and concrete pedagogical methods from `richtlinien.json`.
@@ -62,6 +72,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Powered by Wllama (`@wllama/wllama`) executing GGUF models directly on the CPU via WebAssembly SIMD.
   * Storage strictly utilizes OPFS (Origin Private File System) and IndexedDB, completely avoiding Cache Storage API eviction risks.
   * System prompt enforces German educational jargon (SMART criteria, positive formulation, Berlin curriculum orientation).
+  * Prompt Inspector modal equipped with full keyboard trap and screen-reader headings.
 
 ### Step 4: Comprehensive Plan Editor (`PlanEditorStep.tsx`)
 * Structured 5-column official grid dividing each support measure:
@@ -77,12 +88,16 @@ The application guides the teacher through a streamlined, multi-step process wit
 * **Official Berlin Template Replication (Pages 82 & 83 of Handreichung „Fördermaßnahmen konkret!“):**
   * **Page 82 (Front):** Institutional header (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*), legal reference (*§ 19 SopädVO*), 2-column boxed pupil master data and school framework conditions, narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*), and explicit *Seite 1 / 2* footer.
   * **Page 83 (Form Table & Agreements):** Complete 5-column table (*IST*, *SOLL*, *LERNWEG*, *Absprachen*, *Reflexion*), structured section for *Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich*, conference documentation (*Gesprächsdurchführung*, *Beteiligte*, *Kenntnisnahme*), and three legal signature lines (*Klassenlehrkraft*, *Sonderpädagogin / Schulleitung*, *Erziehungsberechtigte*).
+* **DIN 1450 Document Legibility & Pure B&W Print Engine:**
+  * **DIN 1450 Typography:** Clean, universally readable sans-serif font stack (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) with an 11pt minimum base font for running text, 10.5pt in tables, and line height calibrated to 1.40–1.45 to prevent visual crowding.
+  * **High-Contrast Monochrome Printing:** Suppresses all decorative pastel tints, gray fills, and colored badges in print output; renders razor-sharp `1.5pt solid #000` outer borders and `1pt solid #000` grid rules for optimal photocopy and black-and-white printer reproduction.
+  * **Semantic PDF/UA Document Hierarchy:** Structured with strict HTML5 semantic landmarks (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`) ensuring assistive technologies and screen readers can navigate exported vector PDFs logically.
 * **Clean Document Print Styling:**
   * Uses CSS `@page { margin: 0 }` to completely suppress browser-injected header elements (URL, browser page title) and footer elements (system date/time), avoiding clutter.
   * Internal DIN-A4 page sheet layout container (`.print-document-sheet`) provides physical 12mm/14mm margins for printer hardware.
   * Clear and consistent page indicators (*Seite 1 / 2* and *Seite 2 / 2*).
-  * Fine print at the document bottom includes the application version immediately after the application name (e.g. `Förderplan-Assistent Berlin 1.3.1 • Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018`).
-* Single-click browser print dialog triggering high-resolution vector PDF export.
+  * Fine print at the document bottom includes the application version immediately after the application name (e.g. `Förderplan-Assistent Berlin 1.4.6 • Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018`).
+* Single-click browser print dialog triggering high-resolution vector PDF export (*„Formular drucken / PDF“*).
 
 ---
 
@@ -107,6 +122,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Categorized by developmental areas, diagnosed criteria, recommended standard measures, legal framework references, and documentation requirements.
 * **Guidelines Manager Modal (`GuidelinesManagerModal.tsx`):**
   * Teachers can view, search, and audit the guidelines currently in memory.
+  * Accessible search input with real-time filtering and screen-reader status announcements.
   * Allows updating or importing custom school-specific support catalogues.
 
 ---
@@ -141,6 +157,7 @@ The application guides the teacher through a streamlined, multi-step process wit
 * **Icons:** `lucide-react`
 * **Offline PWA:** `vite-plugin-pwa`, `workbox-window`
 * **On-Device AI Engine:** `@wllama/wllama` (WebAssembly CPU SIMD execution of GGUF models) with OPFS / IndexedDB storage
+* **Accessibility & Focus Management:** Custom `useFocusTrap` hook, WCAG 2.2 AA compliant tokens, DIN 1450 print stylesheets
 * **License:** GNU General Public License v3.0 (`GPL-3.0-or-later`), see `LICENSE`
 
 ---
@@ -170,6 +187,7 @@ The application guides the teacher through a streamlined, multi-step process wit
 │   │   ├── AiAssistantStep.tsx
 │   │   ├── ChecklistAssessmentStep.tsx
 │   │   ├── GuidelinesManagerModal.tsx
+│   │   ├── LicenseModal.tsx
 │   │   ├── ModelConsentModal.tsx
 │   │   ├── Navigation.tsx
 │   │   ├── OfflineIndicator.tsx
@@ -183,6 +201,7 @@ The application guides the teacher through a streamlined, multi-step process wit
 │   ├── data/
 │   │   └── richtlinien.json
 │   ├── hooks/
+│   │   ├── useFocusTrap.ts
 │   │   ├── usePWAInstall.ts
 │   │   └── usePWAUpdate.ts
 │   ├── types/
@@ -191,7 +210,8 @@ The application guides the teacher through a streamlined, multi-step process wit
 │   │   ├── localMatchingEngine.ts
 │   │   ├── planStorage.ts
 │   │   ├── richtlinienTools.ts
-│   │   └── webLlmManager.ts
+│   │   ├── webLlmManager.ts
+│   │   └── wllamaStorage.ts
 │   └── workers/
 │       └── llm.worker.ts
 ├── tsconfig.json
@@ -240,7 +260,44 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
 
 ---
 
-## 10. Versioning Strategy & Project Changelog
+## 10. Accessibility & Universal Design Standards (EN 301 549, WCAG 2.2 AA & DIN 1450)
+
+To ensure full compliance with public administration mandates (including European Standard **EN 301 549**, the German **BITV 2.0 / BGG**, and W3C **WCAG 2.2 Level AA**), as well as standard **DIN 1450** (*Schriften – Leserlichkeit*), the application incorporates the following accessibility architecture:
+
+### 1. Keyboard Navigation & Focus Guidance
+* **Complete Keyboard Controllability:** Every interactive element (buttons, tabs, inputs, selects, textareas, chip selectors, checkboxes, modal triggers) is fully operable via keyboard (`Tab`, `Shift+Tab`, `Enter`, `Space`, `Arrow Keys`, `Escape`).
+* **High-Contrast Visible Focus Rings:** All focusable controls feature an unmistakable `:focus-visible` styling—a 2px high-contrast solid blue outline (`#2563eb` / `#4f46e5`) with a 2px offset. Focus indicators are never hidden or suppressed.
+* **Skip-to-Content Link:** A visually hidden skip link (*„Zum Hauptinhalt springen“*) appears at the top of the viewport when focused by keyboard users, allowing immediate jump to the primary workspace (`#main-content`) bypassing the navigation headers.
+
+### 2. Modal Focus Management (`useFocusTrap`)
+* **Strict Focus Trapping:** All modal dialogs (*Förderplan-Manager*, *Richtlinien-Manager*, *KI-Modell-Zustimmung*, *Versionsinfo & Bereitstellung*, *Software-Lizenz*, and the AI prompt inspector) implement the `useFocusTrap` custom hook.
+* **Active Boundary Containment:** When a dialog is active, focus is constrained within the modal; pressing `Tab` on the last focusable element loops back to the first, and `Shift+Tab` on the first loops to the last.
+* **Focus Restoration:** Upon closing a dialog (via `Esc`, close button, or backdrop click), keyboard focus is automatically returned to the exact trigger element that launched the modal.
+* **Scroll Locking:** Body scrolling is cleanly locked while modals are open, preventing background scroll disorientations.
+
+### 3. Semantic HTML & Assistive Technology (Screen Readers)
+* **Native Landmarks:** Clean structure using `<header role="banner">`, `<main id="main-content">`, `<nav aria-label="...">`, and `<footer role="contentinfo">`.
+* **Explicit Form Associations:** Every input, textarea, and select control is explicitly linked to an accessible `<label>` element using matching `id` and `htmlFor` attributes. No unlabelled controls exist.
+* **Rich ARIA States:**
+  * Wizard step navigation uses `role="tablist"` and `role="tab"` with dynamic `aria-selected` and `aria-current="step"`.
+  * Interactive rating chips utilize `role="radio"` with `aria-checked` inside `role="radiogroup"`.
+  * Collapsible sections and toggles utilize `aria-expanded` and `aria-controls`.
+  * Asynchronous progress indicators (e.g. AI model downloads, guidelines search results) feature `aria-live="polite"` regions.
+
+### 4. Color Contrast, Typography & Responsive Zoom
+* **WCAG 2.2 AA Contrast Compliance:** Text and interactive elements maintain at least a 4.5:1 contrast ratio against their background (3:1 for large headings and active graphical indicators). Muted, low-contrast grays (such as Tailwind `slate-400` on white) have been upgraded to `slate-600` or darker.
+* **200% Zoom Resiliency:** The user interface remains fully readable and operable when scaled up to 200% in browser zoom without horizontal clipping, missing content, or overlapping layout boxes.
+* **Reduced Motion:** Interactive transitions respect the user's operating system preferences via CSS `@media (prefers-reduced-motion: reduce)`.
+
+### 5. DIN 1450 & Document Print Legibility
+* **Administrative Sans-Serif Typography:** In accordance with DIN 1450 recommendations for legibility in official and administrative documents, print output exclusively uses a high-legibility sans-serif font stack (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`).
+* **Optimized Font Geometry & Spacing:** Minimum 11pt base font size for continuous prose, 10.5pt for structured table matrices, and a proportional line-height of 1.40–1.45 to guarantee visual separation of ascenders and descenders.
+* **Pure High-Contrast B&W Rendering:** Eliminates ink-heavy, muddy, or unreadable background colors and decorative dropshadows in print. Outer boundaries and table cells utilize solid, crisp black borders (`1.5pt solid #000` / `1pt solid #000`) designed for flawless photocopying and carbon-copy legibility.
+* **Semantic PDF/UA Tagging:** The printed document template utilizes structured HTML5 elements (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`) ensuring assistive screen readers can parse exported vector PDFs in logical, sequential order.
+
+---
+
+## 11. Versioning Strategy & Project Changelog
 
 ### Versioning Rules
 * **Format:** Strict Semantic Versioning (`vMAJOR.MINOR.PATCH[-modifier]`).
@@ -253,43 +310,43 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
 ### Historical Changelog
 
 * **v1.4.6 (2026-09-29):**
-  * **Barrierefreiheit (EN 301 549 & WCAG 2.2 Level AA):** Vollständige Überarbeitung der Benutzeroberfläche zur Einhaltung europäischer Barrierefreiheitsstandards:
-    * *Tastaturnavigation & Fokusführung:* Durchgängige Bedienbarkeit sämtlicher interaktiver Bedienelemente ausschließlich per Tastatur (`Tab`, `Enter`, `Space`); scharfe, kontrastreiche Fokusindikatoren (`:focus-visible`) mit blauem 2px-Outline und 2px-Versatz; Einbau eines Tastatur-Schnellzugriffs-Links (*„Zum Hauptinhalt springen“*).
-    * *Strikte Dialog-Fokus-Fallen (`useFocusTrap`):* Konsequentes Focus-Trapping in allen modalen Dialogen (*Förderplan-Manager*, *Richtlinien-Manager*, *KI-Modell-Zustimmung*, *Versionsinfo*, *Software-Lizenz* sowie im KI-Prompt-Inspektor) mit automatischer Fokusrückführung beim Schließen via `Esc` oder Klick außerhalb.
-    * *Semantische HTML-Struktur & ARIA-Zustände:* Umstellung auf native Landmarks (`<main id="main-content">`, `<nav aria-label="...">`), explizite Kopplung aller Formularfelder an `<label>`-Elemente via `id`/`htmlFor`, ARIA-Zustände (`aria-current="step"`, `role="tablist"`, `role="tab"`, `aria-selected`, `aria-pressed`, `aria-checked`).
-    * *Farbkontraste & 200%-Skalierung:* Anhebung aller Textkontraste auf mindestens 4.5:1 (Ersatz von blassem Slate-400 durch lesbares Slate-600/700/800); responsive, elastische Layouts ohne Textüberlappung oder Abschneiden bis zu 200 % Browser-Zoom.
-  * **DIN 1450 Druck- & Dokumenten-Lesbarkeit (Förderplan-PDF):**
-    * *DIN 1450 Typografie:* Umstellung der gesamten Druckausgabe von Serifenschrift auf eine hochgradig lesbare, serifenlose Schriftfamilie (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) mit einer Mindestgrundschriftgröße von 11pt im Fließtext (10.5pt in Tabellenrastern) und festem Zeilenabstand von 1.4 bis 1.45 zur Vermeidung visueller Überlagerungen.
-    * *Kontrastreiches Schwarz-Weiß-Drucklayout:* Beseitigung aller störenden Hintergrundfarben und dekorativen Schattierungen im Druck; gestochen scharfe, amtliche Grenzlinien in reinem Schwarz (`1.5pt solid #000` bzw. `1pt solid #000`) für optimale Druckergebnisse und Fotokopierbarkeit.
-    * *Semantische PDF/UA-Struktur:* Auszeichnung der Dokumentenvorlage mit strikter HTML5-Strukturhierarchie (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`), sodass exportierte oder digital geteilte PDFs von Screenreadern fehlerfrei und in logischer Reihenfolge erfasst werden können.
+  * **Accessibility (EN 301 549 & WCAG 2.2 Level AA):** Comprehensive user interface overhaul to achieve full compliance with European public sector accessibility standards:
+    * *Keyboard Navigation & Focus Guidance:* Complete keyboard navigability across all interactive controls (`Tab`, `Shift+Tab`, `Enter`, `Space`); high-contrast visible focus indicators (`:focus-visible`) featuring a vivid blue 2px outline with 2px offset; accessible skip navigation link (*„Zum Hauptinhalt springen“*) bypassing navigation headers to `#main-content`.
+    * *Strict Modal Focus Trapping (`useFocusTrap`):* Resilient focus trapping across all modal dialogs (*Förderplan-Manager*, *Richtlinien-Manager*, *KI-Modell-Zustimmung*, *Versionsinfo & Bereitstellung*, *Software-Lizenz*, and the AI prompt inspector), with automatic focus return to trigger elements upon dismissal via `Esc` or outside click.
+    * *Semantic HTML Structure & ARIA States:* Migration to native landmarks (`<main id="main-content">`, `<nav aria-label="...">`), explicit label association for all form fields via `id`/`htmlFor`, standard ARIA attributes (`aria-current="step"`, `role="tablist"`, `role="tab"`, `aria-selected`, `aria-pressed`, `aria-checked`, `aria-live="polite"`).
+    * *Color Contrast & 200% Zoom Resiliency:* Elevation of all text contrast ratios to at least 4.5:1 against their backgrounds (replacing muted Slate-400 with high-contrast Slate-600/700/800); responsive flex/grid layouts maintaining integrity without text truncation, overlap, or horizontal scroll up to 200% browser zoom.
+  * **DIN 1450 Print & Document Legibility (Support Plan PDF):**
+    * *DIN 1450 Typography:* Overhauled all print stylesheets from serif to a highly legible, administrative sans-serif font stack (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) with an 11pt minimum base font size for running text (10.5pt in tables) and fixed line-height between 1.40 and 1.45 to prevent visual crowding.
+    * *High-Contrast Black-and-White Print Layout:* Removed all distracting tinted background fills, pastel badges, and decorative drop shadows in print output; enforced sharp, administrative black borders (`1.5pt solid #000` and `1pt solid #000`) for crisp physical printing and reliable photocopying.
+    * *Semantic PDF/UA Structure:* Structured the document template with a strict HTML5 hierarchy (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`), ensuring screen readers and assistive tools parse exported vector PDFs in logical reading order.
 * **v1.4.5 (2026-09-29):**
-  * **Bereinigung der Druck- & Export-Toolbar:** Entfernung der redundanten Schaltfläche *„JSON sichern“* aus Schritt 5 (*Druck & Export*); die vollständige Sicherung und Wiederherstellung von Einzelplänen sowie der gesamten Förderplan-Datenbank erfolgt nun ausschließlich und konsistent über den zentralen Förderplan-Manager.
-  * **Vereinheitlichung der Druck-Schaltflächen:** Standardisierung der oberen und unteren Druck-Aktionsschaltflächen in Schritt 5 auf die einheitliche, standardkonforme Beschriftung *„Formular drucken / PDF“*.
+  * **Print & Export Toolbar Cleanup:** Removed redundant *„JSON sichern“* button from Step 5 (*Druck & Export*); full single-plan and bulk backup/restore operations are now managed exclusively and consistently in the central plan manager.
+  * **Print Button Standardization:** Standardized both top and bottom print action buttons in Step 5 to the uniform label *„Formular drucken / PDF“*.
 * **v1.4.4 (2026-09-28):**
-  * **GitHub-Repository-Verlinkung:** Prominente und direkte Verlinkung des Quellcode-Repositories ([https://github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner)) sowohl im App-Footer als auch mit dedizierter Info-Karte im Dialog *„Versionsinfo & Bereitstellung“*.
-  * **Orthografische Prüfung & Umlaute-Standardisierung:** Vollständige Überprüfung sämtlicher für Lehrkräfte sichtbarer UI-Texte, Beschriftungen, Dialoghinweise, Schrittüberschriften und Platzhalter auf standardkonforme deutsche Umlaute (ä, ö, ü) und Eszett (ß); die Normalisierung auf Doppelzeichen (ae, oe, ue, ss) ist strikt auf Texte beschränkt, die für das lokale KI-Modell aufbereitet und von diesem konsumiert werden.
-  * **Bereinigter Druckausdruck (Seite 2):** Vollständige Unterdrückung des App-Footers und der Client-Erklärung im Ausdruck (durch gezielte `@media print`-Regeln); auf der zweiten Seite verbleibt ausschließlich die amtliche Zeile mit der fortlaufenden Seitenzahl als letzte Druckzeile.
+  * **GitHub Repository Integration:** Added direct and prominent links to the open-source repository ([https://github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner)) in both the application footer and a dedicated info card within the *„Versionsinfo & Bereitstellung“* dialog.
+  * **Orthography & Umlaut Standardization:** Complete audit of all teacher-facing UI text, labels, dialog prompts, step headings, and placeholders for standard German orthography with proper umlauts (ä, ö, ü) and Eszett (ß); ASCII digraph transliteration (ae, oe, ue, ss) is strictly restricted to text ingested and generated by the local AI model.
+  * **Print Output Cleanup (Page 2):** Fully suppressed the application footer and client-side processing disclaimer from printed output via targeted `@media print` rules; page 2 concludes cleanly with the official consecutive page counter (*Seite 2 / 2*).
 * **v1.4.3 (2026-09-28):**
-  * **Einzelplan-Export (`.json`):** Direkter Export individueller Förderpläne je Schüler/in (`foerderplan_<Name>_<ID>.json`) über das Download-Symbol direkt auf jeder Plankarte in der Plan-Verwaltung.
-  * **Kollisionserkennung & Importauswahl:** Interaktive Prüfung beim Import von Förderplänen mit bereits existierender ID; Lehrkräfte können wählen zwischen *Bestehenden Plan aktualisieren/überschreiben* (z.B. nach externer Bearbeitung) oder *Als neue Kopie anlegen* (`(Kopie)`).
-  * **Bereinigung & Präzisierung der Sicherheitsdokumentation:** Korrektur des irreführenden Hinweises auf In-App-Dateiverschlüsselung; transparente Erläuterung der Best-Practice-Architektur (offenes, auditierbares Standard-JSON und DSGVO-konforme Absicherung durch Betriebssystem- und Speichermedien-Verschlüsselung wie BitLocker, FileVault oder LUKS).
+  * **Individual Plan Export (`.json`):** Direct export of single student support plans (`foerderplan_<Name>_<ID>.json`) via a download icon directly on each plan card in the plan manager.
+  * **Collision Detection & Import Resolution:** Interactive prompt when importing plans with an existing ID, allowing teachers to choose between *„Bestehenden Plan aktualisieren/überschreiben“* (e.g., after editing on another workstation) or *„Als neue Kopie anlegen“* (`(Kopie)`).
+  * **Security & Storage Documentation Clarification:** Corrected misleading references to in-app file encryption; transparently documented the architectural standard of using open JSON coupled with OS-level full-disk encryption (BitLocker, FileVault, LUKS) and encrypted removable media under GDPR.
 * **v1.4.2 (2026-09-28):**
-  * **GPLv3 Lizenzierung & KI-Gewichte-Ausschluss:** Vollständige Umstellung der Anwendungssoftware unter die *GNU General Public License v3.0 (GPLv3)* mit Bereitstellung der `LICENSE`-Datei im Repository-Stammverzeichnis sowie SPDX-Lizenzheadern in den Quellcodedateien.
-  * **Dedizierter Lizenz- & Rechtsdialog (`LicenseModal.tsx`):** Übersichtliche Darstellung der Software-Lizenzrechte (GPLv3), Bestätigung der 100%igen Kompatibilität aller statisch einkompilierten Bibliotheken (MIT, ISC, BSD-2, Apache-2.0) und direkter Einsicht des Lizenzvolltexts.
-  * **Rechtliche Klarstellung zu Runtime-Modellgewichten:** Expliziter Ausschluss von optional zur Laufzeit nach interaktiver Zustimmung heruntergeladenen neuronalen Sprachmodell-Gewichten (Qwen2.5-0.5B-Instruct / Apache-2.0) vom Geltungsbereich der Software-GPLv3.
-  * **Amtliche Referenzangaben:** Dokumentation der Berliner Handreichung *„Fördermaßnahmen konkret!“* (SenBJF Berlin) als pädagogische Referenzgrundlage.
+  * **GPLv3 Licensing & AI Model Weights Exclusion:** Migrated the entire application codebase to the GNU General Public License v3.0 (GPLv3), adding the `LICENSE` file and SPDX license identifiers.
+  * **Dedicated License Modal (`LicenseModal.tsx`):** Added modal detailing GPLv3 software rights, verified 100% license compatibility across all statically bundled dependencies (MIT, ISC, BSD-2-Clause, Apache-2.0), and provided direct viewing of the complete license text.
+  * **Legal Clarification on Runtime Model Weights:** Explicitly exempted runtime-downloaded neural model parameter weights (e.g., Qwen2.5-0.5B-Instruct under Apache 2.0) from the GPLv3 software license as independent creative works.
+  * **Official Berlin Guidelines Attribution:** Documented the pedagogical foundation in the official Berlin ministerial guideline *„Fördermaßnahmen konkret! Eine Handreichung für pädagogische Fachkräfte zur Entwicklung von Fördermaßnahmen“* (SenBJF Berlin) pursuant to *§ 19 SopädVO Berlin*.
 * **v1.4.1 (2026-09-27):**
-  * **Erweiterung der Förderschwerpunkte (GE & KME):** Ergänzung der beiden amtlichen Berliner Förderschwerpunkte *„Geistige Entwicklung“ (GE)* und *„Körperliche und motorische Entwicklung“ (KME)* in Schritt 1 mit vollständigen Kriterien, Entwicklungsfeldern, Richtlinienmaßnahmen und integrierten Bausteinen aus *„Fördermaßnahmen konkret!“*.
-  * **Klarstellung & Überarbeitung der Förderbedarfs-Filterung:** Umfassende Überarbeitung des Filters *„Nur Förderbedarf filtern“* in Schritt 2: Live-Zähler (`{count} / {total}`), erklärender Hinweiskasten zu den Filterkriterien (Bewertung „eher nicht / trifft nicht zu“ oder aktiver Förderfokus), aktiver Status-Banner mit Schnell-Reset und verständlicher Leerzustand bei 0 Treffern.
+  * **Special Education Needs Focus Expansion (GE & KME):** Added the two official Berlin support categories *„Geistige Entwicklung“ (GE)* and *„Körperliche und motorische Entwicklung“ (KME)* to Step 1, complete with developmental domains, criteria, and official support interventions from *„Fördermaßnahmen konkret!“*.
+  * **Assessment Filter Clarification:** Revamped the *„Nur Förderbedarf filtern“* filter in Step 2: added real-time counter (`{count} / {total}`), explanatory info banner regarding filter criteria (ratings of *„eher nicht / trifft nicht zu“* or active focus areas), active status badge with one-click reset, and an informative empty state.
 * **v1.4.0 (2026-09-27):**
   * **Wllama WebAssembly CPU Engine:** Replaced the WebGPU-only `@mlc-ai/web-llm` engine with Wllama (`@wllama/wllama`), enabling on-device execution of `Qwen2.5-0.5B-Instruct` (GGUF) on all CPUs via WebAssembly SIMD without requiring WebGPU support.
   * **OPFS & IndexedDB Storage Architecture:** Completely eliminated reliance on the Cache Storage API (`window.caches`). Model weights are now stored and streamed exclusively via OPFS (Origin Private File System) with an automatic IndexedDB fallback.
   * **Persistent Quota Protection:** Integrated `navigator.storage.persist()` to safeguard downloaded model weights from browser storage eviction.
   * **Graceful Deterministic Fallback:** Maintained the instant rule-based matching engine (`localMatchingEngine.ts`) as the primary zero-download fallback whenever model download is skipped or deferred.
 * **v1.3.1 (2026-09-26):**
-  * **Optimierter amtlicher Formulardruck:** Unterdrückung automatischer Browser-Kopf- und Fußzeilen (URL, Datum, Uhrzeit, Webseitentitel) mittels `@page { margin: 0 }` und internem `.print-document-sheet`-Layoutcontainer.
-  * **Bereinigte Fußzeile & Versionsanzeige:** Einbindung der Anwendungsversion (`Förderplan-Assistent Berlin 1.3.1`) im Kleingedruckten der finalen Druckansicht bei vollständiger Beibehaltung der amtlichen Referenzangaben.
-  * **Seitennummerierung:** Durchgängige und präzise Darstellung der Seitenzahlen (*Seite 1 / 2* auf der Vorderseite und *Seite 2 / 2* auf der Rückseite/Rasterseite).
+  * **Optimized Official Form Printing:** Suppressed browser-generated headers and footers (URL, timestamp, page title) via CSS `@page { margin: 0 }` and an internal `.print-document-sheet` container.
+  * **Footer & Version Display Cleanup:** Embedded the application version (`Förderplan-Assistent Berlin 1.3.1`) into the document fine print while preserving all official citations.
+  * **Page Numbering:** Consistent and accurate pagination (*Seite 1 / 2* on the front sheet and *Seite 2 / 2* on the reverse/table sheet).
 * **v1.3.0 (2026-09-26):**
   * **Official Form Template Integration:** Replaced generic web print preview in Step 5 (`PrintPreviewStep.tsx`) with the official 2-page ministerial template from pages 82–83 of *„Fördermaßnahmen konkret!“* (Berlin Senatsverwaltung für Bildung, Jugend und Familie / § 19 SopädVO Berlin).
   * **5-Column Standard Grid:** Front page master data with narrative baseline, followed by the official 5-column grid (*1. IST*, *2. SOLL*, *3. LERNWEG*, *4. Absprachen*, *5. Reflexion*) and multidisciplinary conference sign-off blocks.
@@ -298,13 +355,12 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
   * **Dynamic Initials Converter:** Enhanced Step 1 "Initialen" feature to dynamically convert entered names (e.g. "Klaus Schmidt" -> "K. S.") or generate pseudonyms instead of hardcoded placeholder text.
   * **Versioning Directive:** Formalized semantic versioning protocol and changelog maintenance rules in `README.md`.
 * **v1.2.1:**
-  * PWA Offline-Unterstützung (Service Worker Precaching via `vite-plugin-pwa`).
-  * Viewport-Fixes für alle Modale (Höhenanpassung, `min-h-0`, Scrollcontainer & Esc-Dismissal).
-  * Webserver-Export (`.tar.gz` Bundles) und aktiver PWA-Update-Prüfer.
+  * **PWA Offline Support:** Added service worker precaching and offline support via `vite-plugin-pwa`.
+  * **Modal Viewport Fixes:** Corrected dialog sizing, scrollable body containers (`min-h-0`), and Escape key dismissal.
+  * **Static Web Bundles:** Generated `.tar.gz` distribution packages and added interactive PWA update checking.
 * **v1.2.0:**
-  * WebLLM Web Worker-Integration (`Qwen2.5-0.5B-Instruct-q4f16_1-MLC`) mit Hardware-Erkennung und Opt-In-Modal.
+  * **WebLLM Web Worker Integration:** Added optional in-browser LLM integration (`Qwen2.5-0.5B-Instruct-q4f16_1-MLC`) with hardware detection and opt-in consent modal.
 * **v1.1.0:**
-  * Mehrfach-Planverwaltung im LocalStorage / IndexedDB (Entwurf/Abgeschlossen, Duplizieren, Archivieren).
+  * **Multi-Plan Management:** Added multi-plan management in IndexedDB/LocalStorage (draft/completed status, duplicate, archive, delete).
 * **v1.0.0:**
-  * Initiale Veröffentlichung des Förderplan-Assistenten Grundschule Berlin basierend auf *„Fördermaßnahmen konkret!“*.
-
+  * **Initial Release:** Initial launch of *Förderplan-Assistent Grundschule Berlin* based on *„Fördermaßnahmen konkret!“*.
