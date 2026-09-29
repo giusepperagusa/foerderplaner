@@ -1,0 +1,164 @@
+name: Build, Release & Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-package:
+    name: Build & Package Distribution
+    runs-on: ubuntu-latest
+    outputs:
+      app_version: ${{ steps.version.outputs.version }}
+      tag_name: ${{ steps.version.outputs.tag }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Typecheck / Lint Codebase
+        run: npm run lint
+
+      - name: Read Version from package.json
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Building Foerderplaner version: v${VERSION}"
+
+      - name: Build Web Application
+        run: npm run build
+
+      - name: Create Versioned & Alias Tar Archives
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          mkdir -p release-archives
+
+          # 1. Package web distribution (contents of dist/)
+          tar -czf "release-archives/foerderplaner-v${VERSION}-web-dist.tar.gz" -C dist .
+          cp "release-archives/foerderplaner-v${VERSION}-web-dist.tar.gz" "release-archives/foerderplaner-web-dist.tar.gz"
+
+          # 2. Package complete source code repository (excluding temp/build artifacts)
+          tar --exclude='./node_modules' \
+              --exclude='./dist' \
+              --exclude='./dev-dist' \
+              --exclude='./.git' \
+              --exclude='./.aistudio' \
+              --exclude='./release-archives' \
+              --exclude='./public/*.tar.gz' \
+              -czf "release-archives/foerderplaner-v${VERSION}-source-code.tar.gz" .
+          cp "release-archives/foerderplaner-v${VERSION}-source-code.tar.gz" "release-archives/foerderplaner-source-code.tar.gz"
+
+          # Copy archives into dist so the deployed web app serves them directly
+          cp release-archives/*.tar.gz dist/
+
+          # Prevent GitHub Pages from ignoring files with underscores (or treating as Jekyll)
+          touch dist/.nojekyll
+
+          ls -lh release-archives/ dist/*.tar.gz
+
+      - name: Upload Build Artifacts for Subsequent Jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-and-archives
+          path: |
+            dist
+            release-archives
+
+  create-github-release:
+    name: Publish GitHub Project Release
+    needs: build-and-package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-and-archives
+
+      - name: Check if Git Tag / Release Already Exists
+        id: check_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.build-and-package.outputs.tag_name }}
+        run: |
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Release $TAG_NAME already exists. Skipping recreation."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Release $TAG_NAME does not exist yet. Will create."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release with Attached Archives
+        if: steps.check_release.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build-and-package.outputs.tag_name }}
+          name: Release ${{ needs.build-and-package.outputs.tag_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            release-archives/foerderplaner-${{ needs.build-and-package.outputs.tag_name }}-web-dist.tar.gz
+            release-archives/foerderplaner-${{ needs.build-and-package.outputs.tag_name }}-source-code.tar.gz
+            release-archives/foerderplaner-web-dist.tar.gz
+            release-archives/foerderplaner-source-code.tar.gz
+
+  deploy-to-github-pages-repo:
+    name: Deploy Extracted Web App to giusepperagusa.github.io
+    needs: [build-and-package]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-and-archives
+
+      - name: Check Deployment Token Availability
+        id: token_check
+        env:
+          DEPLOY_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN || secrets.GH_PAT || secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          if [ -n "$DEPLOY_TOKEN" ]; then
+            echo "has_token=true" >> "$GITHUB_OUTPUT"
+            echo "Valid secret token found for cross-repository deployment."
+          else
+            echo "has_token=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::No secret PAGES_DEPLOY_TOKEN or GH_PAT configured in repository settings. Cross-repo deployment to giusepperagusa.github.io skipped."
+            echo "To enable automatic deployment, add your GitHub Personal Access Token as a Secret named 'PAGES_DEPLOY_TOKEN' in this repository: Settings -> Secrets and variables -> Actions."
+          fi
+
+      - name: Deploy to giusepperagusa.github.io
+        if: steps.token_check.outputs.has_token == 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN || secrets.GH_PAT || secrets.PERSONAL_ACCESS_TOKEN }}
+          external_repository: giusepperagusa/giusepperagusa.github.io
+          publish_branch: main
+          publish_dir: ./dist
+          keep_files: false
+          commit_message: "deploy(foerderplaner): release ${{ needs.build-and-package.outputs.tag_name }} [skip ci]"
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"

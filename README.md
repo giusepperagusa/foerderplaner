@@ -125,6 +125,11 @@ The application guides the teacher through a streamlined, multi-step process wit
     * `foerderplaner-v1.4.4-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
     * `foerderplaner-v1.4.4-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
+* **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
+  * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
+  * **Automated Archive Packaging:** Bundles `foerderplaner-vX.Y.Z-web-dist.tar.gz` and `foerderplaner-vX.Y.Z-source-code.tar.gz` (and unversioned aliases).
+  * **Automated GitHub Releases:** Automatically creates a GitHub Release tagged `vX.Y.Z` on `foerderplaner` with release notes and attaches all four `.tar.gz` distribution archives.
+  * **Direct GitHub Pages Deployment:** Deploys the uncompressed web build directly to the dedicated GitHub Pages repository (`giusepperagusa/giusepperagusa.github.io`) upon commit using secret `PAGES_DEPLOY_TOKEN`.
 
 ---
 
