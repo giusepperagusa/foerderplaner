@@ -118,12 +118,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.4-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.5-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.4-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.4-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.5-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.5-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -252,6 +252,9 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
 
 ### Historical Changelog
 
+* **v1.4.5 (2026-09-29):**
+  * **Bereinigung der Druck- & Export-Toolbar:** Entfernung der redundanten Schaltfläche *„JSON sichern“* aus Schritt 5 (*Druck & Export*); die vollständige Sicherung und Wiederherstellung von Einzelplänen sowie der gesamten Förderplan-Datenbank erfolgt nun ausschließlich und konsistent über den zentralen Förderplan-Manager.
+  * **Vereinheitlichung der Druck-Schaltflächen:** Standardisierung der oberen und unteren Druck-Aktionsschaltflächen in Schritt 5 auf die einheitliche, standardkonforme Beschriftung *„Formular drucken / PDF“*.
 * **v1.4.4 (2026-09-28):**
   * **GitHub-Repository-Verlinkung:** Prominente und direkte Verlinkung des Quellcode-Repositories ([https://github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner)) sowohl im App-Footer als auch mit dedizierter Info-Karte im Dialog *„Versionsinfo & Bereitstellung“*.
   * **Orthografische Prüfung & Umlaute-Standardisierung:** Vollständige Überprüfung sämtlicher für Lehrkräfte sichtbarer UI-Texte, Beschriftungen, Dialoghinweise, Schrittüberschriften und Platzhalter auf standardkonforme deutsche Umlaute (ä, ö, ü) und Eszett (ß); die Normalisierung auf Doppelzeichen (ae, oe, ue, ss) ist strikt auf Texte beschränkt, die für das lokale KI-Modell aufbereitet und von diesem konsumiert werden.

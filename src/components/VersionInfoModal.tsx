@@ -34,7 +34,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.4-offline';
+export const APP_VERSION = 'v1.4.5-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -322,6 +322,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.5:</span>
+                <span>Bereinigung Druck- & Export-Toolbar & Druck-Schaltflächen: Entfernung der redundanten Schaltfläche „JSON sichern“ aus Schritt 5 (die vollständige Einzel- und Gesamtexport-/Importsicherung erfolgt zentral im Förderplan-Manager); Vereinheitlichung der beiden Druck-Buttons oben und unten auf die identische, standardisierte Beschriftung „Formular drucken / PDF“.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.4:</span>
                 <span>GitHub-Repository-Verlinkung, orthografische Korrektur & bereinigter Druck: Sichtbare GitHub-Repository-Verlinkung (https://github.com/giusepperagusa/foerderplaner) in der UI; vollständige Überprüfung aller UI-Texte auf standardkonforme deutsche Umlaute (ä, ö, ü) und Eszett (ß) gemäß Rechtschreibung; Entfernung des App-Footers und der Client-Erklärung aus dem finalen Druckausdruck (nur amtliche Zeile mit fortlaufender Seitenzahl verbleibt).</span>
