@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Printer,
-  Download,
   Copy,
   Check,
   ArrowLeft,
@@ -25,16 +24,6 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
 
   const handlePrint = () => {
     window.print();
-  };
-
-  const handleDownloadJson = () => {
-    const blob = new Blob([JSON.stringify(planDoc, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = window.document.createElement('a');
-    a.href = url;
-    a.download = `Foerderplan_${planDoc.profil.name.replace(/\s+/g, '_') || 'Schueler'}_${planDoc.profil.zeitraumVon || 'aktuell'}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
   };
 
   const handleCopyText = () => {
@@ -112,20 +101,11 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
 
           <button
             type="button"
-            onClick={handleDownloadJson}
-            className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 transition cursor-pointer"
-          >
-            <Download className="w-3.5 h-3.5 text-blue-600" />
-            <span>JSON sichern</span>
-          </button>
-
-          <button
-            type="button"
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer"
           >
             <Printer className="w-4 h-4" />
-            <span>Formular Drucken / PDF</span>
+            <span>Formular drucken / PDF</span>
           </button>
         </div>
       </div>
@@ -436,7 +416,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer"
         >
           <Printer className="w-4 h-4" />
-          <span>Amtliches Formular drucken</span>
+          <span>Formular drucken / PDF</span>
         </button>
       </div>
 
