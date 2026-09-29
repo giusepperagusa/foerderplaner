@@ -22,6 +22,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import richtlinienData from '../data/richtlinien.json';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   isOpen: boolean;
@@ -34,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.5-offline';
+export const APP_VERSION = 'v1.4.6-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -48,17 +49,7 @@ export const VersionInfoModal: React.FC<Props> = ({
   onApplyUpdate,
   onOpenLicense,
 }) => {
-  // Close on Escape key press
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
 
   const cleanVersion = APP_VERSION.replace('-offline', '');
   const webDistFilename = `foerderplaner-${cleanVersion}-web-dist.tar.gz`;
@@ -112,25 +103,28 @@ export const VersionInfoModal: React.FC<Props> = ({
       aria-modal="true"
     >
       <div 
+        ref={modalRef}
         className="bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col my-auto border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
+        aria-labelledby="version-info-title"
       >
         {/* Header - Fixed & Pinned */}
         <div className="bg-gradient-to-r from-slate-900 to-indigo-950 px-4 sm:px-6 py-3.5 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-indigo-500/20 rounded-xl border border-indigo-400/30">
+            <div className="p-2 bg-indigo-500/20 rounded-xl border border-indigo-400/30" aria-hidden="true">
               <Tag className="w-5 h-5 text-indigo-300" />
             </div>
             <div>
-              <h2 className="text-base font-bold tracking-tight">Versionsinfo & Bereitstellung</h2>
-              <p className="text-indigo-200/80 text-xs">Offline-Status, Aktualisierungen & Web-Export</p>
+              <h2 id="version-info-title" className="text-base font-bold tracking-tight">Versionsinfo & Bereitstellung</h2>
+              <p className="text-indigo-200 text-xs">Offline-Status, Aktualisierungen & Web-Export</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-            title="Schließen (Esc)"
+            aria-label="Schließen"
+            className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+            title="Schließen"
           >
             <X className="w-4 h-4" />
           </button>
@@ -142,15 +136,15 @@ export const VersionInfoModal: React.FC<Props> = ({
           {/* Version Badges Grid */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-              <span className="text-[11px] text-slate-400 block font-medium">Anwendungs-Version</span>
-              <span className="text-sm font-bold text-slate-900 font-mono mt-0.5 block">{APP_VERSION}</span>
-              <span className="text-[10px] text-emerald-700 font-medium">Aktuelle PWA-Build</span>
+              <span className="text-[11px] text-slate-600 block font-medium">Anwendungs-Version</span>
+              <span className="text-sm font-bold text-slate-950 font-mono mt-0.5 block">{APP_VERSION}</span>
+              <span className="text-[10px] text-emerald-800 font-semibold">Aktuelle PWA-Build</span>
             </div>
 
             <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-              <span className="text-[11px] text-slate-400 block font-medium">Offizielle Richtlinien</span>
-              <span className="text-sm font-bold text-slate-900 font-mono mt-0.5 block">Version {GUIDELINE_VERSION}</span>
-              <span className="text-[10px] text-indigo-700 font-medium">{richtlinienData.herausgeber}</span>
+              <span className="text-[11px] text-slate-600 block font-medium">Offizielle Richtlinien</span>
+              <span className="text-sm font-bold text-slate-950 font-mono mt-0.5 block">Version {GUIDELINE_VERSION}</span>
+              <span className="text-[10px] text-indigo-800 font-semibold">{richtlinienData.herausgeber}</span>
             </div>
           </div>
 
@@ -322,6 +316,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.6:</span>
+                <span>Barrierefreiheit und DIN 1450 Typografie: Vollständige Konformität mit EN 301 549 / WCAG 2.2 AA in der App-UI (Tastaturnavigation mit Sharp-Outline-Fokusindikator, Skip-to-Content-Link, striktes Focus-Trapping in allen Dialogen via useFocusTrap, semantische HTML-Elemente und ARIA-Rollen, mindestens 4,5:1 Farbkontraste) sowie Überarbeitung des Förderplan-Drucks nach DIN 1450 (serifenlose Arial/Helvetica-Schriftart, mindestens 11pt Grundschriftgröße, 1,4–1,5 Zeilenabstand, Schwarz-Weiß-Druckkontrast und semantische PDF/UA-Dokumentenstruktur).</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.5:</span>
                 <span>Bereinigung Druck- & Export-Toolbar & Druck-Schaltflächen: Entfernung der redundanten Schaltfläche „JSON sichern“ aus Schritt 5 (die vollständige Einzel- und Gesamtexport-/Importsicherung erfolgt zentral im Förderplan-Manager); Vereinheitlichung der beiden Druck-Buttons oben und unten auf die identische, standardisierte Beschriftung „Formular drucken / PDF“.</span>

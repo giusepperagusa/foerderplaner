@@ -95,22 +95,22 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
         {/* Name / Identifier Field with Anonymize helpers */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+            <label htmlFor="student-name-input" className="text-xs font-semibold text-slate-800 flex items-center gap-1.5">
               <span>Schüler-Kennung / Initialen / Name *</span>
             </label>
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleSetAnonymousId}
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-200 transition"
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-800 hover:text-emerald-950 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-300 transition cursor-pointer"
               >
-                <Key className="w-3 h-3 text-emerald-600" />
+                <Key className="w-3 h-3 text-emerald-700" />
                 <span>Zufalls-ID generieren</span>
               </button>
               <button
                 type="button"
                 onClick={handleConvertToInitials}
-                className="text-[11px] font-medium text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg border border-slate-200 transition"
+                className="text-[11px] font-medium text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg border border-slate-300 transition cursor-pointer"
                 title={profile.name?.trim() ? 'Eingegebenen Namen in Initialen umwandeln' : 'Zufällige Initialen generieren'}
               >
                 {profile.name?.trim() ? 'In Initialen umwandeln' : 'Initialen (z. B. K. S.)'}
@@ -119,13 +119,14 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
           </div>
 
           <input
+            id="student-name-input"
             type="text"
             value={profile.name}
             onChange={(e) => handleFieldChange('name', e.target.value)}
             placeholder="z. B. L. H. oder ID-24-03 oder Vorname"
-            className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden font-medium"
+            className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden font-medium text-slate-900"
           />
-          <p className="text-[11px] text-slate-500">
+          <p className="text-[11px] text-slate-600">
             Verwenden Sie Kürzel oder eine Ziffernkennung, um personenbezogene Klarnamen vollständig zu vermeiden.
           </p>
         </div>
@@ -133,90 +134,97 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
         {/* Other profile fields */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="student-klasse-input" className="text-xs font-semibold text-slate-800 block mb-1">
               Klasse / Lerngruppe
             </label>
             <input
+              id="student-klasse-input"
               type="text"
               value={profile.klasse}
               onChange={(e) => handleFieldChange('klasse', e.target.value)}
               placeholder="z.B. 2a / SAPH / JÜL 1-3"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="student-geburtsdatum-input" className="text-xs font-semibold text-slate-800 block mb-1">
               Geburtsdatum (optional)
             </label>
             <input
+              id="student-geburtsdatum-input"
               type="date"
               value={profile.geburtsdatum}
               onChange={(e) => handleFieldChange('geburtsdatum', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="student-schule-input" className="text-xs font-semibold text-slate-800 block mb-1">
               Schule / Schulnummer (optional)
             </label>
             <input
+              id="student-schule-input"
               type="text"
               value={profile.schule}
               onChange={(e) => handleFieldChange('schule', e.target.value)}
               placeholder="z.B. Grundschule am Park"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="student-lehrkraft-input" className="text-xs font-semibold text-slate-800 block mb-1">
               Verantwortliche Lehrkraft / Kürzel
             </label>
             <input
+              id="student-lehrkraft-input"
               type="text"
               value={profile.lehrkraft}
               onChange={(e) => handleFieldChange('lehrkraft', e.target.value)}
               placeholder="z. B. Klassenleitung / Fr. W."
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="student-eltern-input" className="text-xs font-semibold text-slate-800 block mb-1">
               Erziehungsberechtigte (optional)
             </label>
             <input
+              id="student-eltern-input"
               type="text"
               value={profile.erziehungsberechtigte}
               onChange={(e) => handleFieldChange('erziehungsberechtigte', e.target.value)}
               placeholder="z. B. Eltern / Mutter / Vater"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">
+              <label htmlFor="student-zeitraum-von" className="text-xs font-semibold text-slate-800 block mb-1">
                 Förderzeitraum von
               </label>
               <input
+                id="student-zeitraum-von"
                 type="date"
                 value={profile.zeitraumVon}
                 onChange={(e) => handleFieldChange('zeitraumVon', e.target.value)}
-                className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">
+              <label htmlFor="student-zeitraum-bis" className="text-xs font-semibold text-slate-800 block mb-1">
                 Bis (Evaluation)
               </label>
               <input
+                id="student-zeitraum-bis"
                 type="date"
                 value={profile.zeitraumBis}
                 onChange={(e) => handleFieldChange('zeitraumBis', e.target.value)}
-                className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
               />
             </div>
           </div>
@@ -235,7 +243,7 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div role="radiogroup" aria-label="Sonderpädagogischer Förderschwerpunkt" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {[
             {
               id: 'Lernen' as FoerderschwerpunktType,
@@ -276,6 +284,8 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
               <button
                 key={item.id}
                 type="button"
+                role="radio"
+                aria-checked={isSelected}
                 onClick={() => handleFieldChange('hauptschwerpunkt', item.id)}
                 className={`p-4 rounded-xl text-left border-2 transition cursor-pointer flex flex-col justify-between ${
                   isSelected
@@ -292,22 +302,22 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
                       {data.kuerzel || item.kuerzel}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-600 line-clamp-3 leading-relaxed mb-3">
+                  <p className="text-[11px] text-slate-700 line-clamp-3 leading-relaxed mb-3">
                     {data.definition}
                   </p>
                 </div>
 
                 {data.foerderschwerpunkte_innerhalb && (
                   <div className="pt-2 border-t border-slate-100 mt-auto">
-                    <span className="text-[10px] text-slate-400 block font-semibold mb-1">Kernbereiche:</span>
+                    <span className="text-[10px] text-slate-600 block font-semibold mb-1">Kernbereiche:</span>
                     <div className="flex flex-wrap gap-1">
                       {data.foerderschwerpunkte_innerhalb.slice(0, 3).map((sub: string, sIdx: number) => (
-                        <span key={sIdx} className="text-[9px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded truncate max-w-[140px]">
+                        <span key={sIdx} className="text-[9px] bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded truncate max-w-[140px] font-medium">
                           {sub}
                         </span>
                       ))}
                       {data.foerderschwerpunkte_innerhalb.length > 3 && (
-                        <span className="text-[9px] text-slate-400 px-1 py-0.5">
+                        <span className="text-[9px] text-slate-600 px-1 py-0.5">
                           +{data.foerderschwerpunkte_innerhalb.length - 3}
                         </span>
                       )}
@@ -323,11 +333,11 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
         {currentDetails.bewertungskriterien && (
           <div className="mt-4 p-4.5 rounded-xl bg-slate-50 border border-slate-200 space-y-3.5">
             <div>
-              <h4 className="text-xs font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
+              <h4 className="text-xs font-bold text-slate-900 mb-1.5 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                 <span>Amtliche Bewertungskriterien ({profile.hauptschwerpunkt === 'Koerperliche-motorische Entwicklung' ? 'Körperliche und motorische Entwicklung' : profile.hauptschwerpunkt}):</span>
               </h4>
-              <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
+              <ul className="text-xs text-slate-700 space-y-1 list-disc list-inside">
                 {currentDetails.bewertungskriterien.map((crit: string, idx: number) => (
                   <li key={idx} className="leading-relaxed">{crit}</li>
                 ))}
@@ -336,12 +346,12 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
 
             {currentDetails.foerderschwerpunkte_innerhalb && (
               <div>
-                <h5 className="text-[11px] font-bold text-slate-700 mb-1.5">
+                <h5 className="text-[11px] font-bold text-slate-800 mb-1.5">
                   Gegenstandsbereiche & Entwicklungsfelder:
                 </h5>
                 <div className="flex flex-wrap gap-1.5">
                   {currentDetails.foerderschwerpunkte_innerhalb.map((sub: string, idx: number) => (
-                    <span key={idx} className="text-[10px] font-medium bg-white text-slate-700 px-2.5 py-1 rounded-md border border-slate-200 shadow-2xs">
+                    <span key={idx} className="text-[10px] font-medium bg-white text-slate-800 px-2.5 py-1 rounded-md border border-slate-200 shadow-2xs">
                       {sub}
                     </span>
                   ))}
@@ -351,10 +361,10 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
 
             {currentDetails.empfohlene_foerdermassnahmen && (
               <div>
-                <h5 className="text-[11px] font-bold text-slate-700 mb-1.5">
+                <h5 className="text-[11px] font-bold text-slate-800 mb-1.5">
                   Empfohlene Fördermethoden (Berliner Handreichung „Fördermaßnahmen konkret!“):
                 </h5>
-                <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
+                <ul className="text-xs text-slate-700 space-y-1 list-disc list-inside">
                   {currentDetails.empfohlene_foerdermassnahmen.map((m: string, idx: number) => (
                     <li key={idx} className="leading-relaxed">{m}</li>
                   ))}
@@ -367,18 +377,19 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
 
       {/* Ausgangslage & Pädagogische Notizen */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-3">
-        <label className="text-sm font-bold text-slate-900 block">
+        <label htmlFor="student-ausgangslage" className="text-sm font-bold text-slate-900 block">
           Ausgangslage & Pädagogische Beobachtung (Freitext)
         </label>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-600">
           Beschreiben Sie kurz den aktuellen Lernstand, besondere Stärken sowie vorrangige Förderbedarfe. Diese Notiz unterstützt später die Zuordnung passgenauer Maßnahmen.
         </p>
         <textarea
+          id="student-ausgangslage"
           rows={3}
           value={profile.ausgangslageNotiz}
           onChange={(e) => handleFieldChange('ausgangslageNotiz', e.target.value)}
           placeholder="z. B. Zeigt Unsicherheiten bei der Laut-Synthese im Silbenlesen. In Gruppenphasen aufmerksam, bei längeren Stillarbeiten schnell abgelenkt..."
-          className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+          className="w-full p-3 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
         />
       </div>
 

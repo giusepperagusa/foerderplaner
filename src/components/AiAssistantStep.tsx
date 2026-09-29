@@ -27,6 +27,7 @@ import {
 } from '../utils/localMatchingEngine';
 import { webLlmManager, CURRENT_MODEL_CONFIG, ModelCacheStatus } from '../utils/webLlmManager';
 import { ModelConsentModal } from './ModelConsentModal';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import richtlinienRaw from '../data/richtlinien.json';
 
 interface Props {
@@ -56,6 +57,12 @@ export const AiAssistantStep: React.FC<Props> = ({
   const [showPromptModal, setShowPromptModal] = useState(false);
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
+
+  // Focus trap for prompt modal
+  const promptModalRef = useFocusTrap<HTMLDivElement>({
+    isOpen: showPromptModal,
+    onClose: () => setShowPromptModal(false),
+  });
 
   // Wllama State
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>({
@@ -236,13 +243,16 @@ export const AiAssistantStep: React.FC<Props> = ({
       </div>
 
       {/* Mode Switcher Tabs */}
-      <div className="flex border-b border-slate-200 bg-white rounded-t-2xl px-3 pt-2 gap-2 shadow-xs">
+      <div role="tablist" aria-label="Modus für Förderempfehlungen" className="flex border-b border-slate-200 bg-white rounded-t-2xl px-3 pt-2 gap-2 shadow-xs">
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'rules'}
           onClick={() => setActiveTab('rules')}
           className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition cursor-pointer ${
             activeTab === 'rules'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-blue-600 text-blue-700'
+              : 'border-transparent text-slate-700 hover:text-slate-950'
           }`}
         >
           <ListPlus className="w-4 h-4" />
@@ -253,11 +263,14 @@ export const AiAssistantStep: React.FC<Props> = ({
         </button>
 
         <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'webllm'}
           onClick={() => setActiveTab('webllm')}
           className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border-b-2 transition cursor-pointer ${
             activeTab === 'webllm'
-              ? 'border-indigo-600 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
+              ? 'border-indigo-600 text-indigo-700'
+              : 'border-transparent text-slate-700 hover:text-slate-950'
           }`}
         >
           <Cpu className="w-4 h-4" />
@@ -274,12 +287,15 @@ export const AiAssistantStep: React.FC<Props> = ({
           {/* Filter Bar */}
           <div className="bg-white rounded-xl border border-slate-200 p-3 shadow-xs flex items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-semibold text-slate-700">Förderschwerpunkt filtern:</span>
+              <Filter className="w-3.5 h-3.5 text-slate-600" aria-hidden="true" />
+              <label htmlFor="select-schwerpunkt-filter" className="font-semibold text-slate-800">
+                Förderschwerpunkt filtern:
+              </label>
               <select
+                id="select-schwerpunkt-filter"
                 value={selectedSchwerpunktFilter}
                 onChange={(e) => setSelectedSchwerpunktFilter(e.target.value)}
-                className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-hidden"
+                className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
               >
                 <option value="Alle">Alle Förderbereiche</option>
                 <option value="Lernen">Lernen (LE)</option>
@@ -506,21 +522,24 @@ export const AiAssistantStep: React.FC<Props> = ({
           onClick={() => setShowPromptModal(false)}
         >
           <div 
+            ref={promptModalRef}
             className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col p-4 sm:p-6 shadow-2xl border border-slate-200 my-auto"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
+            aria-labelledby="prompt-modal-title"
           >
             <div className="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
               <div className="flex items-center gap-2">
-                <Cpu className="w-5 h-5 text-blue-600 shrink-0" />
-                <h3 className="text-sm font-bold text-slate-900">
+                <Cpu className="w-5 h-5 text-blue-600 shrink-0" aria-hidden="true" />
+                <h3 id="prompt-modal-title" className="text-sm font-bold text-slate-900">
                   Normalisierter Prompt für lokales LLM
                 </h3>
               </div>
               <button
+                type="button"
                 onClick={() => setShowPromptModal(false)}
-                className="text-slate-400 hover:text-slate-600 text-xs font-semibold p-1 cursor-pointer"
+                className="text-slate-500 hover:text-slate-800 text-xs font-semibold p-1 cursor-pointer"
                 aria-label="Schließen"
               >
                 <X className="w-4 h-4" />

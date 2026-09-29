@@ -184,9 +184,11 @@ export const Navigation: React.FC<Props> = ({
               <span className="hidden md:inline">Richtlinien-Tool</span>
             </button>
 
+            {/* Reset Button with accessible aria-label and high-contrast styling */}
             <button
               onClick={onResetPlan}
-              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+              aria-label="Diesen Förderplan leeren"
+              className="p-1.5 text-slate-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition"
               title="Diesen Förderplan leeren"
             >
               <RotateCcw className="w-4 h-4" />
@@ -194,33 +196,35 @@ export const Navigation: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* Step Tabs */}
-        <div className="flex overflow-x-auto py-2 gap-1 no-scrollbar">
+        {/* Step Tabs with semantic nav element and aria-current */}
+        <nav aria-label="Förderplan Schritte" className="flex overflow-x-auto py-2 gap-1 no-scrollbar">
           {steps.map((step) => {
-            const Icon = step.icon;
             const isActive = currentStep === step.num;
             const isCompletedStep = currentStep > step.num;
 
             return (
               <button
                 key={step.num}
+                type="button"
                 onClick={() => onSelectStep(step.num)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                aria-current={isActive ? 'step' : undefined}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-xs'
                     : isCompletedStep
-                    ? 'text-slate-700 hover:bg-slate-100'
-                    : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                    ? 'text-slate-800 hover:bg-slate-100'
+                    : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100'
                 }`}
               >
                 <div
                   className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                     isActive
-                      ? 'bg-white text-blue-600'
+                      ? 'bg-white text-blue-700'
                       : isCompletedStep
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'bg-slate-200 text-slate-600'
+                      ? 'bg-blue-100 text-blue-900'
+                      : 'bg-slate-200 text-slate-800'
                   }`}
+                  aria-hidden="true"
                 >
                   {step.num}
                 </div>
@@ -228,7 +232,7 @@ export const Navigation: React.FC<Props> = ({
               </button>
             );
           })}
-        </div>
+        </nav>
       </div>
     </header>
   );

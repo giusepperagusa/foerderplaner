@@ -95,7 +95,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
       </div>
 
       {/* Domain Switcher */}
-      <div className="grid grid-cols-3 gap-2">
+      <div role="tablist" aria-label="Einschätzungsbogen Bereiche" className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         {[
           { key: 'kognitiv', label: 'Kognition & Lernen', desc: 'Merkfähigkeit, Arbeitsverhalten, Lesen, Rechnen' },
           { key: 'sprache', label: 'Sprache & Kommunikation', desc: 'Artikulation, Wortschatz, Grammatik' },
@@ -105,6 +105,9 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
           return (
             <button
               key={tab.key}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
               onClick={() => {
                 setActiveChecklist(tab.key as any);
                 setFilterSubcategory('Alle');
@@ -118,7 +121,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
               <span className={`text-xs font-bold block ${isActive ? 'text-blue-900' : 'text-slate-800'}`}>
                 {tab.label}
               </span>
-              <span className="text-[11px] text-slate-500 hidden sm:block truncate mt-0.5">
+              <span className="text-[11px] text-slate-600 hidden sm:block truncate mt-0.5">
                 {tab.desc}
               </span>
             </button>
@@ -131,12 +134,13 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
           <div className="flex flex-wrap items-center gap-2.5">
             <div className="flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-semibold text-slate-700">Teilbereich:</span>
+              <Filter className="w-3.5 h-3.5 text-slate-600" aria-hidden="true" />
+              <label htmlFor="select-subcategory" className="font-semibold text-slate-800">Teilbereich:</label>
               <select
+                id="select-subcategory"
                 value={filterSubcategory}
                 onChange={(e) => setFilterSubcategory(e.target.value)}
-                className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-hidden"
+                className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
               >
                 <option value="Alle">Alle Unterbereiche</option>
                 {subcategories.map((sub) => (
@@ -278,22 +282,28 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
                         <span className="text-slate-800 font-medium">{crit.label}</span>
                       </td>
 
-                      {/* 4-point rating buttons */}
+                      {/* 4-point rating buttons with accessible group semantics and aria-pressed */}
                       <td className="py-3 px-2">
-                        <div className="grid grid-cols-4 gap-1">
+                        <div 
+                          role="group" 
+                          aria-label={`Bewertung für: ${crit.label}`}
+                          className="grid grid-cols-4 gap-1"
+                        >
                           {[
-                            { val: 'trifft_zu', label: 'trifft zu', color: 'hover:bg-emerald-50 text-emerald-700 active-emerald' },
-                            { val: 'trifft_eher_zu', label: 'eher zu', color: 'hover:bg-teal-50 text-teal-700' },
-                            { val: 'trifft_eher_nicht_zu', label: 'eher nicht', color: 'hover:bg-amber-50 text-amber-700' },
-                            { val: 'trifft_nicht_zu', label: 'trifft nicht', color: 'hover:bg-rose-50 text-rose-700' },
+                            { val: 'trifft_zu', label: 'trifft zu' },
+                            { val: 'trifft_eher_zu', label: 'eher zu' },
+                            { val: 'trifft_eher_nicht_zu', label: 'eher nicht' },
+                            { val: 'trifft_nicht_zu', label: 'trifft nicht' },
                           ].map((opt) => {
                             const isChosen = rating === opt.val;
                             return (
                               <button
                                 key={opt.val}
                                 type="button"
+                                aria-pressed={isChosen}
+                                aria-label={`${opt.label} für ${crit.label}`}
                                 onClick={() => onRatingChange(crit.id, opt.val as RatingValue)}
-                                className={`py-1 px-1 text-[10px] rounded font-medium border transition text-center truncate ${
+                                className={`py-1 px-1 text-[10px] rounded font-semibold border transition text-center truncate cursor-pointer ${
                                   isChosen
                                     ? opt.val === 'trifft_zu'
                                       ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
@@ -302,7 +312,7 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
                                       : opt.val === 'trifft_eher_nicht_zu'
                                       ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
                                       : 'bg-rose-600 text-white border-rose-600 shadow-xs'
-                                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                                    : 'border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50'
                                 }`}
                                 title={opt.label}
                               >
@@ -313,13 +323,15 @@ export const ChecklistAssessmentStep: React.FC<Props> = ({
                         </div>
                       </td>
 
-                      {/* Förderfokus checkbox */}
+                      {/* Förderfokus checkbox with accessible label */}
                       <td className="py-3 px-3 text-center bg-amber-50/40 border-l border-amber-100">
                         <input
+                          id={`focus-${crit.id}`}
                           type="checkbox"
                           checked={isFlagged}
                           onChange={() => onFlagToggle(crit.id)}
-                          className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                          aria-label={`Förderfokus für ${crit.label} vormerken`}
+                          className="w-4 h-4 rounded text-blue-600 focus:ring-blue-600 cursor-pointer"
                           title="Als Förderbereich für diesen Förderplan auswählen"
                         />
                       </td>

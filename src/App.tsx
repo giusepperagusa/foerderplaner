@@ -250,6 +250,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-100/70 text-slate-900 flex flex-col font-sans">
+      {/* Skip to Content Link for Keyboard and Screen Reader Accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:font-semibold focus:rounded-lg focus:shadow-lg focus:outline-none"
+      >
+        Zum Hauptinhalt springen
+      </a>
+
       <Navigation
         currentStep={currentStep}
         onSelectStep={setCurrentStep}
@@ -266,7 +274,7 @@ export default function App() {
         needRefresh={needRefresh}
       />
 
-      <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
+      <main id="main-content" tabIndex={-1} className="flex-1 py-8 px-4 sm:px-6 lg:px-8 focus:outline-none">
         {currentStep === 1 && (
           <StudentProfileStep
             profile={activePlan.profil}
@@ -322,13 +330,13 @@ export default function App() {
       </main>
 
       {/* Unobtrusive Footer with version tag, GitHub repo and privacy notice - STRICTLY HIDDEN ON PRINT */}
-      <footer className="print:hidden no-print bg-white border-t border-slate-200 py-4 px-4 sm:px-6 lg:px-8 text-xs text-slate-500">
+      <footer className="print:hidden no-print bg-white border-t border-slate-200 py-4 px-4 sm:px-6 lg:px-8 text-xs text-slate-700">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 flex-wrap text-slate-500">
-            <span className="font-medium text-slate-700">Förderplan-Assistent Grundschule</span>
+          <div className="flex items-center gap-2 flex-wrap text-slate-700">
+            <span className="font-semibold text-slate-900">Förderplan-Assistent Grundschule</span>
             <span>&bull;</span>
-            <span className="flex items-center gap-1 text-emerald-700">
-              <ShieldCheck className="w-3.5 h-3.5" />
+            <span className="flex items-center gap-1 text-emerald-800 font-medium">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
               100% Client-seitig im Browser (PWA, LocalStorage & Web Worker)
             </span>
             <span>&bull;</span>
@@ -336,7 +344,7 @@ export default function App() {
               href="https://github.com/giusepperagusa/foerderplaner"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-600 hover:text-indigo-600 transition underline underline-offset-2"
+              className="text-slate-700 hover:text-blue-700 transition underline underline-offset-2 font-medium"
               title="Quellcode-Entwicklung auf GitHub ansehen"
             >
               GitHub (Quellcode)
@@ -346,27 +354,27 @@ export default function App() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsGuidelinesModalOpen(true)}
-              className="hover:text-blue-600 transition flex items-center gap-1 cursor-pointer"
+              className="hover:text-blue-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
             >
-              <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+              <BookOpen className="w-3.5 h-3.5 text-blue-700" />
               <span>Richtlinien: {GUIDELINE_VERSION}</span>
             </button>
 
             <button
               onClick={() => setIsConsentModalOpen(true)}
-              className="hover:text-indigo-600 transition flex items-center gap-1 cursor-pointer"
+              className="hover:text-indigo-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
             >
-              <Cpu className="w-3.5 h-3.5 text-slate-400" />
+              <Cpu className="w-3.5 h-3.5 text-indigo-700" />
               <span>Lokale KI (Wllama Wasm)</span>
             </button>
 
             <button
               onClick={() => setIsLicenseModalOpen(true)}
-              className="hover:text-indigo-600 transition flex items-center gap-1 cursor-pointer"
+              className="hover:text-indigo-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
               title="Lizenz- und Urheberrechtsinformationen (GPLv3)"
             >
-              <Scale className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-semibold text-slate-700 hover:text-indigo-600">GPLv3</span>
+              <Scale className="w-3.5 h-3.5 text-indigo-700" />
+              <span className="font-semibold text-slate-800 hover:text-indigo-700">GPLv3</span>
             </button>
 
             <button

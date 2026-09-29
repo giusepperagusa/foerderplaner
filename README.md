@@ -118,12 +118,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.5-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.6-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.5-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.5-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.6-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.6-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -252,6 +252,16 @@ The diagnostic checklists, developmental domains, and pedagogical support measur
 
 ### Historical Changelog
 
+* **v1.4.6 (2026-09-29):**
+  * **Barrierefreiheit (EN 301 549 & WCAG 2.2 Level AA):** Vollständige Überarbeitung der Benutzeroberfläche zur Einhaltung europäischer Barrierefreiheitsstandards:
+    * *Tastaturnavigation & Fokusführung:* Durchgängige Bedienbarkeit sämtlicher interaktiver Bedienelemente ausschließlich per Tastatur (`Tab`, `Enter`, `Space`); scharfe, kontrastreiche Fokusindikatoren (`:focus-visible`) mit blauem 2px-Outline und 2px-Versatz; Einbau eines Tastatur-Schnellzugriffs-Links (*„Zum Hauptinhalt springen“*).
+    * *Strikte Dialog-Fokus-Fallen (`useFocusTrap`):* Konsequentes Focus-Trapping in allen modalen Dialogen (*Förderplan-Manager*, *Richtlinien-Manager*, *KI-Modell-Zustimmung*, *Versionsinfo*, *Software-Lizenz* sowie im KI-Prompt-Inspektor) mit automatischer Fokusrückführung beim Schließen via `Esc` oder Klick außerhalb.
+    * *Semantische HTML-Struktur & ARIA-Zustände:* Umstellung auf native Landmarks (`<main id="main-content">`, `<nav aria-label="...">`), explizite Kopplung aller Formularfelder an `<label>`-Elemente via `id`/`htmlFor`, ARIA-Zustände (`aria-current="step"`, `role="tablist"`, `role="tab"`, `aria-selected`, `aria-pressed`, `aria-checked`).
+    * *Farbkontraste & 200%-Skalierung:* Anhebung aller Textkontraste auf mindestens 4.5:1 (Ersatz von blassem Slate-400 durch lesbares Slate-600/700/800); responsive, elastische Layouts ohne Textüberlappung oder Abschneiden bis zu 200 % Browser-Zoom.
+  * **DIN 1450 Druck- & Dokumenten-Lesbarkeit (Förderplan-PDF):**
+    * *DIN 1450 Typografie:* Umstellung der gesamten Druckausgabe von Serifenschrift auf eine hochgradig lesbare, serifenlose Schriftfamilie (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) mit einer Mindestgrundschriftgröße von 11pt im Fließtext (10.5pt in Tabellenrastern) und festem Zeilenabstand von 1.4 bis 1.45 zur Vermeidung visueller Überlagerungen.
+    * *Kontrastreiches Schwarz-Weiß-Drucklayout:* Beseitigung aller störenden Hintergrundfarben und dekorativen Schattierungen im Druck; gestochen scharfe, amtliche Grenzlinien in reinem Schwarz (`1.5pt solid #000` bzw. `1pt solid #000`) für optimale Druckergebnisse und Fotokopierbarkeit.
+    * *Semantische PDF/UA-Struktur:* Auszeichnung der Dokumentenvorlage mit strikter HTML5-Strukturhierarchie (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`), sodass exportierte oder digital geteilte PDFs von Screenreadern fehlerfrei und in logischer Reihenfolge erfasst werden können.
 * **v1.4.5 (2026-09-29):**
   * **Bereinigung der Druck- & Export-Toolbar:** Entfernung der redundanten Schaltfläche *„JSON sichern“* aus Schritt 5 (*Druck & Export*); die vollständige Sicherung und Wiederherstellung von Einzelplänen sowie der gesamten Förderplan-Datenbank erfolgt nun ausschließlich und konsistent über den zentralen Förderplan-Manager.
   * **Vereinheitlichung der Druck-Schaltflächen:** Standardisierung der oberen und unteren Druck-Aktionsschaltflächen in Schritt 5 auf die einheitliche, standardkonforme Beschriftung *„Formular drucken / PDF“*.

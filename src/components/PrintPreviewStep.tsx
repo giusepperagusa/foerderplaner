@@ -114,176 +114,184 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           OFFICIAL FORMULAR: HANDREICHUNG „FÖRDERMASSNAHMEN KONKRET!“ (S. 82-83)
           Strictly formatted for DIN-A4 print reproduction
           ========================================================================= */}
-      <div className="bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black print-document-sheet print:border-none print:shadow-none print:m-0 space-y-6 font-serif">
+      {/* =========================================================================
+          OFFICIAL FORMULAR: HANDREICHUNG „FÖRDERMASSNAHMEN KONKRET!“ (S. 82-83)
+          Strictly formatted for DIN-A4 print reproduction and DIN 1450 legibility
+          ========================================================================= */}
+      <article 
+        aria-label="Amtlicher Förderplan Berlin" 
+        className="bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black print-document-sheet print:border-none print:shadow-none print:m-0 space-y-6 font-sans text-xs sm:text-sm leading-normal"
+      >
         
         {/* =====================================================================
             SEITE 1 (Vorderseite / S. 82):
             KOPFZEILE, STAMMDATEN-BLOCK, BESCHREIBUNG DER AUSGANGSLAGE & RAHMEN
             ===================================================================== */}
-        <div className="space-y-4">
+        <section aria-labelledby="foerderplan-header-title" className="space-y-4">
           
           {/* Official Berlin Header Bar */}
-          <div className="border-b-2 border-black pb-3">
-            <div className="flex justify-between items-start text-[11px] leading-tight text-neutral-800">
+          <header role="banner" className="border-b-2 border-black pb-3">
+            <div className="flex justify-between items-start text-xs leading-tight text-black">
               <div>
-                <span className="font-bold tracking-wide uppercase block text-[10px]">
+                <span className="font-bold tracking-wide uppercase block text-[11px]">
                   Senatsverwaltung für Bildung, Jugend und Familie Berlin
                 </span>
-                <span className="italic text-[10px] text-neutral-600">
+                <span className="italic text-[11px] text-neutral-800">
                   Handreichung „Fördermaßnahmen konkret!“ &bull; Anlage Förderplan (S. 82/83)
                 </span>
               </div>
               <div className="text-right">
                 <span className="font-semibold block">{planDoc.profil.schule || 'Grundschule (Schule)'}</span>
-                <span className="text-[10px] text-neutral-600">Schuljahr {new Date().getFullYear()}/{new Date().getFullYear() + 1}</span>
+                <span className="text-[11px] text-neutral-800">Schuljahr {new Date().getFullYear()}/{new Date().getFullYear() + 1}</span>
               </div>
             </div>
 
             <div className="mt-2 text-center">
-              <h1 className="text-2xl sm:text-3xl font-black tracking-wider uppercase text-black font-sans">
+              <h1 id="foerderplan-header-title" className="text-2xl sm:text-3xl font-black tracking-wider uppercase text-black font-sans">
                 F Ö R D E R P L A N
               </h1>
-              <p className="text-xs text-neutral-700 italic mt-0.5">
+              <p className="text-xs text-neutral-800 italic mt-0.5">
                 gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin
               </p>
             </div>
-          </div>
+          </header>
 
           {/* Formular-Abschnitt 1: Schülerdaten und Rahmenbedingungen (Page 82 Formularblock) */}
-          <div className="border border-black text-xs font-sans">
-            <div className="bg-neutral-100 font-bold px-3 py-1 border-b border-black text-[11px] uppercase tracking-wide">
+          <section aria-labelledby="section-1-heading" className="border border-black font-sans">
+            <h2 id="section-1-heading" className="bg-neutral-100 print:bg-white font-bold px-3 py-1.5 border-b border-black text-xs uppercase tracking-wide text-black">
               1. Angaben zur Schülerin / zum Schüler und Rahmenbedingungen
-            </div>
+            </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-black">
+            <dl className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-black m-0">
               {/* Left Column */}
-              <div className="p-2.5 space-y-2">
+              <div className="p-3 space-y-2.5">
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[130px] text-neutral-700">Name / Kennung:</span>
-                  <span className="font-bold text-sm text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[140px] text-black">Name / Kennung:</dt>
+                  <dd className="font-bold text-sm text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.name || '_______________________________'}
-                  </span>
+                  </dd>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[130px] text-neutral-700">Geburtsdatum:</span>
-                  <span className="text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[140px] text-black">Geburtsdatum:</dt>
+                  <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.geburtsdatum || '_______________________________'}
-                  </span>
+                  </dd>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[130px] text-neutral-700">Klasse / Lerngruppe:</span>
-                  <span className="text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[140px] text-black">Klasse / Lerngruppe:</dt>
+                  <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.klasse || '_______________________________'}
-                  </span>
+                  </dd>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[130px] text-neutral-700">Erziehungsberechtigte:</span>
-                  <span className="text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[140px] text-black">Erziehungsberechtigte:</dt>
+                  <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.erziehungsberechtigte || '_______________________________'}
-                  </span>
+                  </dd>
                 </div>
               </div>
 
               {/* Right Column */}
-              <div className="p-2.5 space-y-2">
+              <div className="p-3 space-y-2.5">
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[150px] text-neutral-700">Förderschwerpunkt:</span>
-                  <span className="font-bold text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[150px] text-black">Förderschwerpunkt:</dt>
+                  <dd className="font-bold text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.hauptschwerpunkt}
                     {planDoc.profil.weitererSchwerpunkt && ` / ${planDoc.profil.weitererSchwerpunkt}`}
-                  </span>
+                  </dd>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[150px] text-neutral-700">Förderzeitraum:</span>
-                  <span className="text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[150px] text-black">Förderzeitraum:</dt>
+                  <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.zeitraumVon || '______'} bis {planDoc.profil.zeitraumBis || '______'}
-                  </span>
+                  </dd>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[150px] text-neutral-700">Klassenlehrkraft:</span>
-                  <span className="text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5">
+                  <dt className="font-bold min-w-[150px] text-black">Klassenlehrkraft:</dt>
+                  <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                     {planDoc.profil.lehrkraft || '_______________________________'}
-                  </span>
+                  </dd>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="font-bold min-w-[150px] text-neutral-700">Status der Planung:</span>
-                  <span className="text-black flex-1 border-b border-dotted border-neutral-400 pb-0.5 uppercase font-semibold text-[11px]">
+                  <dt className="font-bold min-w-[150px] text-black">Status der Planung:</dt>
+                  <dd className="text-black flex-1 border-b border-black pb-0.5 uppercase font-semibold text-xs m-0">
                     {planDoc.status === 'abgeschlossen' ? '[X] Abgeschlossen & Genehmigt' : '[X] Laufender Förderplan-Entwurf'}
-                  </span>
+                  </dd>
                 </div>
               </div>
-            </div>
+            </dl>
 
             {/* Ausgangslage & Ressourcen (Page 82 narrative block) */}
-            <div className="border-t border-black p-3 bg-neutral-50/50">
-              <span className="font-bold text-neutral-800 block mb-1 text-[11px]">
+            <div className="border-t border-black p-3 bg-neutral-50/50 print:bg-white">
+              <span className="font-bold text-black block mb-1 text-xs uppercase tracking-wide">
                 Ausgangslage, Ressourcen & bisherige Förderergebnisse (IST-Stand):
               </span>
-              <p className="text-xs text-neutral-900 whitespace-pre-line leading-relaxed min-h-[40px]">
+              <p className="text-xs sm:text-sm text-black whitespace-pre-line leading-relaxed min-h-[40px] m-0">
                 {planDoc.profil.ausgangslageNotiz || 
                   'Das Kind verfügt über positive Motivation in handlungsorientierten Lernsituationen. Die Förderplanung zielt auf eine gezielte Stabilisierung der Kulturtechniken und des Arbeitsverhaltens.'}
               </p>
             </div>
-          </div>
+          </section>
 
           {/* Page 1 Official Footer: Page number only */}
-          <div className="text-[10px] text-neutral-600 flex justify-between border-t border-black pt-1 font-sans">
-            <span className="font-semibold text-neutral-800">Senatsverwaltung für Bildung, Jugend und Familie Berlin</span>
-            <span className="font-bold text-neutral-900">Seite 1 / 2</span>
+          <div className="text-xs text-neutral-800 flex justify-between border-t border-black pt-1 font-sans">
+            <span className="font-semibold text-black">Senatsverwaltung für Bildung, Jugend und Familie Berlin</span>
+            <span className="font-bold text-black">Seite 1 / 2</span>
           </div>
-        </div>
+        </section>
 
         {/* =====================================================================
             SEITE 2 / FORMULAR-RASTER:
             DAS AMTLICHE 5-SPALTEN-RASTER („FÖRDERMASSNAHMEN KONKRET!“, S. 83)
             IST | SOLL | LERNWEG | ABSPRACHEN | REFLEXION / EVALUATION
             ===================================================================== */}
-        <div className="space-y-3 pt-2 page-break-before">
+        <section aria-labelledby="section-2-heading" className="space-y-3 pt-2 page-break-before font-sans">
           <div className="flex items-baseline justify-between border-b border-black pb-1">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
+            <h2 id="section-2-heading" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black font-sans">
               2. Amtliches Förderplan-Raster: Pädagogische Fördermaßnahmen & Lernwege
             </h2>
-            <span className="text-[10px] font-bold text-neutral-900 font-sans">
+            <span className="text-xs font-bold text-black font-sans">
               Seite 2 / 2
             </span>
           </div>
 
-          <table className="w-full border-collapse border border-black text-xs font-sans official-form-table">
+          <table className="w-full border-collapse border border-black text-xs sm:text-sm font-sans official-form-table" aria-labelledby="section-2-heading">
+            <caption className="sr-only">Fördermaßnahmen und pädagogische Lernwege in 5 Spalten gemäß Berliner Handreichung</caption>
             <thead>
-              <tr className="bg-neutral-100 text-black font-bold border-b border-black text-[11px]">
-                <th className="border border-black p-2 w-[18%] text-left align-top">
+              <tr className="bg-neutral-100 print:bg-white text-black font-bold border-b border-black text-xs">
+                <th scope="col" className="border border-black p-2.5 w-[18%] text-left align-top">
                   <div>1. IST</div>
-                  <div className="text-[9px] font-normal text-neutral-700 leading-tight mt-0.5">
+                  <div className="text-[10px] font-normal text-black leading-tight mt-0.5">
                     Beobachtung / Bedarf<br />(= Stellungnahme)
                   </div>
                 </th>
-                <th className="border border-black p-2 w-[18%] text-left align-top">
+                <th scope="col" className="border border-black p-2.5 w-[18%] text-left align-top">
                   <div>2. SOLL</div>
-                  <div className="text-[9px] font-normal text-neutral-700 leading-tight mt-0.5">
+                  <div className="text-[10px] font-normal text-black leading-tight mt-0.5">
                     Ziele / Kompetenzerwerb<br />(SMART formuliert)
                   </div>
                 </th>
-                <th className="border border-black p-2 w-[30%] text-left align-top">
+                <th scope="col" className="border border-black p-2.5 w-[30%] text-left align-top">
                   <div>3. LERNWEG</div>
-                  <div className="text-[9px] font-normal text-neutral-700 leading-tight mt-0.5">
+                  <div className="text-[10px] font-normal text-black leading-tight mt-0.5">
                     Pädagogische Angebote & Maßnahmen<br />(Differenzierung, Anschauungsmaterial)
                   </div>
                 </th>
-                <th className="border border-black p-2 w-[17%] text-left align-top">
+                <th scope="col" className="border border-black p-2.5 w-[17%] text-left align-top">
                   <div>4. Absprachen</div>
-                  <div className="text-[9px] font-normal text-neutral-700 leading-tight mt-0.5">
+                  <div className="text-[10px] font-normal text-black leading-tight mt-0.5">
                     Wer? Wie? Mit wem?<br />Bis wann?
                   </div>
                 </th>
-                <th className="border border-black p-2 w-[17%] text-left align-top">
+                <th scope="col" className="border border-black p-2.5 w-[17%] text-left align-top">
                   <div>5. Reflexion</div>
-                  <div className="text-[9px] font-normal text-neutral-700 leading-tight mt-0.5">
+                  <div className="text-[10px] font-normal text-black leading-tight mt-0.5">
                     Evaluation &<br />Modifikation
                   </div>
                 </th>
@@ -292,30 +300,30 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
             <tbody>
               {planDoc.planEintraege.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="border border-black p-6 text-center text-neutral-500 italic">
+                  <td colSpan={5} className="border border-black p-6 text-center text-neutral-600 italic">
                     Keine individuellen Maßnahmen im Förderplan erfasst. Fügen Sie in Schritt 3 oder 4 Maßnahmen hinzu.
                   </td>
                 </tr>
               ) : (
                 planDoc.planEintraege.map((row, idx) => (
                   <tr key={row.id} className="align-top border-b border-black page-break-inside-avoid">
-                    <td className="border border-black p-2 text-neutral-900">
-                      <div className="font-bold text-[11px] text-black border-b border-neutral-300 pb-0.5 mb-1">
+                    <td className="border border-black p-2.5 text-black">
+                      <div className="font-bold text-xs text-black border-b border-black pb-0.5 mb-1">
                         #{idx + 1} {row.kategorie}
                       </div>
-                      <div className="text-[10px] text-neutral-500 font-mono mb-1">Bereich: {row.bereich}</div>
-                      <div className="whitespace-pre-line text-xs leading-relaxed">{row.ist}</div>
+                      <div className="text-[10px] text-neutral-800 font-mono mb-1">Bereich: {row.bereich}</div>
+                      <div className="whitespace-pre-line text-xs sm:text-sm leading-relaxed">{row.ist}</div>
                     </td>
-                    <td className="border border-black p-2 text-neutral-900 whitespace-pre-line text-xs leading-relaxed">
+                    <td className="border border-black p-2.5 text-black whitespace-pre-line text-xs sm:text-sm leading-relaxed">
                       {row.soll}
                     </td>
-                    <td className="border border-black p-2 text-neutral-900 whitespace-pre-line text-xs leading-relaxed">
+                    <td className="border border-black p-2.5 text-black whitespace-pre-line text-xs sm:text-sm leading-relaxed">
                       {row.lernweg}
                     </td>
-                    <td className="border border-black p-2 text-neutral-900 whitespace-pre-line text-xs leading-relaxed">
+                    <td className="border border-black p-2.5 text-black whitespace-pre-line text-xs sm:text-sm leading-relaxed">
                       {row.absprachen}
                     </td>
-                    <td className="border border-black p-2 text-neutral-900 whitespace-pre-line text-xs leading-relaxed">
+                    <td className="border border-black p-2.5 text-black whitespace-pre-line text-xs sm:text-sm leading-relaxed">
                       {row.reflexion}
                     </td>
                   </tr>
@@ -323,47 +331,47 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
               )}
             </tbody>
           </table>
-        </div>
+        </section>
 
         {/* =====================================================================
             SEITE 2 UNTEN:
             WEITERE VEREINBARUNGEN, KOOPERATIONEN, NACHTEILSAUSGLEICH (S. 83)
             ===================================================================== */}
-        <div className="border border-black p-3 text-xs font-sans space-y-1.5 page-break-inside-avoid">
-          <span className="font-bold uppercase tracking-wider text-[11px] block text-black">
+        <section aria-labelledby="section-3-heading" className="border border-black p-3.5 text-xs sm:text-sm font-sans space-y-1.5 page-break-inside-avoid">
+          <h2 id="section-3-heading" className="font-bold uppercase tracking-wider text-xs sm:text-sm block text-black">
             3. Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich:
-          </span>
-          <p className="whitespace-pre-line text-neutral-900 leading-relaxed min-h-[35px]">
+          </h2>
+          <p className="whitespace-pre-line text-black leading-relaxed min-h-[35px] m-0">
             {planDoc.weitereVereinbarungen || 
               'Kooperation mit Sonderpädagogik, Erzieherteam und Elternhaus im wöchentlichen/halbjährlichen Turnus. Nachteilsausgleich gemäß Schulanfangsphase / Grundschulverordnung (z.B. angepasste Aufgabenstellung, Zeitzugabe bei Leistungsüberprüfungen).'}
           </p>
-        </div>
+        </section>
 
         {/* =====================================================================
             SEITE 2 ABSCHLUSS:
             GESPRÄCHSDOKUMENTATION & RECHTSVERBINDLICHE UNTERSCHRIFTEN (S. 83)
             ===================================================================== */}
-        <div className="border border-black p-3 text-xs font-sans space-y-4 page-break-inside-avoid">
-          <div className="font-bold uppercase tracking-wider text-[11px] text-black border-b border-black pb-1">
+        <section aria-labelledby="section-4-heading" className="border border-black p-3.5 text-xs sm:text-sm font-sans space-y-4 page-break-inside-avoid">
+          <h2 id="section-4-heading" className="font-bold uppercase tracking-wider text-xs sm:text-sm text-black border-b border-black pb-1">
             4. Durchführung des Förderplangesprächs & Kenntnisnahme
-          </div>
+          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-neutral-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-black">
             <div>
-              <span className="font-bold block text-[10px] text-neutral-600">Gespräch geführt am:</span>
+              <span className="font-bold block text-xs text-neutral-800">Gespräch geführt am:</span>
               <span className="text-black font-semibold">
                 {planDoc.gespraechsDatum || '_____._____.20___'}
               </span>
             </div>
             <div className="sm:col-span-2">
-              <span className="font-bold block text-[10px] text-neutral-600">Beteiligte Personen / Anwesende:</span>
+              <span className="font-bold block text-xs text-neutral-800">Beteiligte Personen / Anwesende:</span>
               <span className="text-black">
                 {planDoc.anwesendePersonen || 'Klassenlehrkraft, Sonderpädagogin/Sonderpädagoge, Erziehungsberechtigte'}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 pt-1 text-[11px]">
+          <div className="flex items-center gap-2 pt-1 text-xs sm:text-sm">
             <span className="font-bold">Information der Erziehungsberechtigten:</span>
             <span>
               {planDoc.informationElternErfolgt 
@@ -373,7 +381,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           </div>
 
           {/* Three Signatures as depicted in the Berlin Template */}
-          <div className="grid grid-cols-3 gap-4 pt-10 text-center text-[10px] text-neutral-700">
+          <div className="grid grid-cols-3 gap-4 pt-10 text-center text-xs text-black">
             <div className="border-t border-black pt-1">
               <span className="block font-semibold">Datum, Unterschrift</span>
               <span>Klassenlehrkraft</span>
@@ -387,17 +395,17 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
               <span>Erziehungsberechtigte</span>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Footer print meta: Version added after 'Förderplan-Assistent Berlin', keeping rest of fine print as is */}
-        <div className="text-[9px] text-neutral-500 flex justify-between border-t border-neutral-300 pt-1 font-sans">
+        {/* Footer print meta */}
+        <footer className="text-[10px] text-neutral-800 flex justify-between border-t border-black pt-1 font-sans">
           <span>
             Förderplan-Assistent Berlin {APP_VERSION.replace('-offline', '').replace(/^v/, '')} &bull; Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018
           </span>
-          <span className="font-semibold text-neutral-700">Seite 2 / 2</span>
-        </div>
+          <span className="font-semibold text-black">Seite 2 / 2</span>
+        </footer>
 
-      </div>
+      </article>
 
       {/* Navigation Buttons (Screen only) */}
       <div className="print:hidden flex items-center justify-between pt-2">

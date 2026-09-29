@@ -20,6 +20,7 @@ import {
   validateGuidelinesSchema,
   parseRawGuidelineText,
 } from '../utils/richtlinienTools';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   isOpen: boolean;
@@ -56,17 +57,8 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
   const [parsedEntries, setParsedEntries] = useState<any[]>([]);
   const [targetCategory, setTargetCategory] = useState('Auditive Aufmerksamkeit');
 
-  // Close on Escape key press
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  // Focus trap for strict EN 301 549 & WCAG 2.2 AA modal accessibility
+  const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
 
   if (!isOpen) return null;
 
@@ -140,20 +132,22 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
       onClick={onClose}
     >
       <div 
+        ref={modalRef}
         className="relative w-full max-w-5xl bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col max-h-[92vh] sm:max-h-[88vh] overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="guidelines-modal-title"
       >
         
         {/* Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-900 text-white border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600 rounded-lg shrink-0">
+            <div className="p-2 bg-blue-600 rounded-lg shrink-0" aria-hidden="true">
               <BookOpen className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold">Richtlinien-Manager & Aktualisierungs-Werkzeug</h2>
+              <h2 id="guidelines-modal-title" className="text-base sm:text-lg font-bold">Richtlinien-Manager & Aktualisierungs-Werkzeug</h2>
               <p className="text-[11px] sm:text-xs text-slate-300">
                 Verwaltung & Normalisierung der amtlichen Handreichung „Fördermaßnahmen konkret!“
               </p>
@@ -161,6 +155,7 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
           </div>
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={handleDownloadActiveJson}
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition cursor-pointer"
               title="Aktuelle richtlinien.json herunterladen"
@@ -169,8 +164,10 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
               richtlinien.json exportieren
             </button>
             <button
+              type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
+              aria-label="Schließen"
+              className="p-1.5 text-slate-300 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -178,49 +175,61 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-slate-200 bg-slate-50 px-4 sm:px-6 gap-2 pt-2 shrink-0 overflow-x-auto no-scrollbar">
+        <div role="tablist" aria-label="Richtlinien Werkzeuge" className="flex border-b border-slate-200 bg-slate-50 px-4 sm:px-6 gap-2 pt-2 shrink-0 overflow-x-auto no-scrollbar">
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'explorer'}
             onClick={() => setActiveTab('explorer')}
             className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'explorer'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                : 'border-transparent text-slate-700 hover:text-slate-950'
             }`}
           >
             <Search className="w-4 h-4" />
             Katalog & Richtlinien ({validationResult.stats?.istSollLernwegPairsCount || 0} Paare)
           </button>
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'normalizer'}
             onClick={() => setActiveTab('normalizer')}
             className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'normalizer'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                : 'border-transparent text-slate-700 hover:text-slate-950'
             }`}
           >
             <Sparkles className="w-4 h-4" />
             Umlaut-Normalisierer (ae, oe, ue, ss)
           </button>
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'parser'}
             onClick={() => setActiveTab('parser')}
             className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'parser'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                : 'border-transparent text-slate-700 hover:text-slate-950'
             }`}
           >
             <FileText className="w-4 h-4" />
             PDF-OCR Text-Parser für Neuauflagen
           </button>
           <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'validator'}
             onClick={() => setActiveTab('validator')}
             className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-bold border-b-2 whitespace-nowrap transition cursor-pointer ${
               activeTab === 'validator'
                 ? 'border-blue-600 text-blue-700 bg-white rounded-t-lg'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                : 'border-transparent text-slate-700 hover:text-slate-950'
             }`}
           >
-            <CheckCircle className="w-4 h-4 text-emerald-600" />
+            <CheckCircle className="w-4 h-4 text-emerald-700" />
             Schema- & Integritätsprüfung
           </button>
         </div>

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { FoerderplanDocument, PlanStatus } from '../types/foerderplan';
 import { duplicatePlan, createBlankPlan } from '../utils/planStorage';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   isOpen: boolean;
@@ -50,17 +51,8 @@ export const PlanManagerModal: React.FC<Props> = ({
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Close on Escape key press
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  // Focus trap for strict EN 301 549 & WCAG 2.2 AA modal accessibility
+  const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
 
   if (!isOpen) return null;
 
@@ -171,23 +163,25 @@ export const PlanManagerModal: React.FC<Props> = ({
       onClick={onClose}
     >
       <div 
+        ref={modalRef}
         className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col overflow-hidden border border-slate-200 my-auto"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="plan-manager-title"
       >
         
         {/* Header */}
         <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs shrink-0" aria-hidden="true">
               <FolderOpen className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm sm:text-base font-bold text-slate-900">
+              <h2 id="plan-manager-title" className="text-sm sm:text-base font-bold text-slate-900">
                 Plan-Verwaltung & Übersicht
               </h2>
-              <p className="text-[11px] sm:text-xs text-slate-500">
+              <p className="text-[11px] sm:text-xs text-slate-600">
                 Verwalten Sie mehrere Entwürfe und abgeschlossene Förderpläne lokal im Browser
               </p>
             </div>
@@ -195,15 +189,18 @@ export const PlanManagerModal: React.FC<Props> = ({
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={onCreateNewPlan}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-xs cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Neuer Plan</span>
             </button>
             <button
+              type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-lg transition"
+              aria-label="Schließen"
+              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded-lg transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -212,8 +209,8 @@ export const PlanManagerModal: React.FC<Props> = ({
 
         {/* Privacy Offline Notice */}
         <div className="bg-emerald-50/80 border-b border-emerald-100 px-4 sm:px-6 py-2 sm:py-2.5 flex items-start gap-2.5 shrink-0">
-          <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-          <div className="text-[11px] sm:text-xs text-emerald-900 leading-relaxed">
+          <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="text-[11px] sm:text-xs text-emerald-950 leading-relaxed">
             <span className="font-semibold">100% Offline & Datenschutzkonform (DSGVO): </span>
             Alle Förderpläne werden ausschließlich in Ihrem lokalen Browser (LocalStorage) gespeichert. 
             Keine Schülerdaten verlassen Ihr Gerät. 
@@ -224,50 +221,63 @@ export const PlanManagerModal: React.FC<Props> = ({
         {/* Toolbar: Filters & Search */}
         <div className="p-3 sm:px-6 border-b border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white shrink-0">
           {/* Status Tabs */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium">
+          <div role="tablist" aria-label="Statusfilter für Förderpläne" className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium">
             <button
+              type="button"
+              role="tab"
+              aria-selected={statusFilter === 'all'}
               onClick={() => setStatusFilter('all')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg transition cursor-pointer ${
                 statusFilter === 'all'
-                  ? 'bg-white text-slate-900 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-slate-950 shadow-xs font-semibold'
+                  : 'text-slate-700 hover:text-slate-950'
               }`}
             >
               Alle ({plans.length})
             </button>
             <button
+              type="button"
+              role="tab"
+              aria-selected={statusFilter === 'entwurf'}
               onClick={() => setStatusFilter('entwurf')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer ${
                 statusFilter === 'entwurf'
-                  ? 'bg-white text-amber-900 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-amber-950 shadow-xs font-semibold'
+                  : 'text-slate-700 hover:text-slate-950'
               }`}
             >
-              <Clock className="w-3 h-3 text-amber-500" />
+              <Clock className="w-3 h-3 text-amber-600" />
               Entwürfe ({entwuerfeCount})
             </button>
             <button
+              type="button"
+              role="tab"
+              aria-selected={statusFilter === 'abgeschlossen'}
               onClick={() => setStatusFilter('abgeschlossen')}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer ${
                 statusFilter === 'abgeschlossen'
-                  ? 'bg-white text-emerald-900 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-emerald-950 shadow-xs font-semibold'
+                  : 'text-slate-700 hover:text-slate-950'
               }`}
             >
-              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+              <CheckCircle2 className="w-3 h-3 text-emerald-700" />
               Abgeschlossen ({abgeschlossenCount})
             </button>
           </div>
 
-          {/* Search Bar */}
+          {/* Search Bar with explicit accessible label */}
           <div className="relative flex-1 sm:max-w-xs">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <label htmlFor="plan-search-input" className="sr-only">
+              Initialen, Schüler-ID oder Klasse suchen
+            </label>
+            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" aria-hidden="true" />
             <input
+              id="plan-search-input"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Initialen, ID, Klasse suchen..."
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900 font-medium"
             />
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Scale, FileText, Cpu, BookOpen, Layers, CheckCircle2, Copy, Check, ExternalLink } from 'lucide-react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const LicenseModal: React.FC<Props> = ({ isOpen, onClose }) => {
+  const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
   const [activeTab, setActiveTab] = useState<'overview' | 'model-exclusion' | 'dependencies' | 'full-text'>('overview');
   const [copied, setCopied] = useState(false);
 
@@ -25,27 +27,39 @@ of this license document, but changing it is not allowed.
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-      <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-150">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="license-modal-title"
+    >
+      <div 
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-150"
+      >
         
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/80">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-indigo-600 text-white rounded-xl shadow-xs">
+            <div className="p-2 bg-indigo-600 text-white rounded-xl shadow-xs" aria-hidden="true">
               <Scale className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900">
+              <h2 id="license-modal-title" className="text-base font-bold text-slate-900">
                 Lizenz- & Urheberrechtsinformationen
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-600">
                 GNU General Public License v3.0 (GPLv3) & Klarstellungen zu Drittkomponenten
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition"
+            aria-label="Schließen"
+            className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition cursor-pointer"
             title="Schließen"
           >
             <X className="w-5 h-5" />
@@ -53,7 +67,7 @@ of this license document, but changing it is not allowed.
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-slate-200 px-6 bg-white overflow-x-auto text-xs font-semibold">
+        <div role="tablist" aria-label="Lizenzinformationen Abschnitte" className="flex border-b border-slate-200 px-6 bg-white overflow-x-auto text-xs font-semibold">
           {[
             { id: 'overview', label: 'Hauptlizenz (GPLv3)', icon: Scale },
             { id: 'model-exclusion', label: 'Ausschluss KI-Modelle', icon: Cpu },
@@ -65,14 +79,17 @@ of this license document, but changing it is not allowed.
             return (
               <button
                 key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`py-3 px-3.5 border-b-2 font-medium flex items-center gap-2 transition cursor-pointer whitespace-nowrap ${
+                className={`flex items-center gap-2 py-3 px-3 border-b-2 transition whitespace-nowrap cursor-pointer ${
                   isActive
-                    ? 'border-indigo-600 text-indigo-600 font-bold'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
+                    ? 'border-indigo-600 text-indigo-700 font-bold'
+                    : 'border-transparent text-slate-700 hover:text-slate-950'
                 }`}
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
               </button>
             );

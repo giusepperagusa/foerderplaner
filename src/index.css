@@ -1,5 +1,49 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   EN 301 549 & WCAG 2.2 AA Accessible Focus States
+   Sharp, high-contrast focus outlines for keyboard navigation
+   ========================================================================= */
+:focus-visible {
+  outline: 2px solid #1d4ed8 !important; /* High contrast blue against white/light backgrounds (>= 4.5:1) */
+  outline-offset: 2px !important;
+}
+
+/* Ensure focus outline is distinct on dark/colored backgrounds if needed */
+.dark-focus:focus-visible {
+  outline: 2px solid #ffffff !important;
+  outline-offset: 2px !important;
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* =========================================================================
+   DIN 1450 & PDF/UA PRINT STYLESHEET
+   Legible typography (Arial/Helvetica), min 11pt, 1.4-1.5 line height,
+   pure high-contrast black & white layout for printing & digital PDF exports.
+   ========================================================================= */
 @layer utilities {
   @media print {
     @page {
@@ -13,9 +57,12 @@
       color: #000000 !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
-      font-size: 10.5pt;
+      font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif !important;
+      font-size: 11pt !important;
+      line-height: 1.45 !important;
       margin: 0 !important;
       padding: 0 !important;
+      text-rendering: optimizeLegibility;
     }
 
     /* Print-specific layout container that provides precise physical DIN-A4 page margins */
@@ -23,6 +70,11 @@
       padding: 12mm 14mm 14mm 14mm !important;
       box-sizing: border-box !important;
       width: 100% !important;
+      font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif !important;
+      font-size: 11pt !important;
+      line-height: 1.45 !important;
+      color: #000000 !important;
+      background: #ffffff !important;
     }
 
     .no-print, header, nav, footer, .print-hidden {
@@ -39,9 +91,37 @@
       break-inside: avoid !important;
     }
 
-    .official-form-table th,
+    /* High contrast borders and pure black text on print */
+    .official-form-table {
+      border: 1.5pt solid #000000 !important;
+      font-size: 10.5pt !important;
+      line-height: 1.4 !important;
+    }
+
+    .official-form-table th {
+      background-color: #f0f0f0 !important;
+      color: #000000 !important;
+      border: 1pt solid #000000 !important;
+      font-weight: 700 !important;
+      padding: 4pt 6pt !important;
+    }
+
     .official-form-table td {
+      border: 1pt solid #000000 !important;
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      padding: 4pt 6pt !important;
+    }
+
+    /* Elimination of low-contrast borders & decorative elements */
+    .print-border-solid {
       border-color: #000000 !important;
+    }
+
+    .print-no-bg {
+      background: transparent !important;
+      background-color: transparent !important;
     }
   }
 }
+

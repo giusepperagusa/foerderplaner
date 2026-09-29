@@ -24,6 +24,7 @@ import {
   ModelCacheStatus,
   InitProgressReport 
 } from '../utils/webLlmManager';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   isOpen: boolean;
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelReady }) => {
+  const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>({
     isSupported: true,
     isCached: false,
@@ -118,28 +120,32 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
       }}
     >
       <div 
+        ref={modalRef}
         className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col border border-slate-200 overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="model-consent-title"
       >
         
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-700 to-purple-800 text-white p-4 sm:p-5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 sm:p-2.5 bg-white/10 rounded-xl">
+            <div className="p-2 sm:p-2.5 bg-white/10 rounded-xl" aria-hidden="true">
               <Cpu className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-200" />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Lokales Sprachmodell (Wllama Wasm)</h2>
+              <h2 id="model-consent-title" className="text-xl font-bold">Lokales Sprachmodell (Wllama Wasm)</h2>
               <p className="text-xs text-indigo-200">
                 On-Device KI via CPU WebAssembly & OPFS/IndexedDB • 100% DSGVO-konform ohne Cloud & Cache API
               </p>
             </div>
           </div>
           <button 
+            type="button"
             onClick={onClose}
             disabled={isDownloading}
+            aria-label="Schließen"
             className="p-1.5 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
             <X className="w-5 h-5" />

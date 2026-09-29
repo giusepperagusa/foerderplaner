@@ -109,19 +109,22 @@ export const PlanEditorStep: React.FC<Props> = ({
               {/* Row title bar */}
               <div className="bg-slate-100/90 px-4 py-2 border-b border-slate-200 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-700">#{index + 1}</span>
+                  <span className="font-bold text-slate-800">#{index + 1}</span>
                   <input
                     type="text"
                     value={row.kategorie}
                     onChange={(e) => handleRowChange(row.id, 'kategorie', e.target.value)}
-                    className="font-bold text-slate-800 bg-transparent border-b border-dashed border-slate-400 focus:outline-hidden px-1"
+                    aria-label={`Bereich oder Thema für Maßnahme ${index + 1}`}
+                    className="font-bold text-slate-900 bg-transparent border-b border-dashed border-slate-400 focus:ring-1 focus:ring-blue-600 focus:outline-hidden px-1"
                     placeholder="Bereich / Thema"
                   />
-                  <span className="text-[10px] text-slate-400">({row.bereich})</span>
+                  <span className="text-[10px] text-slate-600 font-medium">({row.bereich})</span>
                 </div>
                 <button
+                  type="button"
                   onClick={() => handleDeleteRow(row.id)}
-                  className="text-slate-400 hover:text-rose-600 transition p-1"
+                  aria-label={`Maßnahme ${index + 1} löschen`}
+                  className="text-slate-500 hover:text-rose-700 transition p-1 cursor-pointer"
                   title="Maßnahme löschen"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -132,66 +135,71 @@ export const PlanEditorStep: React.FC<Props> = ({
               <div className="grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-slate-200 text-xs">
                 {/* 1. IST */}
                 <div className="p-3 bg-rose-50/30 space-y-1">
-                  <label className="font-bold text-rose-900 block text-[10px] uppercase tracking-wider">
+                  <label htmlFor={`ist-${row.id}`} className="font-bold text-rose-950 block text-[10px] uppercase tracking-wider">
                     1. IST (Bedarf/Stellungnahme)
                   </label>
                   <textarea
+                    id={`ist-${row.id}`}
                     rows={4}
                     value={row.ist}
                     onChange={(e) => handleRowChange(row.id, 'ist', e.target.value)}
-                    className="w-full p-2 bg-white border border-rose-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:ring-1 focus:ring-rose-400"
+                    className="w-full p-2 bg-white border border-rose-300 rounded-lg text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
                   />
                 </div>
 
                 {/* 2. SOLL */}
                 <div className="p-3 bg-emerald-50/30 space-y-1">
-                  <label className="font-bold text-emerald-900 block text-[10px] uppercase tracking-wider">
+                  <label htmlFor={`soll-${row.id}`} className="font-bold text-emerald-950 block text-[10px] uppercase tracking-wider">
                     2. SOLL (Ziele)
                   </label>
                   <textarea
+                    id={`soll-${row.id}`}
                     rows={4}
                     value={row.soll}
                     onChange={(e) => handleRowChange(row.id, 'soll', e.target.value)}
-                    className="w-full p-2 bg-white border border-emerald-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:ring-1 focus:ring-emerald-400"
+                    className="w-full p-2 bg-white border border-emerald-300 rounded-lg text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
 
                 {/* 3. LERNWEG */}
                 <div className="p-3 bg-blue-50/30 space-y-1">
-                  <label className="font-bold text-blue-900 block text-[10px] uppercase tracking-wider">
+                  <label htmlFor={`lernweg-${row.id}`} className="font-bold text-blue-950 block text-[10px] uppercase tracking-wider">
                     3. LERNWEG (Maßnahmen)
                   </label>
                   <textarea
+                    id={`lernweg-${row.id}`}
                     rows={4}
                     value={row.lernweg}
                     onChange={(e) => handleRowChange(row.id, 'lernweg', e.target.value)}
-                    className="w-full p-2 bg-white border border-blue-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:ring-1 focus:ring-blue-400"
+                    className="w-full p-2 bg-white border border-blue-300 rounded-lg text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 {/* 4. ABSPRACHEN */}
                 <div className="p-3 bg-amber-50/30 space-y-1">
-                  <label className="font-bold text-amber-900 block text-[10px] uppercase tracking-wider">
+                  <label htmlFor={`absprachen-${row.id}`} className="font-bold text-amber-950 block text-[10px] uppercase tracking-wider">
                     4. Absprachen (Wer? Wie? Wann?)
                   </label>
                   <textarea
+                    id={`absprachen-${row.id}`}
                     rows={4}
                     value={row.absprachen}
                     onChange={(e) => handleRowChange(row.id, 'absprachen', e.target.value)}
-                    className="w-full p-2 bg-white border border-amber-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:ring-1 focus:ring-amber-400"
+                    className="w-full p-2 bg-white border border-amber-300 rounded-lg text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
 
                 {/* 5. REFLEXION */}
                 <div className="p-3 bg-purple-50/30 space-y-1">
-                  <label className="font-bold text-purple-900 block text-[10px] uppercase tracking-wider">
+                  <label htmlFor={`reflexion-${row.id}`} className="font-bold text-purple-950 block text-[10px] uppercase tracking-wider">
                     5. Reflexion / Evaluation
                   </label>
                   <textarea
+                    id={`reflexion-${row.id}`}
                     rows={4}
                     value={row.reflexion}
                     onChange={(e) => handleRowChange(row.id, 'reflexion', e.target.value)}
-                    className="w-full p-2 bg-white border border-purple-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:ring-1 focus:ring-purple-400"
+                    className="w-full p-2 bg-white border border-purple-300 rounded-lg text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-purple-500"
                   />
                 </div>
               </div>
@@ -208,52 +216,56 @@ export const PlanEditorStep: React.FC<Props> = ({
         </h3>
 
         <div>
-          <label className="text-xs font-semibold text-slate-700 block mb-1">
+          <label htmlFor="plan-weitere-vereinbarungen" className="text-xs font-semibold text-slate-800 block mb-1">
             Weitere Vereinbarungen (z. B. Kooperation Ganztag, Sonderpädagoge, Nachteilsausgleich)
           </label>
           <textarea
+            id="plan-weitere-vereinbarungen"
             rows={3}
             value={weitereVereinbarungen}
             onChange={(e) => onUpdateField('weitereVereinbarungen', e.target.value)}
             placeholder="z. B. Nachteilsausgleich: Zeitzugabe bei schriftlichen Klassenarbeiten; wöchentlicher Austausch mit dem Erzieherteam..."
-            className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden"
+            className="w-full p-3 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="plan-gespraechs-datum" className="text-xs font-semibold text-slate-800 block mb-1">
               Gespräch wurde durchgeführt am
             </label>
             <input
+              id="plan-gespraechs-datum"
               type="date"
               value={gespraechsDatum}
               onChange={(e) => onUpdateField('gespraechsDatum', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-700 block mb-1">
+            <label htmlFor="plan-anwesende-personen" className="text-xs font-semibold text-slate-800 block mb-1">
               Anwesende Personen / Beteiligte
             </label>
             <input
+              id="plan-anwesende-personen"
               type="text"
               value={anwesendePersonen}
               onChange={(e) => onUpdateField('anwesendePersonen', e.target.value)}
               placeholder="z. B. Fr. Müller (Klassenleitung), Hr. Dr. Klein (Sonderpädagoge), Fr. Meyer (Mutter)"
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
             />
           </div>
         </div>
 
         <div className="pt-2">
-          <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+          <label htmlFor="plan-eltern-info-check" className="flex items-center gap-2 text-xs text-slate-800 cursor-pointer">
             <input
+              id="plan-eltern-info-check"
               type="checkbox"
               checked={informationElternErfolgt}
               onChange={(e) => onUpdateField('informationElternErfolgt', e.target.checked)}
-              className="rounded text-blue-600 focus:ring-blue-500 w-4 h-4"
+              className="rounded text-blue-600 focus:ring-blue-600 w-4 h-4 cursor-pointer"
             />
             <span>
               Information der Erziehungsberechtigten ist erfolgt (wenn nicht anwesend, Kopie übergeben).
