@@ -28,10 +28,11 @@ export const CURRENT_MODEL_CONFIG = {
   downloadSizeMB: 397,
   ramRequiredMB: 600,
   contextWindow: 4096,
+  kvCacheQuantization: 'q8_0 (8-Bit)',
   estimatedTimeFast: 'ca. 25–45 Sekunden (WLAN / Breitband)',
   estimatedTimeSlow: 'ca. 2–4 Minuten (mobiles Internet)',
   description:
-    'Leichtgewichtiges GGUF-Modell für lokale CPU-Inferenz via WebAssembly (Wllama) mit OPFS/IndexedDB-Speicherung. Läuft auf jedem Gerät ohne WebGPU-Zwang und respektiert 100% Datenschutz (kein Serverkontakt, kein Cache API).',
+    'Leichtgewichtiges GGUF-Modell für lokale CPU-Inferenz via WebAssembly (Wllama) mit OPFS/IndexedDB-Speicherung und 8-Bit quantisiertem KV-Cache (4.096 Tokens Kontext). Läuft auf jedem Gerät ohne WebGPU-Zwang und respektiert 100% Datenschutz (kein Serverkontakt, kein Cache API).',
   hfRepo: 'Qwen/Qwen2.5-0.5B-Instruct-GGUF',
   hfFile: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
   url: 'https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf',
@@ -166,7 +167,18 @@ class WllamaManager {
    */
   public async initModel(onProgress?: ProgressCallback): Promise<Wllama> {
     if (this.wllama && this.currentLoadedModelId === CURRENT_MODEL_CONFIG.id) {
-      return this.wllama;
+      try {
+        const info = this.wllama.getLoadedContextInfo();
+        // If current instance context size is at least the target 4096 tokens, reuse it
+        if (info && info.n_ctx >= CURRENT_MODEL_CONFIG.contextWindow) {
+          return this.wllama;
+        }
+        // If loaded with legacy smaller context (e.g. 1024), unload and reinitialize
+        await this.wllama.exit();
+        this.wllama = null;
+      } catch {
+        // proceed to reload
+      }
     }
 
     if (this.isLoading) {
@@ -197,7 +209,7 @@ class WllamaManager {
 
       const startTime = Date.now();
 
-      // Load model from Hugging Face or cached OPFS/IDB storage
+      // Load model from Hugging Face or cached OPFS/IDB storage with explicit 4096 context & 8-bit quantized KV cache
       await this.wllama.loadModelFromHF(
         {
           repo: CURRENT_MODEL_CONFIG.hfRepo,
@@ -205,6 +217,10 @@ class WllamaManager {
         },
         {
           useCache: true,
+          n_ctx: CURRENT_MODEL_CONFIG.contextWindow, // 4096 tokens (prevents 1024 token limit error)
+          n_parallel: 1, // Single-user in-browser sequence
+          cache_type_k: 'q8_0', // Quantize KV cache K to 8-bit for minimal RAM overhead
+          cache_type_v: 'q8_0', // Quantize KV cache V to 8-bit for minimal RAM overhead
           progressCallback: ({ loaded, total }) => {
             const progress = total > 0 ? loaded / total : 0;
             const elapsed = Math.round((Date.now() - startTime) / 1000);

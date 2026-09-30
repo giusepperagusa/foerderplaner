@@ -318,6 +318,10 @@ export const VersionInfoModal: React.FC<Props> = ({
             </span>
             <div className="space-y-1.5 text-[11px]">
               <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.8:</span>
+                <span>Wllama KV-Cache Quantisierung & Kontextfenster-Erweiterung (4.096 Tokens): Konfiguration von Wllama zur 8-Bit-Quantisierung des Key-Value-Caches (<code>cache_type_k: 'q8_0'</code>, <code>cache_type_v: 'q8_0'</code>) und Festlegung der Kontextgröße auf 4.096 Tokens (<code>n_ctx: 4096</code>). Behebung des Token-Limit-Fehlers bei der lokalen Generierung von Förderbausteinen in Schritt 3 (Prompt mit ~1.185 Tokens überschritt das vormalige Wllama-Standardlimit von 1.024 Tokens). Straffung des Normalisierten Prompts für ressourcenschonende CPU-Wasm-Inferenz.</span>
+              </div>
+              <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.7:</span>
                 <span>Harmonisierung der Dialog-Schaltflächen & PDF-Druckoptimierung: Vollständige Vereinheitlichung aller Dialog-Aufrufer auf einheitliche Beschriftungen („Lokale KI (Wllama)“, „Richtlinien-Katalog“, „Software-Lizenz (GPLv3)“, „Förderplan-Manager“, „Versionsinfo“); Behebung der im Druck unterdrückten amtlichen Fußzeile mit App-Version und Senats-Referenz durch Entkopplung der CSS-Druckregeln; dynamische mehrseitige Seitennummerierung („Seite X von Y“) bei Plänen mit mehr als 2 Seiten.</span>
               </div>

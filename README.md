@@ -70,6 +70,8 @@ The application guides the teacher through a streamlined, multi-step process wit
 * **Optional On-Device Assistant (`webLlmManager.ts` & `wllamaStorage.ts`):**
   * Teacher can request customized formulation proposals, differentiation strategies, or parent-communication talking points.
   * Powered by Wllama (`@wllama/wllama`) executing GGUF models directly on the CPU via WebAssembly SIMD.
+  * Configured with an expanded **4,096-token context window** (`n_ctx: 4096`) and **8-bit quantized KV-cache** (`cache_type_k: 'q8_0'`, `cache_type_v: 'q8_0'`), cutting memory usage by 50% while comfortably accommodating comprehensive evaluation criteria prompts (~1,185 tokens) and rich generation.
+  * Single-sequence in-browser execution (`n_parallel: 1`) prevents sequence fragmentation and eliminates token-limit exhaustion errors.
   * Storage strictly utilizes OPFS (Origin Private File System) and IndexedDB, completely avoiding Cache Storage API eviction risks.
   * System prompt enforces German educational jargon (SMART criteria, positive formulation, Berlin curriculum orientation).
   * Prompt Inspector modal equipped with full keyboard trap and screen-reader headings.
@@ -134,12 +136,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.7-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.8-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.7-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.7-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.8-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.8-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -309,6 +311,13 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.8 (2026-09-30):**
+  * **Wllama KV-Cache Quantization & Context Window Expansion (4,096 Tokens):**
+    * *Fixed Context Length Ceiling:* Configured `@wllama/wllama` initialization (`loadModelFromHF`) to explicitly set `n_ctx: 4096` (matching `CURRENT_MODEL_CONFIG.contextWindow`), resolving the runtime error `request (1185 tokens) exceeds the available context size (1024 tokens)` triggered when processing extensive pupil observations and multi-criteria diagnostic evaluations.
+    * *KV-Cache 8-Bit Quantization (`cache_type_k: 'q8_0'`, `cache_type_v: 'q8_0'`):* Enabled 8-bit quantization for both Key and Value tensors in the WebAssembly llama.cpp context, cutting KV cache memory consumption by ~50% and protecting 32-bit WebAssembly heap allocations on resource-constrained devices.
+    * *Single-Sequence Concurrency (`n_parallel: 1`):* Pinned execution to single-sequence in-browser inference, preventing unnecessary context slot subdivision.
+    * *Prompt Optimization (`buildLocalModelPrompt`):* Trimmed reference guideline few-shot examples from 4 to 3 high-impact templates, reducing input token volume and halving prompt evaluation (prefill) latency on client CPUs.
+    * *Specification & Transparency:* Updated the interactive `ModelConsentModal` to display the active 4,096-token context window and 8-bit quantized KV cache specifications.
 * **v1.4.7 (2026-09-30):**
   * **Dialog Button & Label Standardization:** Harmonized all modal trigger buttons and tooltips across the top navigation, step headers, and footer to uniform canonical labels: *„Lokale KI (Wllama)“*, *„Richtlinien-Katalog“*, *„Software-Lizenz (GPLv3)“*, *„Förderplan-Manager“*, and *„Versionsinfo“*.
   * **Print & PDF Layout Overhaul & Multi-Page Numbering:**

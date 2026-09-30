@@ -141,7 +141,7 @@ export function buildLocalModelPrompt(
   const normNotes = normalizeGermanText(profile.ausgangslageNotiz || 'Keine zusaetzlichen Notizen');
 
   const criteriaText = selectedCriteria.map((c) => `- [${c.unterbereich || 'Allgemein'}] ${c.label}`).join('\n');
-  const referenceMeasures = proposals.slice(0, 4).map((p, idx) => 
+  const referenceMeasures = proposals.slice(0, 3).map((p, idx) => 
     `Vorlage ${idx + 1} (${p.kategorie}):\nIST: ${p.ist}\nSOLL: ${p.soll}\nLERNWEG:\n${p.lernweg.map((l) => '  * ' + l).join('\n')}`
   ).join('\n\n');
 

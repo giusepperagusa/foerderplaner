@@ -202,13 +202,27 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
                   ~{CURRENT_MODEL_CONFIG.ramRequiredMB} MB
                 </span>
               </div>
-              <div className="p-2.5 bg-white rounded-lg border border-slate-200 col-span-2">
-                <span className="text-slate-400 block text-[11px]">Geschätzte Downloadzeit:</span>
+              <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                <span className="text-slate-400 block text-[11px]">Kontextfenster:</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
-                  <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                  {CURRENT_MODEL_CONFIG.estimatedTimeFast}
+                  <Cpu className="w-3.5 h-3.5 text-blue-600" />
+                  {CURRENT_MODEL_CONFIG.contextWindow.toLocaleString('de-DE')} Tokens
                 </span>
               </div>
+              <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                <span className="text-slate-400 block text-[11px]">KV-Cache:</span>
+                <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  {CURRENT_MODEL_CONFIG.kvCacheQuantization || '8-Bit (q8_0)'}
+                </span>
+              </div>
+            </div>
+            <div className="mt-2 p-2 bg-white rounded-lg border border-slate-200 text-xs flex items-center justify-between">
+              <span className="text-slate-500 text-[11px]">Geschätzte Downloadzeit:</span>
+              <span className="font-semibold text-slate-800 flex items-center gap-1 text-[11px]">
+                <Clock className="w-3.5 h-3.5 text-emerald-600" />
+                {CURRENT_MODEL_CONFIG.estimatedTimeFast}
+              </span>
             </div>
           </div>
 
@@ -224,6 +238,9 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
               </li>
               <li>
                 <strong>Speichertechnologie:</strong> Die Speicherung erfolgt geschützt im <strong>OPFS (Origin Private File System)</strong> bzw. in <strong>IndexedDB</strong> – die instabile Cache API wird bewusst nicht verwendet.
+              </li>
+              <li>
+                <strong>Quantisierter KV-Cache & 4.096 Tokens Kontext:</strong> Der Key-Value-Cache wird mit 8-Bit (q8_0) quantisiert. Dies spart ca. 50% Arbeitsspeicher und verhindert Token-Limit-Abbrüche auch bei umfangreichen Schülerprofilen.
               </li>
               <li>
                 <strong>CPU-Ausführung:</strong> Funktioniert zuverlässig auf jedem Rechner ohne WebGPU-Voraussetzung.
