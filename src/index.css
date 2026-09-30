@@ -77,8 +77,16 @@
       background: #ffffff !important;
     }
 
-    .no-print, header, nav, footer, .print-hidden {
+    .no-print, .print-hidden, .app-header, .app-navigation, .app-footer {
       display: none !important;
+    }
+
+    /* Guarantee document headers and footers are never suppressed in print */
+    .print-document-sheet header,
+    .print-document-sheet footer,
+    .print-document-sheet .document-footer {
+      display: flex !important;
+      visibility: visible !important;
     }
 
     .page-break-before {

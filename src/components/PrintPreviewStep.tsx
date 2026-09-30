@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   Printer,
   Copy,
@@ -21,8 +21,64 @@ interface Props {
 
 export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
   const [copiedText, setCopiedText] = useState(false);
+  const section2Ref = useRef<HTMLElement>(null);
+
+  // Dynamic page calculation based on measure + pedagogical table density heuristics
+  const [totalPages, setTotalPages] = useState<number>(() => {
+    const entriesCount = planDoc.planEintraege.length;
+    const totalChars = planDoc.planEintraege.reduce(
+      (acc, r) => acc + r.ist.length + r.soll.length + r.lernweg.length + r.absprachen.length + r.reflexion.length,
+      0
+    ) + (planDoc.weitereVereinbarungen ? planDoc.weitereVereinbarungen.length : 0);
+
+    if (entriesCount <= 2 && totalChars < 900) return 2;
+    if (entriesCount <= 3 && totalChars < 1600) return 3;
+    return Math.max(2, Math.ceil(entriesCount / 2) + (totalChars > 2400 ? 2 : 1));
+  });
+
+  const calculatePages = useCallback(() => {
+    const entriesCount = planDoc.planEintraege.length;
+    const totalChars = planDoc.planEintraege.reduce(
+      (acc, r) => acc + r.ist.length + r.soll.length + r.lernweg.length + r.absprachen.length + r.reflexion.length,
+      0
+    ) + (planDoc.weitereVereinbarungen ? planDoc.weitereVereinbarungen.length : 0);
+
+    let calculated = 2;
+    if (entriesCount <= 2 && totalChars < 900) {
+      calculated = 2;
+    } else if (entriesCount <= 3 && totalChars < 1600) {
+      calculated = 3;
+    } else {
+      calculated = Math.max(2, Math.ceil(entriesCount / 2) + (totalChars > 2400 ? 2 : 1));
+    }
+
+    // Measure live DOM height if rendered
+    if (section2Ref.current) {
+      const s2Height = section2Ref.current.scrollHeight;
+      if (s2Height > 50) {
+        // Usable page height inside DIN-A4 page container (297mm - 26mm padding ~ 980px)
+        const s2Pages = Math.max(1, Math.ceil(s2Height / 980));
+        calculated = Math.max(calculated, 1 + s2Pages);
+      }
+    }
+
+    setTotalPages(calculated);
+  }, [planDoc]);
+
+  useEffect(() => {
+    calculatePages();
+    const timer = setTimeout(calculatePages, 200);
+    window.addEventListener('resize', calculatePages);
+    window.addEventListener('beforeprint', calculatePages);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', calculatePages);
+      window.removeEventListener('beforeprint', calculatePages);
+    };
+  }, [calculatePages]);
 
   const handlePrint = () => {
+    calculatePages();
     window.print();
   };
 
@@ -239,10 +295,15 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
             </div>
           </section>
 
-          {/* Page 1 Official Footer: Page number only */}
-          <div className="text-xs text-neutral-800 flex justify-between border-t border-black pt-1 font-sans">
+          {/* Page 1 Official Footer: Official publisher and dynamic page indicator */}
+          <div className="document-footer text-xs text-neutral-800 flex justify-between items-center border-t border-black pt-1.5 font-sans mt-3">
             <span className="font-semibold text-black">Senatsverwaltung für Bildung, Jugend und Familie Berlin</span>
-            <span className="font-bold text-black">Seite 1 / 2</span>
+            <span className="text-[10px] text-neutral-700 hidden sm:inline print:inline">
+              Förderplan-Assistent Berlin {APP_VERSION.replace('-offline', '').replace(/^v/, '')} &bull; Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018
+            </span>
+            <span className="font-bold text-black">
+              {totalPages > 2 ? `Seite 1 von ${totalPages}` : 'Seite 1 / 2'}
+            </span>
           </div>
         </section>
 
@@ -251,13 +312,17 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
             DAS AMTLICHE 5-SPALTEN-RASTER („FÖRDERMASSNAHMEN KONKRET!“, S. 83)
             IST | SOLL | LERNWEG | ABSPRACHEN | REFLEXION / EVALUATION
             ===================================================================== */}
-        <section aria-labelledby="section-2-heading" className="space-y-3 pt-2 page-break-before font-sans">
+        <section 
+          ref={section2Ref} 
+          aria-labelledby="section-2-heading" 
+          className="space-y-3 pt-2 page-break-before font-sans"
+        >
           <div className="flex items-baseline justify-between border-b border-black pb-1">
             <h2 id="section-2-heading" className="text-xs sm:text-sm font-bold uppercase tracking-wider text-black font-sans">
               2. Amtliches Förderplan-Raster: Pädagogische Fördermaßnahmen & Lernwege
             </h2>
             <span className="text-xs font-bold text-black font-sans">
-              Seite 2 / 2
+              {totalPages > 2 ? `Seite 2 von ${totalPages}` : 'Seite 2 / 2'}
             </span>
           </div>
 
@@ -397,12 +462,14 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           </div>
         </section>
 
-        {/* Footer print meta */}
-        <footer className="text-[10px] text-neutral-800 flex justify-between border-t border-black pt-1 font-sans">
-          <span>
+        {/* Final Document Footer: Official version, reference senate guideline, and final page indicator */}
+        <footer className="document-footer text-[10px] text-neutral-900 flex justify-between items-center border-t border-black pt-1.5 font-sans mt-4 print:mt-3">
+          <span className="font-normal text-black">
             Förderplan-Assistent Berlin {APP_VERSION.replace('-offline', '').replace(/^v/, '')} &bull; Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018
           </span>
-          <span className="font-semibold text-black">Seite 2 / 2</span>
+          <span className="font-semibold text-black">
+            {totalPages > 2 ? `Seite ${totalPages} von ${totalPages}` : 'Seite 2 / 2'}
+          </span>
         </footer>
 
       </article>

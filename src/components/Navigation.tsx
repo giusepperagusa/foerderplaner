@@ -63,7 +63,7 @@ export const Navigation: React.FC<Props> = ({
   const isCompleted = activePlanStatus === 'abgeschlossen';
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs app-header print:hidden no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Brand bar */}
@@ -88,19 +88,20 @@ export const Navigation: React.FC<Props> = ({
                 <button
                   type="button"
                   onClick={onOpenVersionInfo}
+                  aria-label={`Versionsinfo (${APP_VERSION})`}
                   className={`inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded-full border transition-colors ${
                     needRefresh
                       ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200 animate-pulse'
                       : 'text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border-slate-200'
                   }`}
-                  title={needRefresh ? 'Neues Update verfügbar! Klicken zum Aktualisieren' : 'Versionsinformationen, Richtlinien-Stand & Changelog anzeigen'}
+                  title="Versionsinfo & Bereitstellung"
                 >
                   {needRefresh ? (
                     <ArrowUpCircle className="w-3 h-3 text-amber-600" />
                   ) : (
                     <Tag className="w-2.5 h-2.5 text-slate-400" />
                   )}
-                  <span>{APP_VERSION}</span>
+                  <span>Versionsinfo ({APP_VERSION})</span>
                   {needRefresh && <span className="font-sans font-bold text-[9px] bg-amber-500 text-white px-1 rounded-sm">UPDATE</span>}
                 </button>
               </div>
@@ -115,11 +116,14 @@ export const Navigation: React.FC<Props> = ({
             {/* Active Plan Selector Pill */}
             <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl">
               <button
+                type="button"
                 onClick={onOpenPlanManager}
                 className="flex items-center gap-1.5 text-xs font-semibold text-slate-800 hover:text-blue-600 transition"
-                title="Plan-Verwaltung öffnen"
+                title="Förderplan-Manager öffnen"
+                aria-label="Förderplan-Manager öffnen"
               >
                 <FolderOpen className="w-3.5 h-3.5 text-blue-600" />
+                <span className="hidden sm:inline text-slate-500 font-normal">Plan:</span>
                 <span className="max-w-[130px] truncate" title={displayName}>
                   {displayName}
                 </span>
@@ -129,6 +133,7 @@ export const Navigation: React.FC<Props> = ({
               </button>
 
               <button
+                type="button"
                 onClick={onToggleStatus}
                 className={`ml-1 flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md border transition ${
                   isCompleted
@@ -156,39 +161,45 @@ export const Navigation: React.FC<Props> = ({
 
             {/* New Plan Button */}
             <button
+              type="button"
               onClick={onCreateNewPlan}
-              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-xs"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-xs cursor-pointer"
               title="Neuen leeren Förderplan starten"
             >
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Neuer Plan</span>
             </button>
 
-            {/* Local LLM (WebLLM) Button */}
+            {/* Local LLM (Wllama) Button */}
             <button
+              type="button"
               onClick={onOpenModelConsent}
-              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg transition border border-indigo-200"
-              title="Lokales Modell (Wllama / Qwen2.5) verwalten & Cache prüfen"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg transition border border-indigo-200 cursor-pointer"
+              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
+              aria-label="Lokale KI (Wllama)"
             >
               <Cpu className="w-3.5 h-3.5 text-indigo-600" />
-              <span className="hidden md:inline">Lokales Modell</span>
+              <span className="hidden md:inline">Lokale KI (Wllama)</span>
             </button>
 
             {/* Guidelines button */}
             <button
+              type="button"
               onClick={onOpenGuidelinesManager}
-              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition border border-slate-200"
-              title="Katalog und Reusable Normalisierungs-Tool öffnen"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition border border-slate-200 cursor-pointer"
+              title="Amtlichen Richtlinien-Katalog öffnen"
+              aria-label="Richtlinien-Katalog"
             >
               <BookOpen className="w-3.5 h-3.5 text-blue-600" />
-              <span className="hidden md:inline">Richtlinien-Tool</span>
+              <span className="hidden md:inline">Richtlinien-Katalog</span>
             </button>
 
             {/* Reset Button with accessible aria-label and high-contrast styling */}
             <button
+              type="button"
               onClick={onResetPlan}
               aria-label="Diesen Förderplan leeren"
-              className="p-1.5 text-slate-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition"
+              className="p-1.5 text-slate-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition cursor-pointer"
               title="Diesen Förderplan leeren"
             >
               <RotateCcw className="w-4 h-4" />
@@ -197,7 +208,7 @@ export const Navigation: React.FC<Props> = ({
         </div>
 
         {/* Step Tabs with semantic nav element and aria-current */}
-        <nav aria-label="Förderplan Schritte" className="flex overflow-x-auto py-2 gap-1 no-scrollbar">
+        <nav aria-label="Förderplan Schritte" className="flex overflow-x-auto py-2 gap-1 no-scrollbar app-navigation print:hidden no-print">
           {steps.map((step) => {
             const isActive = currentStep === step.num;
             const isCompletedStep = currentStep > step.num;

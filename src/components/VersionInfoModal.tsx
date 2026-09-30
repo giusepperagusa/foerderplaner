@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.6-offline';
+export const APP_VERSION = 'v1.4.7-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -303,8 +303,9 @@ export const VersionInfoModal: React.FC<Props> = ({
                 type="button"
                 onClick={onOpenLicense}
                 className="px-2.5 py-1.5 bg-white hover:bg-indigo-50 text-indigo-700 font-semibold rounded-lg text-[11px] border border-indigo-300 transition shadow-2xs cursor-pointer shrink-0"
+                title="Software-Lizenz (GPLv3) anzeigen"
               >
-                Lizenzdetails
+                Software-Lizenz (GPLv3)
               </button>
             )}
           </div>
@@ -316,6 +317,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.7:</span>
+                <span>Harmonisierung der Dialog-Schaltflächen & PDF-Druckoptimierung: Vollständige Vereinheitlichung aller Dialog-Aufrufer auf einheitliche Beschriftungen („Lokale KI (Wllama)“, „Richtlinien-Katalog“, „Software-Lizenz (GPLv3)“, „Förderplan-Manager“, „Versionsinfo“); Behebung der im Druck unterdrückten amtlichen Fußzeile mit App-Version und Senats-Referenz durch Entkopplung der CSS-Druckregeln; dynamische mehrseitige Seitennummerierung („Seite X von Y“) bei Plänen mit mehr als 2 Seiten.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.6:</span>
                 <span>Barrierefreiheit und DIN 1450 Typografie: Vollständige Konformität mit EN 301 549 / WCAG 2.2 AA in der App-UI (Tastaturnavigation mit Sharp-Outline-Fokusindikator, Skip-to-Content-Link, striktes Focus-Trapping in allen Dialogen via useFocusTrap, semantische HTML-Elemente und ARIA-Rollen, mindestens 4,5:1 Farbkontraste) sowie Überarbeitung des Förderplan-Drucks nach DIN 1450 (serifenlose Arial/Helvetica-Schriftart, mindestens 11pt Grundschriftgröße, 1,4–1,5 Zeilenabstand, Schwarz-Weiß-Druckkontrast und semantische PDF/UA-Dokumentenstruktur).</span>

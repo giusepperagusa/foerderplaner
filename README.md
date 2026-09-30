@@ -134,12 +134,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.6-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.7-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.6-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.6-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.7-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.7-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -309,6 +309,11 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.7 (2026-09-30):**
+  * **Dialog Button & Label Standardization:** Harmonized all modal trigger buttons and tooltips across the top navigation, step headers, and footer to uniform canonical labels: *„Lokale KI (Wllama)“*, *„Richtlinien-Katalog“*, *„Software-Lizenz (GPLv3)“*, *„Förderplan-Manager“*, and *„Versionsinfo“*.
+  * **Print & PDF Layout Overhaul & Multi-Page Numbering:**
+    * *Restored Document Footer & Senate Citation:* Decoupled CSS `@media print` suppression rules from naked HTML tags (`header`, `footer`) to dedicated application chrome classes (`.app-header`, `.app-footer`, `.print-hidden`), restoring the official prescribed final line (*„Förderplan-Assistent Berlin {version} • Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018“*) in all exported PDFs and printed documents.
+    * *Dynamic Multi-Page Numbering:* Replaced hardcoded *„Seite 1 / 2“* and *„Seite 2 / 2“* counters with dynamic page calculation (*„Seite 1 von {totalPages}“*, *„Seite 2 von {totalPages}“*, *„Seite {totalPages} von {totalPages}“*) based on live DOM measurement and pedagogical table density heuristics for support plans spanning 3 or more pages.
 * **v1.4.6 (2026-09-29):**
   * **Accessibility (EN 301 549 & WCAG 2.2 Level AA):** Comprehensive user interface overhaul to achieve full compliance with European public sector accessibility standards:
     * *Keyboard Navigation & Focus Guidance:* Complete keyboard navigability across all interactive controls (`Tab`, `Shift+Tab`, `Enter`, `Space`); high-contrast visible focus indicators (`:focus-visible`) featuring a vivid blue 2px outline with 2px offset; accessible skip navigation link (*„Zum Hauptinhalt springen“*) bypassing navigation headers to `#main-content`.

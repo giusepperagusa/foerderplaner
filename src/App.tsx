@@ -35,7 +35,7 @@ import {
   createBlankPlan,
   duplicatePlan,
 } from './utils/planStorage';
-import { ShieldCheck, Tag, Cpu, BookOpen, ArrowUpCircle, Scale } from 'lucide-react';
+import { ShieldCheck, Tag, Cpu, BookOpen, ArrowUpCircle, Scale, FolderOpen } from 'lucide-react';
 
 export default function App() {
   // PWA update management
@@ -351,47 +351,63 @@ export default function App() {
             </a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <button
+              type="button"
+              onClick={() => setIsPlanManagerOpen(true)}
+              className="hover:text-blue-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
+              title="Förderplan-Manager öffnen"
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-blue-700" />
+              <span>Förderplan-Manager</span>
+            </button>
+
+            <button
+              type="button"
               onClick={() => setIsGuidelinesModalOpen(true)}
               className="hover:text-blue-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
+              title={`Richtlinien-Katalog (v${GUIDELINE_VERSION})`}
             >
               <BookOpen className="w-3.5 h-3.5 text-blue-700" />
-              <span>Richtlinien: {GUIDELINE_VERSION}</span>
+              <span>Richtlinien-Katalog</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setIsConsentModalOpen(true)}
               className="hover:text-indigo-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
+              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
             >
               <Cpu className="w-3.5 h-3.5 text-indigo-700" />
-              <span>Lokale KI (Wllama Wasm)</span>
+              <span>Lokale KI (Wllama)</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setIsLicenseModalOpen(true)}
               className="hover:text-indigo-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
-              title="Lizenz- und Urheberrechtsinformationen (GPLv3)"
+              title="Software-Lizenz (GPLv3) anzeigen"
             >
               <Scale className="w-3.5 h-3.5 text-indigo-700" />
-              <span className="font-semibold text-slate-800 hover:text-indigo-700">GPLv3</span>
+              <span className="font-semibold text-slate-800 hover:text-indigo-700">Software-Lizenz (GPLv3)</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setIsVersionInfoModalOpen(true)}
               className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium border transition-colors cursor-pointer ${
                 needRefresh
                   ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-200'
               }`}
-              title="Version, Changelog & PWA Update-Status öffnen"
+              title="Versionsinfo & Bereitstellung"
             >
               {needRefresh ? (
                 <ArrowUpCircle className="w-3 h-3 text-amber-600" />
               ) : (
                 <Tag className="w-3 h-3 text-slate-400" />
               )}
-              <span>{APP_VERSION}</span>
+              <span>Versionsinfo ({APP_VERSION})</span>
             </button>
           </div>
         </div>

@@ -231,9 +231,11 @@ export const AiAssistantStep: React.FC<Props> = ({
             </button>
 
             <button
+              type="button"
               onClick={() => setShowConsentModal(true)}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs whitespace-nowrap cursor-pointer"
-              title="Modell-Status und Download-Manager öffnen"
+              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
+              aria-label="Lokale KI (Wllama)"
             >
               <Cpu className="w-4 h-4 text-indigo-200" />
               <span>Lokale KI (Wllama)</span>
@@ -410,10 +412,14 @@ export const AiAssistantStep: React.FC<Props> = ({
             </div>
 
             <button
+              type="button"
               onClick={() => setShowConsentModal(true)}
-              className="px-3.5 py-1.5 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto cursor-pointer"
+              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
+              aria-label="Lokale KI (Wllama)"
             >
-              Modellspeicher verwalten
+              <Cpu className="w-3.5 h-3.5 text-purple-700" />
+              <span>Lokale KI (Wllama)</span>
             </button>
           </div>
 
