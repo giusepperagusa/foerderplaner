@@ -66,15 +66,27 @@
     }
 
     /* Print-specific layout container that provides precise physical DIN-A4 page margins */
-    .print-document-sheet {
-      padding: 12mm 14mm 14mm 14mm !important;
+    .print-document-sheet,
+    .a4-page-sheet {
+      padding: 12mm 14mm 12mm 14mm !important;
       box-sizing: border-box !important;
       width: 100% !important;
+      min-height: 297mm !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
       font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif !important;
       font-size: 11pt !important;
       line-height: 1.45 !important;
       color: #000000 !important;
       background: #ffffff !important;
+      page-break-after: always !important;
+      break-after: page !important;
+    }
+
+    .a4-page-sheet:last-of-type {
+      page-break-after: auto !important;
+      break-after: auto !important;
     }
 
     .no-print, .print-hidden, .app-header, .app-navigation, .app-footer {
@@ -84,9 +96,17 @@
     /* Guarantee document headers and footers are never suppressed in print */
     .print-document-sheet header,
     .print-document-sheet footer,
-    .print-document-sheet .document-footer {
+    .print-document-sheet .document-footer,
+    .a4-page-sheet header,
+    .a4-page-sheet footer,
+    .a4-page-sheet .document-footer {
       display: flex !important;
       visibility: visible !important;
+    }
+
+    .document-footer {
+      margin-top: auto !important;
+      width: 100% !important;
     }
 
     .page-break-before {
