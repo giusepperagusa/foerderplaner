@@ -68,20 +68,25 @@
     /* Print-specific layout container that provides precise physical DIN-A4 page margins */
     .print-document-sheet,
     .a4-page-sheet {
-      padding: 12mm 14mm 12mm 14mm !important;
+      padding: 10mm 12mm 8mm 12mm !important;
       box-sizing: border-box !important;
       width: 100% !important;
       min-height: 297mm !important;
+      height: 297mm !important;
+      max-height: 297mm !important;
       display: flex !important;
       flex-direction: column !important;
       justify-content: space-between !important;
       font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif !important;
       font-size: 11pt !important;
-      line-height: 1.45 !important;
+      line-height: 1.4 !important;
       color: #000000 !important;
       background: #ffffff !important;
       page-break-after: always !important;
       break-after: page !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+      overflow: hidden !important;
     }
 
     .a4-page-sheet:last-of-type {

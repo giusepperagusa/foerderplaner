@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.10-offline';
+export const APP_VERSION = 'v1.4.11-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -325,6 +325,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.11:</span>
+                <span>Optimierung Formularkopf & überlaufgeschützte Paginierung: Schulangabe strikt oben rechts auf Seite 1 platziert; Titel „F Ö R D E R P L A N“ und SopädVO-Untertitel zentriert im oberen Seitenbereich verankert; intelligenter Paginierungs-Algorithmus stellt sicher, dass die Fußzeile auf jeder Seite immer garantiert Platz hat und niemals über den unteren Blattrand rutscht (bei Überlauf werden Abschnitte mit explizitem Fortsetzungsbanner wie <i>„Fortsetzung von Seite X: 3. Weitere Vereinbarungen & 4. Gesprächsnachweis“</i> auf die Folgeseite umbrochen).</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.10:</span>
                 <span>Druck-/PDF-Layoutbereinigung, Subpfad-Veröffentlichung & Download-Referenz: Entfernung sämtlicher Senats-Attributionen aus Formularkopf und -fußzeilen; versions- und dokumentdatierte Seitennummerierung („Seite X von Y“) strikt am unteren Seitenende jeder Seite verankert; vollständige Unterstützung für beliebige Subpfad-/Unterordner-Veröffentlichungen (z. B. GitHub Pages Projektseiten oder Schulportale) via <code>base: './'</code> und <code>VITE_BASE_PATH</code> samt relativer PWA-Manifest- und Wasm-Pfadauflösung; direkter Link zum amtlichen Berliner PDF-Originaldokument (<code>foerdermassnahmen_konkret.pdf</code>) im Richtlinien-Manager und der Dokumentation hinzugefügt.</span>
