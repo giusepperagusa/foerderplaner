@@ -1,6 +1,7 @@
 /**
  * Interactive Consent & Download Manager for Local Wllama GGUF Model
- * Warns about data volume (~397MB), estimated duration, mobile data costs,
+ * Warns about data volume (~506MB Q8_0 / ~397MB Q4_K_M), estimated duration, mobile data costs,
+ * provides model selection (bartowski Q8_0 recommended vs Q4_K_M compact),
  * manages local OPFS/IndexedDB storage (no Cache API), and displays live download progress.
  */
 import React, { useState, useEffect } from 'react';
@@ -16,11 +17,13 @@ import {
   ShieldCheck, 
   Clock, 
   RefreshCw,
-  Database
+  Database,
+  Sparkles
 } from 'lucide-react';
 import { 
   webLlmManager, 
-  CURRENT_MODEL_CONFIG, 
+  AVAILABLE_MODELS,
+  ModelOption,
   ModelCacheStatus,
   InitProgressReport 
 } from '../utils/webLlmManager';
@@ -34,6 +37,9 @@ interface Props {
 
 export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelReady }) => {
   const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
+  const [selectedKey, setSelectedKey] = useState<string>(() => webLlmManager.getSelectedModelKey());
+  const activeModel: ModelOption = AVAILABLE_MODELS[selectedKey] || AVAILABLE_MODELS['qwen2.5-0.5b-q8_0'];
+
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>({
     isSupported: true,
     isCached: false,
@@ -51,7 +57,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
     if (isOpen) {
       checkStatus();
     }
-  }, [isOpen]);
+  }, [isOpen, selectedKey]);
 
   const checkStatus = async () => {
     setIsChecking(true);
@@ -63,16 +69,24 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
     }
   };
 
+  const handleSelectModel = (key: string) => {
+    if (isDownloading) return;
+    setSelectedKey(key);
+    webLlmManager.setSelectedModelKey(key);
+    setStatusMessage(null);
+    setDownloadError(null);
+  };
+
   const handleStartDownload = async () => {
     setDownloadError(null);
     setIsDownloading(true);
-    setProgressReport({ progress: 0.01, text: 'Verbindung zu Hugging Face / Modell-Quelle wird hergestellt...', timeElapsed: 0 });
+    setProgressReport({ progress: 0.01, text: `Verbindung zu Hugging Face (${activeModel.hfRepo}) wird hergestellt...`, timeElapsed: 0 });
 
     try {
       await webLlmManager.initModel((report) => {
         setProgressReport(report);
       });
-      setStatusMessage('Modell erfolgreich geladen und im privaten Speicher (OPFS/IndexedDB) abgelegt!');
+      setStatusMessage(`Modell (${activeModel.quantization}) erfolgreich geladen und im privaten Speicher (OPFS/IndexedDB) abgelegt!`);
       await checkStatus();
       if (onModelReady) {
         onModelReady();
@@ -167,24 +181,65 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
             </div>
           )}
 
+          {/* Model Selection Selector */}
+          <div className="space-y-2">
+            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+              Modell-Auswahl & Quantisierung:
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {Object.entries(AVAILABLE_MODELS).map(([key, model]) => {
+                const isSelected = selectedKey === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => handleSelectModel(key)}
+                    disabled={isDownloading}
+                    className={`p-3 rounded-xl border text-left transition relative cursor-pointer ${
+                      isSelected
+                        ? 'border-indigo-600 bg-indigo-50/70 ring-2 ring-indigo-500/20'
+                        : 'border-slate-200 bg-white hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1 mb-1">
+                      <span className="font-bold text-xs text-slate-900">
+                        {model.shortName}
+                      </span>
+                      {model.isRecommended && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">
+                          Empfohlen
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[11px] text-slate-600 space-y-0.5">
+                      <div>Präzision: <strong className="text-slate-800">{model.quantization}</strong></div>
+                      <div>Download: <strong className="text-slate-800">~{model.downloadSizeMB} MB</strong></div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Model Specification Card */}
           <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
             <div className="flex items-center justify-between mb-3">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
-                  Empfohlenes Offline-Modell (CPU-kompatibel)
+                  {activeModel.isRecommended ? 'Empfohlen für hohe Textqualität' : 'Kompakte Variante'}
                 </span>
                 <h3 className="font-bold text-slate-800 text-base mt-1">
-                  {CURRENT_MODEL_CONFIG.name}
+                  {activeModel.name}
                 </h3>
               </div>
-              <span className="text-xs px-2.5 py-1 font-semibold rounded-full bg-slate-200 text-slate-700">
-                GGUF
+              <span className="text-xs px-2.5 py-1 font-semibold rounded-full bg-slate-200 text-slate-700 font-mono">
+                {activeModel.quantization}
               </span>
             </div>
 
             <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-              {CURRENT_MODEL_CONFIG.description}
+              {activeModel.description}
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -192,28 +247,28 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
                 <span className="text-slate-400 block text-[11px]">Download-Größe:</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                   <HardDrive className="w-3.5 h-3.5 text-indigo-600" />
-                  ~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB
+                  ~{activeModel.downloadSizeMB} MB
                 </span>
               </div>
               <div className="p-2.5 bg-white rounded-lg border border-slate-200">
                 <span className="text-slate-400 block text-[11px]">Benötigter RAM:</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                   <Cpu className="w-3.5 h-3.5 text-purple-600" />
-                  ~{CURRENT_MODEL_CONFIG.ramRequiredMB} MB
+                  ~{activeModel.ramRequiredMB} MB
                 </span>
               </div>
               <div className="p-2.5 bg-white rounded-lg border border-slate-200">
                 <span className="text-slate-400 block text-[11px]">Kontextfenster:</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                   <Cpu className="w-3.5 h-3.5 text-blue-600" />
-                  {CURRENT_MODEL_CONFIG.contextWindow.toLocaleString('de-DE')} Tokens
+                  {activeModel.contextWindow.toLocaleString('de-DE')} Tokens
                 </span>
               </div>
               <div className="p-2.5 bg-white rounded-lg border border-slate-200">
                 <span className="text-slate-400 block text-[11px]">KV-Cache:</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  {CURRENT_MODEL_CONFIG.kvCacheQuantization || '8-Bit (q8_0)'}
+                  {activeModel.kvCacheQuantization || '8-Bit (q8_0)'}
                 </span>
               </div>
             </div>
@@ -221,7 +276,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
               <span className="text-slate-500 text-[11px]">Geschätzte Downloadzeit:</span>
               <span className="font-semibold text-slate-800 flex items-center gap-1 text-[11px]">
                 <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                {CURRENT_MODEL_CONFIG.estimatedTimeFast}
+                {activeModel.estimatedTimeFast}
               </span>
             </div>
           </div>
@@ -230,11 +285,14 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
           <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2">
             <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
               <Wifi className="w-4 h-4 text-amber-700" />
-              Hinweis zu Speicher & Datenvolumen
+              Hinweis zu Speicher, Präzision & Inferenz
             </div>
             <ul className="text-xs text-amber-800 space-y-1.5 list-disc list-inside">
               <li>
-                <strong>Einmaliger Download:</strong> Es werden einmalig ca. <strong>{CURRENT_MODEL_CONFIG.downloadSizeMB} Megabyte (MB)</strong> Daten geladen.
+                <strong>Einmaliger Download:</strong> Es werden einmalig ca. <strong>{activeModel.downloadSizeMB} Megabyte (MB)</strong> Daten geladen.
+              </li>
+              <li>
+                <strong>Präzision & Vermeidung von Repetitionen:</strong> Das 8-Bit quantisierte Modell (bartowski Q8_0) bietet nahezu verlustfreie Genauigkeit und verhindert Sprachverflachung oder Textwiederholungen gegenüber stark komprimierten 4-Bit-Modellen.
               </li>
               <li>
                 <strong>Speichertechnologie:</strong> Die Speicherung erfolgt geschützt im <strong>OPFS (Origin Private File System)</strong> bzw. in <strong>IndexedDB</strong> – die instabile Cache API wird bewusst nicht verwendet.
@@ -320,7 +378,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
                 className="px-3 py-1.5 text-xs text-rose-700 hover:text-rose-800 hover:bg-rose-50 border border-rose-200 rounded-lg flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                Modell löschen (~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB frei)
+                Modellspeicher leeren (~{activeModel.downloadSizeMB} MB frei)
               </button>
             )}
           </div>
@@ -361,7 +419,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
             ) : (
               <>
                 <DownloadCloud className="w-4 h-4" />
-                Zustimmen & Download starten (~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB)
+                Zustimmen & Download starten (~{activeModel.downloadSizeMB} MB)
               </>
             )}
           </button>

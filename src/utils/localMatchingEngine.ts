@@ -140,34 +140,37 @@ export function buildLocalModelPrompt(
   const normSchwerpunkt = normalizeGermanText(profile.hauptschwerpunkt);
   const normNotes = normalizeGermanText(profile.ausgangslageNotiz || 'Keine zusaetzlichen Notizen');
 
-  const criteriaText = selectedCriteria.map((c) => `- [${c.unterbereich || 'Allgemein'}] ${c.label}`).join('\n');
-  const referenceMeasures = proposals.slice(0, 3).map((p, idx) => 
-    `Vorlage ${idx + 1} (${p.kategorie}):\nIST: ${p.ist}\nSOLL: ${p.soll}\nLERNWEG:\n${p.lernweg.map((l) => '  * ' + l).join('\n')}`
-  ).join('\n\n');
+  const criteriaText = selectedCriteria
+    .slice(0, 5)
+    .map((c) => `- ${c.label}`)
+    .join('\n');
 
-  return `System-Rolle: Du bist ein spezialisierter paedagogischer Assistent fuer Grundschullehrkraefte zur Erstellung individueller Foerderplaene gemaess den amtlichen Berliner Richtlinien 'Foerdermassnahmen konkret'.
-Alle Ausgaben muessen datenschutzkonform und lokal verarbeitet werden.
-Schreibe in normalisierter deutscher Sprache (ae, oe, ue, ss fuer Umlaute) zur optimalen Verarbeitung auf mobilen Endgeraeten.
+  const ref = proposals[0] || {
+    kategorie: 'Lern- und Arbeitsverhalten',
+    ist: 'Benoetigt klare Strukturierung und Anschauung bei mehrschrittigen Aufgaben.',
+    soll: 'Bearbeitet Arbeitsauftraege in Teilschritten selbststaendig nach Checkliste.',
+    lernweg: ['Visualisierung der Arbeitsschritte mit Piktogrammen', 'Reflexion nach jedem Arbeitsschritt mit der Lehrkraft'],
+  };
 
-Schuelerdaten:
-- Name: ${normName}
-- Klasse: ${normKlasse}
+  return `Schuelerdaten:
+- Name: ${normName} (${normKlasse})
 - Foerderschwerpunkt: ${normSchwerpunkt}
-- Beobachtungen Lehrkraft: ${normNotes}
+- Beobachtung: ${normNotes}
 
-Beobachtete Entwicklungsbedarfe aus dem Einschaetzungsbogen:
-${criteriaText || '- Allgemeine Foerderung erforderlich'}
+Ermittelte Foerderbedarfe:
+${criteriaText || '- Allgemeine sprachliche und kognitive Foerderung'}
 
-Amtliche Richtlinien-Vorlagen:
-${referenceMeasures}
+Muster-Aufbau (gemaess Berliner Handreichung "Foerdermassnahmen konkret!"):
+IST: ${ref.ist}
+SOLL: ${ref.soll}
+LERNWEG:
+* ${ref.lernweg[0] || 'Gezielte Uebungsformate mit Anschauung'}
+* ${ref.lernweg[1] || 'Regelmaessige Wiederholung im Wochenplan'}
+ABSPRACHEN: Klassenlehrkraft, 2-3x pro Woche im Unterricht
+REFLEXION: Ueberpruefung in 6 Wochen
 
-Aufgabe:
-Erstelle 2 bis 3 praezise, differenzierte Foerderplan-Eintraege im offiziellen 5-Spalten-Format:
-1. IST (konkrete Beobachtung des Kindes)
-2. SOLL (realistisches, erreichbares Foerderziel)
-3. LERNWEG (konkrete methodische Massnahmen und Hilfsmittel fuer den Unterricht)
-4. Absprachen (Wer foerdert? Wie oft? Bis wann?)
-5. Reflexion (Evaluationskriterium)`;
+AUFGABE:
+Formuliere fuer ${normName} 1 bis 2 praezise Foerderplan-Bausteine exakt im obigen Muster-Aufbau (IST, SOLL, LERNWEG, ABSPRACHEN, REFLEXION). Schreibe sachlich und ermutigend ohne Textwiederholungen.`;
 }
 
 /**

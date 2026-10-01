@@ -312,12 +312,15 @@ To ensure full compliance with public administration mandates (including Europea
 ### Historical Changelog
 
 * **v1.4.8 (2026-09-30):**
-  * **Wllama KV-Cache Quantization & Context Window Expansion (4,096 Tokens):**
-    * *Fixed Context Length Ceiling:* Configured `@wllama/wllama` initialization (`loadModelFromHF`) to explicitly set `n_ctx: 4096` (matching `CURRENT_MODEL_CONFIG.contextWindow`), resolving the runtime error `request (1185 tokens) exceeds the available context size (1024 tokens)` triggered when processing extensive pupil observations and multi-criteria diagnostic evaluations.
-    * *KV-Cache 8-Bit Quantization (`cache_type_k: 'q8_0'`, `cache_type_v: 'q8_0'`):* Enabled 8-bit quantization for both Key and Value tensors in the WebAssembly llama.cpp context, cutting KV cache memory consumption by ~50% and protecting 32-bit WebAssembly heap allocations on resource-constrained devices.
-    * *Single-Sequence Concurrency (`n_parallel: 1`):* Pinned execution to single-sequence in-browser inference, preventing unnecessary context slot subdivision.
-    * *Prompt Optimization (`buildLocalModelPrompt`):* Trimmed reference guideline few-shot examples from 4 to 3 high-impact templates, reducing input token volume and halving prompt evaluation (prefill) latency on client CPUs.
-    * *Specification & Transparency:* Updated the interactive `ModelConsentModal` to display the active 4,096-token context window and 8-bit quantized KV cache specifications.
+  * **Wllama bartowski Q8_0 Model Option, Anti-Repetition Sampling & 4,096-Token Context:**
+    * *App Version Display Fix:* Synchronized `APP_VERSION` in `VersionInfoModal.tsx` to `v1.4.8-offline`, resolving the display persistence issue where the navigation and footer retained the v1.4.7 badge.
+    * *bartowski Q8_0 High-Precision GGUF Option:* Integrated `bartowski/Qwen2.5-0.5B-Instruct-GGUF/Qwen2.5-0.5B-Instruct-Q8_0.gguf` (~506 MB) alongside the compact Q4_K_M variant (~397 MB). In 0.5B-parameter models, 8-bit quantization retains 99.5%+ of full precision, preventing degradation and semantic flattening.
+    * *Anti-Repetition Sampling Parameters:* Resolved degenerative repetition loops (infinite repetition of criteria phrasing until hitting max tokens) by configuring `penalty_repeat: 1.18`, `penalty_last_n: 256`, `penalty_freq: 0.3`, `penalty_present: 0.3`, `temperature: 0.6`, and `max_tokens: 450` in `createChatCompletion`.
+    * *Live Streaming Repetition Guard:* Added client-side loop detection to automatically break generation if an identical 30-character phrase repeats consecutively, preventing browser compute freezes.
+    * *Fixed Context Length Ceiling:* Configured `@wllama/wllama` initialization (`loadModelFromHF`) to explicitly set `n_ctx: 4096`, resolving the runtime error `request (1185 tokens) exceeds the available context size (1024 tokens)`.
+    * *KV-Cache 8-Bit Quantization (`cache_type_k: 'q8_0'`, `cache_type_v: 'q8_0'`):* Enabled 8-bit quantization for both Key and Value tensors in the WebAssembly llama.cpp context, cutting KV cache memory consumption by ~50%.
+    * *Suppressed WebGPU Warnings:* Set `n_gpu_layers: 0` in Wllama load parameters to bypass WebGPU adapter polling on unsupported setups, eliminating the `No available adapters` console messages.
+    * *Prompt Optimization (`buildLocalModelPrompt`):* Formatted prompt with a single clear 5-column exemplar, reducing input tokens and prefill latency on client CPUs.
 * **v1.4.7 (2026-09-30):**
   * **Dialog Button & Label Standardization:** Harmonized all modal trigger buttons and tooltips across the top navigation, step headers, and footer to uniform canonical labels: *„Lokale KI (Wllama)“*, *„Richtlinien-Katalog“*, *„Software-Lizenz (GPLv3)“*, *„Förderplan-Manager“*, and *„Versionsinfo“*.
   * **Print & PDF Layout Overhaul & Multi-Page Numbering:**

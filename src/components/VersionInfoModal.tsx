@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.7-offline';
+export const APP_VERSION = 'v1.4.8-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -319,7 +319,7 @@ export const VersionInfoModal: React.FC<Props> = ({
             <div className="space-y-1.5 text-[11px]">
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.8:</span>
-                <span>Wllama KV-Cache Quantisierung & Kontextfenster-Erweiterung (4.096 Tokens): Konfiguration von Wllama zur 8-Bit-Quantisierung des Key-Value-Caches (<code>cache_type_k: 'q8_0'</code>, <code>cache_type_v: 'q8_0'</code>) und Festlegung der Kontextgröße auf 4.096 Tokens (<code>n_ctx: 4096</code>). Behebung des Token-Limit-Fehlers bei der lokalen Generierung von Förderbausteinen in Schritt 3 (Prompt mit ~1.185 Tokens überschritt das vormalige Wllama-Standardlimit von 1.024 Tokens). Straffung des Normalisierten Prompts für ressourcenschonende CPU-Wasm-Inferenz.</span>
+                <span>Wllama bartowski Q8_0 Modell-Option, Anti-Repetitions-Sampling & 4.096 Tokens KV-Cache: Korrektur der Versionsanzeige auf v1.4.8; Bereitstellung des hochpräzisen 8-Bit-GGUF-Modells (bartowski Q8_0, ~506 MB) zur Vermeidung von Sprachverflachung und Wiederholungsschleifen bei 0.5B-Parametern; Konfiguration von Repetition-Penalty (<code>penalty_repeat: 1.18</code>, <code>penalty_freq: 0.3</code>, <code>penalty_present: 0.3</code>, <code>temperature: 0.6</code>, <code>max_tokens: 450</code>) und automatischem Repetition-Guard im Stream gegen Endlosschleifen; Konfiguration des 4.096-Tokens-Kontexts (<code>n_ctx: 4096</code>) mit 8-Bit quantisiertem KV-Cache (<code>cache_type_k: 'q8_0'</code>, <code>cache_type_v: 'q8_0'</code>); Unterdrückung von WebGPU-Adapter-Warnungen via <code>n_gpu_layers: 0</code>.</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.7:</span>

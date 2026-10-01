@@ -153,7 +153,7 @@ export const AiAssistantStep: React.FC<Props> = ({
     try {
       const systemPrompt = `Du bist ein erfahrener Grundschul-Sonderpaedagoge in Berlin. Formuliere konkrete, wuerdevolle und alltagstaugliche Foerderplan-Bausteine gemaess den Berliner Richtlinien "Foerdermassnahmen konkret!". Verwende normalisierte Schreibweise fuer Umlaute (ae, oe, ue, ss), damit Textausgaben optimal lesbar und ressourceneffizient bleiben.`;
 
-      const userPrompt = `${localModelPrompt}\n\nBitte erstelle 2 bis 3 praegnante, differenzierte Foerdermassnahmen im standardisierten 5-Spalten-Format (IST, SOLL, LERNWEG, ABSPRACHEN).`;
+      const userPrompt = localModelPrompt;
 
       await webLlmManager.generateStreaming(systemPrompt, userPrompt, (_delta, fullText) => {
         setGeneratedText(fullText);
@@ -400,10 +400,10 @@ export const AiAssistantStep: React.FC<Props> = ({
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-purple-950 text-sm">
-                  {CURRENT_MODEL_CONFIG.name}
+                  {webLlmManager.getModelConfig().name}
                 </span>
                 <span className="text-[10px] font-mono bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full font-bold">
-                  Wllama Wasm CPU Inferenz
+                  {webLlmManager.getModelConfig().quantization}
                 </span>
               </div>
               <p className="text-xs text-purple-800 leading-relaxed">
@@ -434,7 +434,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               ) : (
                 <span className="flex items-center gap-1.5 text-slate-500">
                   <AlertCircle className="w-4 h-4 text-amber-500" />
-                  Modell noch nicht geladen (~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
+                  Modell noch nicht geladen (~{webLlmManager.getModelConfig().downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
                 </span>
               )}
             </div>
@@ -457,7 +457,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               ) : (
                 <>
                   <DownloadCloud className="w-4 h-4" />
-                  <span>Modell laden / Zustimmen (~{CURRENT_MODEL_CONFIG.downloadSizeMB} MB)</span>
+                  <span>Modell laden / Zustimmen (~{webLlmManager.getModelConfig().downloadSizeMB} MB)</span>
                 </>
               )}
             </button>
