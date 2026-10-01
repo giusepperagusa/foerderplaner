@@ -15,7 +15,7 @@
 
 ## 1. System Overview & Re-creation Prompt
 
-You are tasked with building or recreating the **Förderplan-Assistent Grundschule** from scratch. This application is an entirely client-side, 100% offline-first Progressive Web App (PWA) designed for primary school teachers in Berlin to diagnose learning needs and create legally grounded, pedagogically sound individual support plans (*Förderpläne*) in accordance with official Berlin SEN/School Education guidelines (*Sonderpädagogische Förderung in Berlin* / *Senatsverwaltung für Bildung, Jugend und Familie*).
+You are tasked with building or recreating the **Förderplan-Assistent Grundschule** from scratch. This application is an entirely client-side, 100% offline-first Progressive Web App (PWA) designed for primary school teachers in Berlin to diagnose learning needs and create legally grounded, pedagogically sound individual support plans (*Förderpläne*) in accordance with official Berlin SEN/School Education guidelines (*Sonderpädagogische Förderung in Berlin* / *Senatsverwaltung für Bildung, Jugend und Familie*, Handreichung [„Fördermaßnahmen konkret!“ (PDF-Download)](https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf)).
 
 ### Fundamental Architectural Tenets
 1. **100% Local / Zero Server Dependency:** All data storage (IndexedDB), NLP matching, PDF/print rendering, and optional on-device AI generation must run entirely in the user's browser. No student data, notes, or assessments ever leave the client.
@@ -87,18 +87,22 @@ The application guides the teacher through a streamlined, multi-step process wit
 * Parent consultation documentation (meeting date, participants, notification confirmation).
 
 ### Step 5: Print & PDF Export (`PrintPreviewStep.tsx`)
-* **Official Berlin Template Replication (Pages 82 & 83 of Handreichung „Fördermaßnahmen konkret!“):**
-  * **Page 82 (Front):** Institutional header (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*), legal reference (*§ 19 SopädVO*), 2-column boxed pupil master data and school framework conditions, narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*), and explicit *Seite 1 / 2* footer.
-  * **Page 83 (Form Table & Agreements):** Complete 5-column table (*IST*, *SOLL*, *LERNWEG*, *Absprachen*, *Reflexion*), structured section for *Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich*, conference documentation (*Gesprächsdurchführung*, *Beteiligte*, *Kenntnisnahme*), and three legal signature lines (*Klassenlehrkraft*, *Sonderpädagogin / Schulleitung*, *Erziehungsberechtigte*).
+* **Official Berlin Support Plan Layout (Pages 82 & 83 of Handreichung „Fördermaßnahmen konkret!“):**
+  * **Page 1 (Front / Page 82):** Clean administrative document title (*FÖRDERPLAN*), legal citation (*§ 19 SopädVO Berlin*), school name and school year, 2-column boxed pupil master data and school framework conditions, narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*), and anchored bottom footer. Notice: Institutional header attribution (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*) is deliberately removed from the page header.
+  * **Page 2+ (Form Table, Agreements & Conference / Page 83):** Official 5-column table (*IST*, *SOLL*, *LERNWEG*, *Absprachen*, *Reflexion*), structured section for *Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich*, conference documentation (*Gesprächsdurchführung*, *Beteiligte*, *Kenntnisnahme*), and three legal signature lines (*Klassenlehrkraft*, *Sonderpädagogin / Schulleitung*, *Erziehungsberechtigte*).
+* **Strict Page Footer Anchoring & Pagination Standards:**
+  * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
+  * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via DIN-A4 page container).
+  * **Alignment & Content:**
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.10 • Stand: 11/2018`).
+    * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
 * **DIN 1450 Document Legibility & Pure B&W Print Engine:**
   * **DIN 1450 Typography:** Clean, universally readable sans-serif font stack (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) with an 11pt minimum base font for running text, 10.5pt in tables, and line height calibrated to 1.40–1.45 to prevent visual crowding.
   * **High-Contrast Monochrome Printing:** Suppresses all decorative pastel tints, gray fills, and colored badges in print output; renders razor-sharp `1.5pt solid #000` outer borders and `1pt solid #000` grid rules for optimal photocopy and black-and-white printer reproduction.
   * **Semantic PDF/UA Document Hierarchy:** Structured with strict HTML5 semantic landmarks (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`) ensuring assistive technologies and screen readers can navigate exported vector PDFs logically.
 * **Clean Document Print Styling:**
   * Uses CSS `@page { margin: 0 }` to completely suppress browser-injected header elements (URL, browser page title) and footer elements (system date/time), avoiding clutter.
-  * Internal DIN-A4 page sheet layout container (`.print-document-sheet`) provides physical 12mm/14mm margins for printer hardware.
-  * Clear and consistent page indicators (*Seite 1 / 2* and *Seite 2 / 2*).
-  * Fine print at the document bottom includes the application version immediately after the application name (e.g. `Förderplan-Assistent Berlin 1.4.6 • Dokumentengrundlage: „Fördermaßnahmen konkret!“ Stand 11/2018`).
+  * Internal DIN-A4 page sheet layout container (`.a4-page-sheet`) provides physical 12mm/14mm margins for printer hardware.
 * Single-click browser print dialog triggering high-resolution vector PDF export (*„Formular drucken / PDF“*).
 
 ---
@@ -122,26 +126,35 @@ The application guides the teacher through a streamlined, multi-step process wit
 * **Data Structure (`src/data/richtlinien.json` & `richtlinien.json`):**
   * Contains official Berlin guidelines (*Sonderpädagogische Förderung / Grundschule*).
   * Categorized by developmental areas, diagnosed criteria, recommended standard measures, legal framework references, and documentation requirements.
+  * Direct reference to the official source document: [Senatsverwaltung für Bildung, Jugend und Familie Berlin: Handreichung „Fördermaßnahmen konkret!“ (Stand: 11/2018)](https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf).
 * **Guidelines Manager Modal (`GuidelinesManagerModal.tsx`):**
   * Teachers can view, search, and audit the guidelines currently in memory.
   * Accessible search input with real-time filtering and screen-reader status announcements.
+  * Provides direct links in the header, validator tab, and modal footer to download the official Berlin Senate PDF document (`foerdermassnahmen_konkret.pdf`).
   * Allows updating or importing custom school-specific support catalogues.
 
 ---
 
-## 5. Deployment, PWA & Archive Generation
+## 5. Deployment, PWA, Subpath Publishing & Archive Generation
 
+* **Arbitrary Subpath & Root Publishing (`vite.config.ts`):**
+  * **Configurable & Relative Base Path:** Configured with `base: process.env.VITE_BASE_PATH || process.env.BASE_URL || './'`, defaulting to relative paths (`./`). This allows the application to be hosted at:
+    * The domain root (`https://example.org/` or `https://username.github.io/`)
+    * Any arbitrary subfolder/subpath (e.g. `https://username.github.io/foerderplaner/`, `https://school.domain.de/tools/foerderplan/`, or on a local intranet file path) without requiring hardcoded server-side rewrites.
+  * **Subpath-Safe PWA Manifest & Service Worker Scope:** PWA manifest configured with relative identifier (`id: 'foerderplaner-pwa'`), relative start URL (`start_url: './'`), relative scope (`scope: './'`), and relative icon assets (`pwa-192x192.png`, etc.). The service worker automatically registers at `${BASE_URL}sw.js` with its scope bounded to the hosting subfolder.
+  * **Dynamic Wasm Asset Resolution (`webLlmManager.ts`):** The Wllama WebAssembly engine dynamically resolves `wllama.wasm` relative to `import.meta.env.BASE_URL`, preventing 404 network failures when deployed under subdirectories.
+  * **Subpath-Aware Archive Downloads (`VersionInfoModal.tsx`):** Distribution archive downloads prepend the dynamic base prefix (`import.meta.env.BASE_URL`), guaranteeing that `.tar.gz` packages resolve correctly regardless of the application's mounting point.
 * **Vite + PWA Configuration (`vite.config.ts`):**
-  * Full manifest configuration with maskable icons (`/public/pwa-*.png`).
+  * Full manifest configuration with maskable icons (`pwa-*.png`).
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.9-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.10-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.9-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.9-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.10-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.10-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -311,6 +324,12 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.10 (2026-10-01):**
+  * **Druck- & PDF-Layoutbereinigung, Subpfad-Veröffentlichung & Download-Referenz:**
+    * *Entfernung von Senats-Attributionen:* Sämtliche institutionellen Zuweisungen und Referenztexte des Berliner Senats (*„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* sowie *„Handreichung „Fördermaßnahmen konkret!“ • Anlage Förderplan (S. 82/83)“*) wurden vollständig aus dem Formularkopf der Seite 1 sowie aus den Fußzeilen aller Seiten im Web-Preview und PDF/Druck entfernt.
+    * *Strikte Fußzeilen-Verankerung & Seitennummerierung:* Die Seitennummerierung (*„Seite {current} von {total}“*) befindet sich ausschließlich in der Fußzeile jeder einzelnen Seite, rechtsbündig ausgerichtet. Auf derselben Fußzeilen-Zeile linksbündig stehen die Programmversion und das Datum des Referenzdokuments (*„Förderplan-Assistent Berlin 1.4.10 • Stand: 11/2018“*). Durch `min-h-[297mm]`, Flex-Spaltenlayout und DIN-A4-Druckcontainer ist die Fußzeile immer strikt am physischen unteren Blattrand fixiert und klebt niemals am Textende.
+    * *Machbarkeit & Implementierung beliebiger Subpfad-Veröffentlichungen:* Vollständige Unterstützung für die Bereitstellung unter beliebigen URLs, die nicht mit der Domain-Root übereinstimmen (z. B. GitHub Pages Projektseiten wie `username.github.io/foerderplaner/`, Schulserver unter `/tools/foerderplan/` oder lokale Intranet-Pfade). Realisiert über konfigurierbares `base: process.env.VITE_BASE_PATH || process.env.BASE_URL || './'`, relative PWA-Manifest-Pfade (`scope: './'`, `start_url: './'`, relative Icon-URIs), dynamische Wasm-Asset-Auflösung (`webLlmManager.ts`) und basen-präfixierte Archiv-Downloads (`VersionInfoModal.tsx`).
+    * *Direkte Download-Referenz für das Berliner Senatsdokument:* Ergänzung der offiziellen PDF-Download-URL ([https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf](https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf)) im Richtlinien-Manager (`GuidelinesManagerModal.tsx` in Kopfzeile, Validator-Metadaten und Modal-Footer) sowie in der `README.md`.
 * **v1.4.9 (2026-10-01):**
   * **PWA Immediate Activation, High-Quality 1.5B Model Option & Elimination of Repetitions/Truncations:**
     * *Service Worker Instant Cache Invalidation:* Configured `registerType: 'autoUpdate'` and `workbox.skipWaiting: true` in `vite.config.ts`, ensuring new versions take effect immediately upon deployment and resolving browser persistence of outdated app bundles (e.g. v1.4.7/v1.4.8).

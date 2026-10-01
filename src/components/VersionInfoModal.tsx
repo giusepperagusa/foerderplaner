@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.9-offline';
+export const APP_VERSION = 'v1.4.10-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -193,7 +193,11 @@ export const VersionInfoModal: React.FC<Props> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => handleDownloadArchive(`/${webDistFilename}`, webDistFilename, false)}
+                onClick={() => {
+                  const baseUrl = import.meta.env.BASE_URL || './';
+                  const prefix = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+                  handleDownloadArchive(`${prefix}${webDistFilename}`, webDistFilename, false);
+                }}
                 disabled={downloadingWeb}
                 className="flex items-center justify-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-75 text-white rounded-lg text-xs font-semibold shadow-xs transition cursor-pointer"
               >
@@ -207,7 +211,11 @@ export const VersionInfoModal: React.FC<Props> = ({
 
               <button
                 type="button"
-                onClick={() => handleDownloadArchive(`/${sourceCodeFilename}`, sourceCodeFilename, true)}
+                onClick={() => {
+                  const baseUrl = import.meta.env.BASE_URL || './';
+                  const prefix = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+                  handleDownloadArchive(`${prefix}${sourceCodeFilename}`, sourceCodeFilename, true);
+                }}
                 disabled={downloadingSrc}
                 className="flex items-center justify-center gap-2 px-3 py-2 bg-white hover:bg-slate-100 disabled:opacity-75 text-indigo-950 border border-indigo-300 rounded-lg text-xs font-semibold shadow-xs transition cursor-pointer"
               >
@@ -317,6 +325,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.10:</span>
+                <span>Druck-/PDF-Layoutbereinigung, Subpfad-Veröffentlichung & Download-Referenz: Entfernung sämtlicher Senats-Attributionen aus Formularkopf und -fußzeilen; versions- und dokumentdatierte Seitennummerierung („Seite X von Y“) strikt am unteren Seitenende jeder Seite verankert; vollständige Unterstützung für beliebige Subpfad-/Unterordner-Veröffentlichungen (z. B. GitHub Pages Projektseiten oder Schulportale) via <code>base: './'</code> und <code>VITE_BASE_PATH</code> samt relativer PWA-Manifest- und Wasm-Pfadauflösung; direkter Link zum amtlichen Berliner PDF-Originaldokument (<code>foerdermassnahmen_konkret.pdf</code>) im Richtlinien-Manager und der Dokumentation hinzugefügt.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.9:</span>
                 <span>PWA Sofort-Aktualisierung, 1.5B Modell-Option & Anti-Schleifen-Sampling: Aktivierung von <code>autoUpdate</code> und <code>skipWaiting: true</code> im Service Worker zur zuverlässigen Verhinderung veralteter Caches; Bereitstellung des leistungsstarken Qwen 2.5 1.5B-Modells (~940 MB) für fehlerfreie deutsche Sprachlogik und Differenzierung zwischen IST, SOLL und LERNWEG; Prompt-Restrukturierung mit trennscharfer Abschnittsdefinition gegen Token-Wiederholungen; Konfiguration nativer Sampling-Parameter (<code>temp: 0.6</code>, <code>penalty_repeat: 1.35</code>, <code>penalty_freq: 0.5</code>, <code>penalty_present: 0.4</code>, <code>stop</code>-Token) und intelligenter Stream-Abschluss-Erkennung zur Beseitigung abgeschnittener Schlusssätze.</span>

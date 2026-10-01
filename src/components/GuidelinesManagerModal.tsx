@@ -11,6 +11,7 @@ import {
   RefreshCw,
   Sparkles,
   BookOpen,
+  ExternalLink,
 } from 'lucide-react';
 import richtlinienRaw from '../data/richtlinien.json';
 import {
@@ -148,9 +149,19 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
             </div>
             <div>
               <h2 id="guidelines-modal-title" className="text-base sm:text-lg font-bold">Richtlinien-Manager & Aktualisierungs-Werkzeug</h2>
-              <p className="text-[11px] sm:text-xs text-slate-300">
-                Verwaltung & Normalisierung der amtlichen Handreichung „Fördermaßnahmen konkret!“
-              </p>
+              <div className="flex flex-wrap items-center gap-x-2 text-[11px] sm:text-xs text-slate-300">
+                <span>Handreichung „Fördermaßnahmen konkret!“ (Stand: 11/2018)</span>
+                <span className="text-slate-500">•</span>
+                <a
+                  href="https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-300 hover:text-white underline inline-flex items-center gap-1 font-medium"
+                >
+                  <ExternalLink className="w-3 h-3" />
+                  Original-Dokument (berlin.de PDF)
+                </a>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -489,6 +500,18 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
                     <span className="text-slate-600">{currentData.gueltigAb} (Version {currentData.version})</span>
                   </div>
                   <div>
+                    <span className="font-semibold text-slate-700">Offizielles Senatsdokument (Download):</span>{' '}
+                    <a
+                      href="https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline inline-flex items-center gap-1 font-medium break-all"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                      https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf
+                    </a>
+                  </div>
+                  <div>
                     <span className="font-semibold text-slate-700">Hinweis zur Zeichencodierung:</span>{' '}
                     <p className="text-slate-500 text-[11px] mt-0.5">{currentData.hinweis}</p>
                   </div>
@@ -500,11 +523,23 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
         </div>
 
         {/* Footer */}
-        <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 shrink-0">
-          <span>Stand der Berliner Richtlinien: November 2018 (SenBJF)</span>
+        <div className="px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600 shrink-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span>Stand der Berliner Richtlinien: November 2018 (SenBJF)</span>
+            <span>•</span>
+            <a
+              href="https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline inline-flex items-center gap-1 font-medium"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              Original-PDF herunterladen (berlin.de)
+            </a>
+          </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition cursor-pointer"
+            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition cursor-pointer ml-auto"
           >
             Schließen
           </button>

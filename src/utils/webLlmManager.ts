@@ -299,12 +299,15 @@ class WllamaManager {
 
       const cm = this.getCacheManager();
 
+      const baseUrl = import.meta.env.BASE_URL || './';
+      const wasmPath = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}wllama.wasm`;
+
       // Configure Wllama with local wasm asset and OPFS/IDB cache manager
       this.wllama = new Wllama(
         {
-          default: '/wllama.wasm',
-          'single-thread/wllama.wasm': '/wllama.wasm',
-          'multi-thread/wllama.wasm': '/wllama.wasm',
+          default: wasmPath,
+          'single-thread/wllama.wasm': wasmPath,
+          'multi-thread/wllama.wasm': wasmPath,
         },
         {
           suppressNativeLog: true,
