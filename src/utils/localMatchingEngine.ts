@@ -135,42 +135,39 @@ export function buildLocalModelPrompt(
   selectedCriteria: Array<{ label: string; unterbereich?: string }>,
   proposals: RecommendationProposal[]
 ): string {
-  const normName = normalizeGermanText(profile.name || 'Schueler');
+  const normName = normalizeGermanText(profile.name || 'Das Kind');
   const normKlasse = normalizeGermanText(profile.klasse || 'Grundschule');
-  const normSchwerpunkt = normalizeGermanText(profile.hauptschwerpunkt);
-  const normNotes = normalizeGermanText(profile.ausgangslageNotiz || 'Keine zusaetzlichen Notizen');
+  const normSchwerpunkt = normalizeGermanText(profile.hauptschwerpunkt || 'Lern- und Arbeitsverhalten');
+  const normNotes = normalizeGermanText(profile.ausgangslageNotiz || 'Unterstuetzungsbedarf im Unterricht').trim();
 
-  const criteriaText = selectedCriteria
-    .slice(0, 5)
-    .map((c) => `- ${c.label}`)
-    .join('\n');
+  const criteriaList = selectedCriteria.slice(0, 3).map((c) => normalizeGermanText(c.label));
+  const criteriaStr = criteriaList.length > 0 ? criteriaList.join(', ') : 'Arbeitsorganisation und Ausdauer staerken';
 
-  const ref = proposals[0] || {
-    kategorie: 'Lern- und Arbeitsverhalten',
-    ist: 'Benoetigt klare Strukturierung und Anschauung bei mehrschrittigen Aufgaben.',
-    soll: 'Bearbeitet Arbeitsauftraege in Teilschritten selbststaendig nach Checkliste.',
-    lernweg: ['Visualisierung der Arbeitsschritte mit Piktogrammen', 'Reflexion nach jedem Arbeitsschritt mit der Lehrkraft'],
-  };
+  // Extract concrete recommendation proposals from the official guidelines if available
+  const ref = proposals[0];
+  const refMethod1 = ref?.lernweg?.[0] ? normalizeGermanText(ref.lernweg[0]) : 'Strukturierte Checkliste fuer Teilschritte einsetzen';
+  const refMethod2 = ref?.lernweg?.[1] ? normalizeGermanText(ref.lernweg[1]) : 'Feste visualisierte Zeitfenster und Arbeitsrituale nutzen';
 
-  return `Schuelerdaten:
-- Name: ${normName} (${normKlasse})
-- Foerderschwerpunkt: ${normSchwerpunkt}
-- Beobachtung: ${normNotes}
+  return `Erstelle genau EINEN konkreten Foerderplan-Baustein fuer ${normName} (${normKlasse}, Foerderschwerpunkt: ${normSchwerpunkt}).
 
-Ermittelte Foerderbedarfe:
-${criteriaText || '- Allgemeine sprachliche und kognitive Foerderung'}
+Ausgangslage:
+- Beobachtete Schwierigkeit: ${normNotes}
+- Angestrebtes Zielgebiet: ${criteriaStr}
 
-Muster-Aufbau (gemaess Berliner Handreichung "Foerdermassnahmen konkret!"):
-IST: ${ref.ist}
-SOLL: ${ref.soll}
+Formatiere die Antwort EXAKT nach diesem Schema mit 5 unterschiedlichen Abschnitten:
+
+IST: [1 praeziser Satz zur aktuellen Beobachtung des Kindes im Unterricht]
+SOLL: [1 praeziser Satz zum erreichbaren, konkreten Ziel]
 LERNWEG:
-* ${ref.lernweg[0] || 'Gezielte Uebungsformate mit Anschauung'}
-* ${ref.lernweg[1] || 'Regelmaessige Wiederholung im Wochenplan'}
-ABSPRACHEN: Klassenlehrkraft, 2-3x pro Woche im Unterricht
-REFLEXION: Ueberpruefung in 6 Wochen
+* ${refMethod1}
+* ${refMethod2}
+ABSPRACHEN: Klassenlehrkraft, 2-3x pro Woche im Fachunterricht
+REFLEXION: Ueberpruefung der Zielerreichung nach 6 Wochen
 
-AUFGABE:
-Formuliere fuer ${normName} 1 bis 2 praezise Foerderplan-Bausteine exakt im obigen Muster-Aufbau (IST, SOLL, LERNWEG, ABSPRACHEN, REFLEXION). Schreibe sachlich und ermutigend ohne Textwiederholungen.`;
+REGELN:
+- Jeder Abschnitt muss einen eigenstaendigen Inhalt haben. Kopiere niemals den gleichen Text zwischen IST, SOLL und LERNWEG!
+- Beende die Antwort direkt nach REFLEXION mit einem Punkt.
+- Schreibe keine Erklaerungen, keine Gruesse und keine Zusatzueberschriften.`;
 }
 
 /**

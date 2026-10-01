@@ -42,37 +42,55 @@ export interface ModelOption {
 }
 
 export const AVAILABLE_MODELS: Record<string, ModelOption> = {
+  'qwen2.5-1.5b-q4_k_m': {
+    id: 'Qwen2.5-1.5B-Instruct-Q4_K_M.gguf',
+    name: 'Qwen 2.5 (1.5B Instruct GGUF - Q4_K_M bartowski)',
+    shortName: 'Qwen2.5-1.5B (Empfohlen)',
+    quantization: 'Q4_K_M (4-Bit)',
+    downloadSizeMB: 940,
+    ramRequiredMB: 1200,
+    contextWindow: 4096,
+    kvCacheQuantization: 'q8_0 (8-Bit)',
+    estimatedTimeFast: 'ca. 50–90 Sekunden (WLAN / Breitband)',
+    estimatedTimeSlow: 'ca. 3–5 Minuten (mobiles Internet)',
+    description:
+      'Hervorragendes deutsches Textverständnis mit 1,5 Milliarden Parametern (3-fache Kapazität von 0.5B). Folgt den Abschnitten IST, SOLL und LERNWEG fehlerfrei, verhindert Degenerationen und bietet sprachlich ausgereifte Förderplan-Formulierungen.',
+    hfRepo: 'bartowski/Qwen2.5-1.5B-Instruct-GGUF',
+    hfFile: 'Qwen2.5-1.5B-Instruct-Q4_K_M.gguf',
+    url: 'https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf',
+    isRecommended: true,
+  },
   'qwen2.5-0.5b-q8_0': {
     id: 'Qwen2.5-0.5B-Instruct-Q8_0.gguf',
     name: 'Qwen 2.5 (0.5B Instruct GGUF - Q8_0 bartowski)',
-    shortName: 'Qwen2.5-0.5B-Q8_0 (Empfohlen)',
-    quantization: 'Q8_0 (8-Bit Präzision)',
+    shortName: 'Qwen2.5-0.5B-Q8_0 (Kompakt)',
+    quantization: 'Q8_0 (8-Bit)',
     downloadSizeMB: 506,
     ramRequiredMB: 680,
     contextWindow: 4096,
     kvCacheQuantization: 'q8_0 (8-Bit)',
-    estimatedTimeFast: 'ca. 35–50 Sekunden (WLAN / Breitband)',
+    estimatedTimeFast: 'ca. 30–45 Sekunden (WLAN / Breitband)',
     estimatedTimeSlow: 'ca. 2–3 Minuten (mobiles Internet)',
     description:
-      'Empfohlene 8-Bit-Quantisierung (bartowski). Bietet maximale Sprachpräzision, hervorragende deutsche Satzstrukturen und verhindert Degeneration/Repetitionen bei 0.5B-Modellen nahezu vollständig bei nur ca. 109 MB Mehrdownload.',
+      'Leichtgewichtiges 8-Bit-Modell (~506 MB). Bietet gute Geschwindigkeit auf sparsamer Hardware, verfügt jedoch aufgrund von nur 0,5 Milliarden Parametern über einen begrenzteren deutschen Wortschatz.',
     hfRepo: 'bartowski/Qwen2.5-0.5B-Instruct-GGUF',
     hfFile: 'Qwen2.5-0.5B-Instruct-Q8_0.gguf',
     url: 'https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/Qwen2.5-0.5B-Instruct-Q8_0.gguf',
-    isRecommended: true,
+    isRecommended: false,
   },
   'qwen2.5-0.5b-q4_k_m': {
     id: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
     name: 'Qwen 2.5 (0.5B Instruct GGUF - Q4_K_M)',
-    shortName: 'Qwen2.5-0.5B-Q4_K_M (Kompakt)',
+    shortName: 'Qwen2.5-0.5B-Q4_K_M (Minimal)',
     quantization: 'Q4_K_M (4-Bit)',
     downloadSizeMB: 397,
     ramRequiredMB: 600,
     contextWindow: 4096,
     kvCacheQuantization: 'q8_0 (8-Bit)',
-    estimatedTimeFast: 'ca. 25–45 Sekunden (WLAN / Breitband)',
+    estimatedTimeFast: 'ca. 20–35 Sekunden (WLAN / Breitband)',
     estimatedTimeSlow: 'ca. 2 Minuten (mobiles Internet)',
     description:
-      'Kompaktes 4-Bit-GGUF-Modell für minimale Downloadgröße (~397 MB). Benötigt etwas weniger RAM, neigt bei 0.5B-Parametern ohne Repetition-Penalty jedoch eher zu Wiederholungen.',
+      'Kleinstmögliche Downloadgröße (~397 MB) mit 4-Bit-Quantisierung für extrem ressourcenbeschränkte Umgebungen.',
     hfRepo: 'Qwen/Qwen2.5-0.5B-Instruct-GGUF',
     hfFile: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
     url: 'https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf',
@@ -80,7 +98,7 @@ export const AVAILABLE_MODELS: Record<string, ModelOption> = {
   },
 };
 
-export const DEFAULT_MODEL_KEY = 'qwen2.5-0.5b-q8_0';
+export const DEFAULT_MODEL_KEY = 'qwen2.5-1.5b-q4_k_m';
 
 export function getActiveModelConfig(): ModelOption {
   if (typeof window !== 'undefined') {
@@ -377,20 +395,32 @@ class WllamaManager {
 
     let fullText = '';
 
-    const stream = await this.wllama.createChatCompletion({
+    const stream = await (this.wllama as any).createChatCompletion({
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt },
       ],
       stream: true,
-      temperature: 0.6, // Higher entropy prevents deterministic repetition loops
-      top_p: 0.9,
+      temp: 0.6, // Native llama.cpp sampling temperature
+      temperature: 0.6,
+      top_p: 0.85,
       top_k: 40,
-      penalty_repeat: 1.18, // Active penalty against repeating identical n-grams
-      penalty_last_n: 256, // Context window to look back for repetition
-      penalty_freq: 0.3, // Frequency penalty
-      penalty_present: 0.3, // Presence penalty
-      max_tokens: 450, // Capped to realistic length for fast (15-25s) completion
+      penalty_repeat: 1.35, // Strong penalty against repeating identical n-grams
+      penalty_last_n: 512, // Look back across the full response context
+      penalty_freq: 0.5, // Frequency penalty against repeatedly chosen words
+      penalty_present: 0.4, // Presence penalty encouraging vocabulary variety
+      max_tokens: 420,
+      stop: [
+        '<|im_end|>',
+        '<|endoftext|>',
+        '### Ermutigung',
+        '### Bedeutung',
+        '### Fazit',
+        'Hinweis:',
+        'AUFGABE:',
+        'Schuelerdaten:',
+        'Ausgangslage:',
+      ],
     });
 
     for await (const chunk of stream) {
@@ -399,7 +429,24 @@ class WllamaManager {
         fullText += delta;
         onToken(delta, fullText);
 
-        // Repetition guard: detect if model enters a degenerative loop of the same phrase
+        // Completion guard: once REFLEXION section is generated, detect end of required content
+        const reflexionIdx = fullText.toUpperCase().indexOf('REFLEXION');
+        if (reflexionIdx !== -1) {
+          const afterReflexion = fullText.slice(reflexionIdx);
+          // If the model finishes the REFLEXION sentence and tries to output meta-commentary
+          if (
+            afterReflexion.includes('\n\n') ||
+            afterReflexion.includes('###') ||
+            afterReflexion.toLowerCase().includes('ermutigung') ||
+            afterReflexion.toLowerCase().includes('bedeutung') ||
+            afterReflexion.toLowerCase().includes('fazit')
+          ) {
+            console.log('Finished 5 standard sections, stopping stream cleanly.');
+            break;
+          }
+        }
+
+        // Repetition guard 1: detect degenerate loop of identical adjacent text
         if (fullText.length > 80) {
           const tail = fullText.slice(-60);
           const firstHalf = tail.slice(0, 30);
@@ -409,10 +456,47 @@ class WllamaManager {
             break;
           }
         }
+
+        // Repetition guard 2: detect duplicate sentences across different sections (e.g. copying bullet to IST/SOLL/LERNWEG)
+        const lines = fullText
+          .split('\n')
+          .map((l) => l.trim().toLowerCase())
+          .filter((l) => l.length > 25 && !l.startsWith('ist:') && !l.startsWith('soll:') && !l.startsWith('absp'));
+        const uniqueLines = new Set(lines);
+        if (lines.length - uniqueLines.size >= 1) {
+          console.warn('Cross-section duplicate sentence detected, stopping stream to prevent repetition cascade');
+          break;
+        }
       }
     }
 
-    return fullText;
+    // Clean up trailing commentary or truncated incomplete fragments
+    let cleaned = fullText.trim();
+    if (cleaned.includes('### Ermutigung')) {
+      cleaned = cleaned.split('### Ermutigung')[0].trim();
+    }
+    if (cleaned.includes('### Bedeutung')) {
+      cleaned = cleaned.split('### Bedeutung')[0].trim();
+    }
+    if (cleaned.includes('### Fazit')) {
+      cleaned = cleaned.split('### Fazit')[0].trim();
+    }
+
+    // Prevent truncated dangling half-sentences at the end (e.g. "...aufgesch")
+    const lastPunctuation = Math.max(
+      cleaned.lastIndexOf('.'),
+      cleaned.lastIndexOf('!'),
+      cleaned.lastIndexOf('?')
+    );
+    if (lastPunctuation !== -1 && cleaned.length - lastPunctuation > 10) {
+      const trailing = cleaned.slice(lastPunctuation + 1).trim();
+      // If trailing fragment is incomplete and does not look like a closed bullet or label, trim back to terminal punctuation
+      if (!trailing.endsWith('.') && trailing.split(' ').length < 8) {
+        cleaned = cleaned.slice(0, lastPunctuation + 1).trim();
+      }
+    }
+
+    return cleaned;
   }
 
   public isEngineReady(): boolean {

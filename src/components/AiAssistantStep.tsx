@@ -75,6 +75,8 @@ export const AiAssistantStep: React.FC<Props> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedText, setGeneratedText] = useState<string>('');
   const [generationError, setGenerationError] = useState<string | null>(null);
+  const [insertSuccess, setInsertSuccess] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Compute matched proposals from official guideline database
   const proposals = useMemo(() => {
@@ -149,9 +151,10 @@ export const AiAssistantStep: React.FC<Props> = ({
 
     setIsGenerating(true);
     setGeneratedText('');
+    setInsertSuccess(false);
 
     try {
-      const systemPrompt = `Du bist ein erfahrener Grundschul-Sonderpaedagoge in Berlin. Formuliere konkrete, wuerdevolle und alltagstaugliche Foerderplan-Bausteine gemaess den Berliner Richtlinien "Foerdermassnahmen konkret!". Verwende normalisierte Schreibweise fuer Umlaute (ae, oe, ue, ss), damit Textausgaben optimal lesbar und ressourceneffizient bleiben.`;
+      const systemPrompt = `Du bist ein erfahrener Berliner Sonderpaedagoge fuer Grundschul-Foerderplaene ("Foerdermassnahmen konkret!"). Formuliere praezise, alltagstaugliche Foerderplan-Bausteine mit getrennten Abschnitten (IST, SOLL, LERNWEG, ABSPRACHEN, REFLEXION). Schreibe keine Vorbemerkungen, keine Wiederholungen und keine Schlusskommentare.`;
 
       const userPrompt = localModelPrompt;
 
@@ -170,27 +173,34 @@ export const AiAssistantStep: React.FC<Props> = ({
   const handleInsertGeneratedAsRow = () => {
     if (!generatedText) return;
     
-    // Parse rudimentary sections if possible, else structured row
-    const lines = generatedText.split('\n').filter(l => l.trim().length > 0);
-    const istLine = lines.find(l => l.toUpperCase().includes('IST')) || lines[0] || 'Beobachtung gemäß lokaler Analyse';
-    const sollLine = lines.find(l => l.toUpperCase().includes('SOLL')) || lines[1] || 'Förderziel gemäß Empfehlung';
-    const lernwegLines = lines.filter(l => l.toUpperCase().includes('LERNWEG') || l.startsWith('-') || l.startsWith('*'));
+    // Parse the 5 sections from generated text
+    const lines = generatedText.split('\n').map((l) => l.trim()).filter((l) => l.length > 0);
+    const istLine = lines.find((l) => l.toUpperCase().includes('IST')) || 'Schwierigkeiten bei Konzentration und Aufgabenorganisation.';
+    const sollLine = lines.find((l) => l.toUpperCase().includes('SOLL')) || 'Steigert Ausdauer und Konzentration bei Arbeitsaufträgen.';
+    const absprachenLine = lines.find((l) => l.toUpperCase().includes('ABSPRACHEN'));
+    const reflexionLine = lines.find((l) => l.toUpperCase().includes('REFLEXION'));
+    const lernwegLines = lines.filter((l) => l.startsWith('*') || l.startsWith('-') || l.startsWith('•'));
     
     const newRow: PlanRow = {
       id: `gen-${Date.now()}`,
       bereich: profile.hauptschwerpunkt || 'Lernen',
       kategorie: 'KI-Vorschlag (Lokal)',
-      ist: istLine.replace(/^.*IST[:\-]?\s*/i, '').trim(),
-      soll: sollLine.replace(/^.*SOLL[:\-]?\s*/i, '').trim(),
+      ist: istLine.replace(/^.*IST[:\-]?\s*/i, '').replace(/^[#*\s]+/, '').trim(),
+      soll: sollLine.replace(/^.*SOLL[:\-]?\s*/i, '').replace(/^[#*\s]+/, '').trim(),
       lernweg: lernwegLines.length > 0 
-        ? lernwegLines.map(l => l.replace(/^[-*]\s*/, '').trim()).join('\n• ') 
-        : generatedText.slice(0, 200),
-      absprachen: `Klassenlehrkraft • Umsetzung im Unterricht • Prüfung in 8 Wochen`,
-      reflexion: '',
+        ? lernwegLines.map((l) => l.replace(/^[-*•]\s*/, '').trim()).join('\n• ') 
+        : 'Visuelle Strukturierungshilfen und schrittweise Aufgabenbearbeitung',
+      absprachen: absprachenLine 
+        ? absprachenLine.replace(/^.*ABSPRACHEN[:\-]?\s*/i, '').trim() 
+        : 'Klassenlehrkraft, 2-3x pro Woche im Unterricht',
+      reflexion: reflexionLine 
+        ? reflexionLine.replace(/^.*REFLEXION[:\-]?\s*/i, '').trim() 
+        : 'Gemeinsame Reflexion und Auswertung nach 6 Wochen',
     };
 
     onAddPlanRow(newRow);
-    alert('Der KI-Vorschlag wurde erfolgreich in Ihren Förderplan übernommen!');
+    setInsertSuccess(true);
+    setTimeout(() => setInsertSuccess(false), 3500);
   };
 
   const filteredProposals = proposals.filter((p) => {
@@ -496,23 +506,42 @@ export const AiAssistantStep: React.FC<Props> = ({
               </div>
 
               {!isGenerating && generatedText && (
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(generatedText);
-                      alert('Text in Zwischenablage kopiert!');
-                    }}
-                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition cursor-pointer"
-                  >
-                    Text kopieren
-                  </button>
-                  <button
-                    onClick={handleInsertGeneratedAsRow}
-                    className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
-                  >
-                    <PlusCircle className="w-3.5 h-3.5" />
-                    <span>In Förderplan übernehmen</span>
-                  </button>
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
+                  <div className="flex items-center gap-2">
+                    {insertSuccess && (
+                      <span className="text-emerald-400 text-xs font-semibold flex items-center gap-1 bg-emerald-950/60 border border-emerald-800/80 px-2.5 py-1 rounded-lg">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                        In Förderplan übernommen!
+                      </span>
+                    )}
+                    {copySuccess && (
+                      <span className="text-blue-300 text-xs font-semibold flex items-center gap-1 bg-blue-950/60 border border-blue-800/80 px-2.5 py-1 rounded-lg">
+                        <Check className="w-3.5 h-3.5 text-blue-400" />
+                        In Zwischenablage kopiert!
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedText);
+                        setCopySuccess(true);
+                        setTimeout(() => setCopySuccess(false), 2500);
+                      }}
+                      className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition cursor-pointer"
+                    >
+                      Text kopieren
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleInsertGeneratedAsRow}
+                      className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <PlusCircle className="w-3.5 h-3.5" />
+                      <span>In Förderplan übernehmen</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

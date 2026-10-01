@@ -136,12 +136,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.8-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.9-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.8-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.8-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.9-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.9-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -311,6 +311,13 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.9 (2026-10-01):**
+  * **PWA Immediate Activation, High-Quality 1.5B Model Option & Elimination of Repetitions/Truncations:**
+    * *Service Worker Instant Cache Invalidation:* Configured `registerType: 'autoUpdate'` and `workbox.skipWaiting: true` in `vite.config.ts`, ensuring new versions take effect immediately upon deployment and resolving browser persistence of outdated app bundles (e.g. v1.4.7/v1.4.8).
+    * *High-Quality 1.5B Parameter Model (`qwen2.5-1.5b-q4_k_m`):* Added `bartowski/Qwen2.5-1.5B-Instruct-GGUF` (~940 MB) as the recommended model. 1.5B parameters provide three times the linguistic and reasoning capacity of 0.5B models, properly understanding the semantic distinctions between IST, SOLL, and LERNWEG and eliminating hallucinated vocabulary.
+    * *Prompt Guidance Disambiguation (`buildLocalModelPrompt`):* Completely overhauled local prompt structuring to strictly define the role and content of each section (IST: observation; SOLL: achievable goal; LERNWEG: pedagogical methods from official guideline; ABSPRACHEN: agreements; REFLEXION: timeline). Removed ambiguous keywords like *„ermutigend“* which small models confused for section headers.
+    * *Native Sampling Parameters & Stop Tokens:* Configured native llama.cpp parameters (`temp: 0.6`, `temperature: 0.6`, `penalty_repeat: 1.35`, `penalty_last_n: 512`, `penalty_freq: 0.5`, `penalty_present: 0.4`, `n_predict: 420`) and explicit stop tokens (`### Ermutigung`, `### Fazit`, `Hinweis:`, `<|im_end|>`) to prevent generation drift.
+    * *Stream Completion & Truncation Guard:* Implemented completion detection following the `REFLEXION` section to stop generation cleanly, and added terminal punctuation cleanup so generated text never ends on cut-off half-words.
 * **v1.4.8 (2026-09-30):**
   * **Wllama bartowski Q8_0 Model Option, Anti-Repetition Sampling & 4,096-Token Context:**
     * *App Version Display Fix:* Synchronized `APP_VERSION` in `VersionInfoModal.tsx` to `v1.4.8-offline`, resolving the display persistence issue where the navigation and footer retained the v1.4.7 badge.

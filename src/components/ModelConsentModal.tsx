@@ -187,7 +187,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
               <Sparkles className="w-4 h-4 text-indigo-600" />
               Modell-Auswahl & Quantisierung:
             </span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {Object.entries(AVAILABLE_MODELS).map(([key, model]) => {
                 const isSelected = selectedKey === key;
                 return (

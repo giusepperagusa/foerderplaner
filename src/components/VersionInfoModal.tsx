@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.8-offline';
+export const APP_VERSION = 'v1.4.9-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -317,6 +317,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.9:</span>
+                <span>PWA Sofort-Aktualisierung, 1.5B Modell-Option & Anti-Schleifen-Sampling: Aktivierung von <code>autoUpdate</code> und <code>skipWaiting: true</code> im Service Worker zur zuverlässigen Verhinderung veralteter Caches; Bereitstellung des leistungsstarken Qwen 2.5 1.5B-Modells (~940 MB) für fehlerfreie deutsche Sprachlogik und Differenzierung zwischen IST, SOLL und LERNWEG; Prompt-Restrukturierung mit trennscharfer Abschnittsdefinition gegen Token-Wiederholungen; Konfiguration nativer Sampling-Parameter (<code>temp: 0.6</code>, <code>penalty_repeat: 1.35</code>, <code>penalty_freq: 0.5</code>, <code>penalty_present: 0.4</code>, <code>stop</code>-Token) und intelligenter Stream-Abschluss-Erkennung zur Beseitigung abgeschnittener Schlusssätze.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.8:</span>
                 <span>Wllama bartowski Q8_0 Modell-Option, Anti-Repetitions-Sampling & 4.096 Tokens KV-Cache: Korrektur der Versionsanzeige auf v1.4.8; Bereitstellung des hochpräzisen 8-Bit-GGUF-Modells (bartowski Q8_0, ~506 MB) zur Vermeidung von Sprachverflachung und Wiederholungsschleifen bei 0.5B-Parametern; Konfiguration von Repetition-Penalty (<code>penalty_repeat: 1.18</code>, <code>penalty_freq: 0.3</code>, <code>penalty_present: 0.3</code>, <code>temperature: 0.6</code>, <code>max_tokens: 450</code>) und automatischem Repetition-Guard im Stream gegen Endlosschleifen; Konfiguration des 4.096-Tokens-Kontexts (<code>n_ctx: 4096</code>) mit 8-Bit quantisiertem KV-Cache (<code>cache_type_k: 'q8_0'</code>, <code>cache_type_v: 'q8_0'</code>); Unterdrückung von WebGPU-Adapter-Warnungen via <code>n_gpu_layers: 0</code>.</span>
