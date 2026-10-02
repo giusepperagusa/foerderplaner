@@ -89,28 +89,30 @@ The application guides the teacher through a streamlined, multi-step process wit
 ### Step 5: Print & PDF Export (`PrintPreviewStep.tsx`)
 * **Official Berlin Support Plan Layout (Pages 82 & 83 of Handreichung „Fördermaßnahmen konkret!“):**
   * **Page 1 (Front / Page 82):**
-    * *School Indication:* Strictly positioned in the upper right corner of the first page (`absolute right-0 top-0`).
-    * *Centered Document Header:* The title *„F Ö R D E R P L A N“* and legal subtitle (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) are centered across the upper part of the first page.
+    * *School Indication:* Positioned in the upper right corner of the first page.
+    * *Centered Document Header:* The title *„F Ö R D E R P L A N“* and legal subtitle (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) are mathematically centered across the entire page width using a balanced 3-column CSS Grid (`grid-cols-[1fr_auto_1fr]`), preventing any horizontal displacement from the school indication on the right.
     * *Attribution Removal:* Institutional header attribution (*Senatsverwaltung für Bildung, Jugend und Familie Berlin*) is deliberately removed from the page header.
-    * *Content:* 2-column boxed pupil master data and school framework conditions, narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*), and bottom-anchored footer.
+    * *Content:* 2-column boxed pupil master data and school framework conditions, narrative section for baseline status & resources (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*), and bottom-anchored footer with guaranteed vertical headroom.
   * **Page 2+ (Form Table, Agreements & Conference / Page 83):** Official 5-column table (*IST*, *SOLL*, *LERNWEG*, *Absprachen*, *Reflexion*), structured section for *Weitere Vereinbarungen / Kooperationen & Nachteilsausgleich*, conference documentation (*Gesprächsdurchführung*, *Beteiligte*, *Kenntnisnahme*), and three legal signature lines (*Klassenlehrkraft*, *Sonderpädagogin / Schulleitung*, *Erziehungsberechtigte*).
 * **Guaranteed Footer Protection & Continuation-Aware Pagination:**
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
-  * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via DIN-A4 page container).
+  * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.11 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.12 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
     * When measures exceed 1 detailed entry, Sections 3 (Agreements) and 4 (Conference & Signatures) automatically move to their own dedicated continuation page.
     * Every continuation page begins with an explicit continuation line and section label explaining what section it belongs to (e.g. *„Förderplan • Fortsetzung von Seite X: 3. Weitere Vereinbarungen & 4. Gesprächsdurchführung / Kenntnisnahme“*).
 * **DIN 1450 Document Legibility & Pure B&W Print Engine:**
-  * **DIN 1450 Typography:** Clean, universally readable sans-serif font stack (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) with an 11pt minimum base font for running text, 10.5pt in tables, and line height calibrated to 1.40 to prevent visual crowding.
+  * **DIN 1450 Typography:** Clean, universally readable sans-serif font stack (`Arial`, `Helvetica`, `Nimbus Sans L`, `sans-serif`) with an 10.5pt base font for running text and tables, and line height calibrated to 1.35 to prevent visual crowding.
   * **High-Contrast Monochrome Printing:** Suppresses all decorative pastel tints, gray fills, and colored badges in print output; renders razor-sharp `1.5pt solid #000` outer borders and `1pt solid #000` grid rules for optimal photocopy and black-and-white printer reproduction.
   * **Semantic PDF/UA Document Hierarchy:** Structured with strict HTML5 semantic landmarks (`<article>`, `<header>`, `<h1>`, `<section>`, `<h2>`, `<dl>`, `<table role="table">`, `<caption>`, `<th scope="col">`) ensuring assistive technologies and screen readers can navigate exported vector PDFs logically.
 * **Clean Document Print Styling:**
   * Uses CSS `@page { margin: 0 }` to completely suppress browser-injected header elements (URL, browser page title) and footer elements (system date/time), avoiding clutter.
-  * Internal DIN-A4 page sheet layout container (`.a4-page-sheet`) enforces physical DIN-A4 dimensions (`height: 297mm; max-height: 297mm; overflow: hidden; page-break-inside: avoid;`).
+  * Internal DIN-A4 page sheet layout container (`.a4-page-sheet`) enforces physical DIN-A4 dimensions with a calibrated 295mm buffer (`height: 295mm; min-height: 295mm; max-height: 295mm; overflow: hidden; page-break-inside: avoid;`).
+  * Root wrapper resets suppress all outer padding and screen margins on `#root`, `<main>`, and `.space-y-6`.
+  * Standard adjacent-sibling page breaks (`.a4-page-sheet + .a4-page-sheet { page-break-before: always; }`) guarantee that exactly one clean page break occurs between pages, completely preventing empty intermediate pages or trailing blank pages at the end of the document.
 * Single-click browser print dialog triggering high-resolution vector PDF export (*„Formular drucken / PDF“*).
 
 ---
@@ -157,7 +159,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.11-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.12-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
@@ -332,18 +334,23 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.12 (2026-10-02):**
+  * **Centered Header Title & Elimination of Overflow Pages:**
+    * *Mathematically Centered Title & Subtitle:* Restructured Page 1 header using a balanced 3-column CSS Grid (`grid-cols-[1fr_auto_1fr]`). The document title *„F Ö R D E R P L A N“* and legal subtitle (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) are now strictly centered across the entire physical page width, completely preventing the school indication on the upper right from pushing the centered title to the left.
+    * *Page 1 Footer Overflow Fix:* Calibrated DIN-A4 page sheet height to 295mm (`min-height: 295mm; max-height: 295mm; box-sizing: border-box`), suppressed outer margins/padding on `#root`, `<main>`, and `space-y-*` containers during print, and applied compact padding (`print:p-2`, `print:space-y-1.5`) to Section 1 master data and baseline notes. This provides generous vertical headroom on Page 1, ensuring the first-page footer never slips beyond the end of the page onto an empty second page.
+    * *Elimination of Final Blank Page:* Replaced conflicting `break-after` and `break-before` CSS rules with standard adjacent-sibling page breaks (`.a4-page-sheet + .a4-page-sheet { break-before: page; }`) and explicit trailing break suppression (`.a4-page-sheet:last-of-type { break-after: avoid; }`). This guarantees that exactly one page break occurs between consecutive sheets and completely eliminates extraneous blank overflow pages.
 * **v1.4.11 (2026-10-01):**
-  * **Formularkopf-Optimierung & Überlaufgeschützte Paginierung:**
-    * *Schulangabe oben rechts:* Die Schulbezeichnung und das Schuljahr wurden strikt in der oberen rechten Ecke der ersten Seite (`absolute right-0 top-0`) platziert.
-    * *Zentrierter Dokumententitel:* Der Titel *„F Ö R D E R P L A N“* und der gesetzliche Verweis (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) sind zentriert über die gesamte obere Breite der ersten Seite ausgerichtet.
-    * *Überlaufgeschützte Paginierung:* Um sicherzustellen, dass die Fußzeile auf jeder einzelnen Seite niemals über das DIN-A4-Blattende (297 mm) hinausgeschoben wird, limitiert die Paginierungs-Engine Rastereinträge auf maximal 2 pro Seite. Bei mehr als einem detaillierten Eintrag werden die Abschnitte 3 (Weitere Vereinbarungen) und 4 (Gesprächsnachweis & Unterschriften) automatisch auf eine eigene Fortsetzungsseite umgebrochen.
-    * *Explizite Fortsetzungsbanner:* Jede Folgeseite verfügt über eine klare, prominente Fortsetzungszeile mit Kennzeichnung der zugehörigen Abschnitte (z. B. *„Förderplan • Fortsetzung von Seite X: 3. Weitere Vereinbarungen & 4. Gesprächsdurchführung / Kenntnisnahme“*).
+  * **Form Header Optimization & Overflow-Protected Pagination:**
+    * *School Indication in Upper Right:* Positioned the school name and school year in the upper right corner of the first page.
+    * *Centered Document Title:* Anchored the title *„F Ö R D E R P L A N“* and statutory reference (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) across the upper region of the first page.
+    * *Overflow-Protected Pagination:* Restricted measure table entries to a maximum of 2 rows per page to prevent footers from slipping past the DIN A4 boundary (297 mm). When multiple detailed entries exist, Section 3 (*Weitere Vereinbarungen*) and Section 4 (*Gesprächsdurchführung & Unterschriften*) automatically break onto their own continuation page.
+    * *Explicit Continuation Banners:* Added explicit continuation headers to all subsequent pages explaining which section they continue (e.g., *„Förderplan • Fortsetzung von Seite X: 3. Weitere Vereinbarungen & 4. Gesprächsdurchführung / Kenntnisnahme“*).
 * **v1.4.10 (2026-10-01):**
-  * **Druck- & PDF-Layoutbereinigung, Subpfad-Veröffentlichung & Download-Referenz:**
-    * *Entfernung von Senats-Attributionen:* Sämtliche institutionellen Zuweisungen und Referenztexte des Berliner Senats (*„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* sowie *„Handreichung „Fördermaßnahmen konkret!“ • Anlage Förderplan (S. 82/83)“*) wurden vollständig aus dem Formularkopf der Seite 1 sowie aus den Fußzeilen aller Seiten im Web-Preview und PDF/Druck entfernt.
-    * *Strikte Fußzeilen-Verankerung & Seitennummerierung:* Die Seitennummerierung (*„Seite {current} von {total}“*) befindet sich ausschließlich in der Fußzeile jeder einzelnen Seite, rechtsbündig ausgerichtet. Auf derselben Fußzeilen-Zeile linksbündig stehen die Programmversion und das Datum des Referenzdokuments (*„Förderplan-Assistent Berlin 1.4.10 • Stand: 11/2018“*). Durch `min-h-[297mm]`, Flex-Spaltenlayout und DIN-A4-Druckcontainer ist die Fußzeile immer strikt am physischen unteren Blattrand fixiert und klebt niemals am Textende.
-    * *Machbarkeit & Implementierung beliebiger Subpfad-Veröffentlichungen:* Vollständige Unterstützung für die Bereitstellung unter beliebigen URLs, die nicht mit der Domain-Root übereinstimmen (z. B. GitHub Pages Projektseiten wie `username.github.io/foerderplaner/`, Schulserver unter `/tools/foerderplan/` oder lokale Intranet-Pfade). Realisiert über konfigurierbares `base: process.env.VITE_BASE_PATH || process.env.BASE_URL || './'`, relative PWA-Manifest-Pfade (`scope: './'`, `start_url: './'`, relative Icon-URIs), dynamische Wasm-Asset-Auflösung (`webLlmManager.ts`) und basen-präfixierte Archiv-Downloads (`VersionInfoModal.tsx`).
-    * *Direkte Download-Referenz für das Berliner Senatsdokument:* Ergänzung der offiziellen PDF-Download-URL ([https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf](https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf)) im Richtlinien-Manager (`GuidelinesManagerModal.tsx` in Kopfzeile, Validator-Metadaten und Modal-Footer) sowie in der `README.md`.
+  * **Print & PDF Layout Cleanup, Subpath Publishing & Download Reference:**
+    * *Removal of Senate Attributions:* Completely removed institutional attributions and reference text referring to the Berlin Senate (*„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* and *„Handreichung „Fördermaßnahmen konkret!“ • Anlage Förderplan (S. 82/83)“*) from the Page 1 header and all page footers in web preview and PDF/print export.
+    * *Strict Footer Anchoring & Page Numbering:* Relocated page numbers (*„Seite {current} von {total}“*) exclusively to the right side of the bottom footer on every page. Anchored program version and reference document date (*„Förderplan-Assistent Berlin 1.4.10 • Stand: 11/2018“*) on the left side of the same footer line, firmly fixed at the physical bottom margin.
+    * *Arbitrary Subpath & Subfolder Publishing:* Implemented full support for deploying under arbitrary URLs differing from the domain root (e.g., GitHub Pages project repositories `username.github.io/foerderplaner/`, school portals under `/tools/foerderplan/`, or local intranet paths) via configurable `base: process.env.VITE_BASE_PATH || process.env.BASE_URL || './'`, relative PWA manifest paths (`scope: './'`, `start_url: './'`, relative icon URIs), dynamic Wasm asset resolution (`webLlmManager.ts`), and base-prefixed archive downloads (`VersionInfoModal.tsx`).
+    * *Direct Download Reference for Official Berlin Senate Document:* Integrated direct PDF download links to the official guidelines document ([foerdermassnahmen_konkret.pdf](https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf)) within the Guidelines Manager (`GuidelinesManagerModal.tsx` in header, validator metadata, and footer) as well as the `README.md`.
 * **v1.4.9 (2026-10-01):**
   * **PWA Immediate Activation, High-Quality 1.5B Model Option & Elimination of Repetitions/Truncations:**
     * *Service Worker Instant Cache Invalidation:* Configured `registerType: 'autoUpdate'` and `workbox.skipWaiting: true` in `vite.config.ts`, ensuring new versions take effect immediately upon deployment and resolving browser persistence of outdated app bundles (e.g. v1.4.7/v1.4.8).

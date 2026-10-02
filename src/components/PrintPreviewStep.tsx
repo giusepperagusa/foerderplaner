@@ -327,7 +327,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
   );
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6 max-w-5xl mx-auto print:space-y-0 print:m-0 print:p-0 print:w-full print:max-w-none">
       
       {/* Action Toolbar (Screen only - hidden during print) */}
       <div className="print:hidden bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -381,96 +381,104 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
               aria-labelledby="foerderplan-header-title" 
               className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none"
             >
-              <div className="flex-1 flex flex-col space-y-4">
+              <div className="flex-1 flex flex-col space-y-3 sm:space-y-4 print:space-y-2.5">
                 
                 {/* Header Bar:
                     - School indication placed strictly in the upper right
-                    - Title "F Ö R D E R P L A N" and legal subtitle centered in the upper part
+                    - Title "F Ö R D E R P L A N" and legal subtitle centered mathematically across the entire width
                 */}
-                <header role="banner" className="border-b-2 border-black pb-2.5 relative">
-                  {/* School indication in the upper right corner */}
-                  <div className="absolute right-0 top-0 text-right text-xs leading-tight text-black">
-                    <span className="font-semibold block text-xs">{planDoc.profil.schule || 'Grundschule (Schule)'}</span>
-                    <span className="text-[11px] text-neutral-800">
-                      Schuljahr {new Date().getFullYear()}/{new Date().getFullYear() + 1}
-                    </span>
-                  </div>
+                <header role="banner" className="border-b-2 border-black pb-2">
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-2">
+                    {/* Left balance placeholder matching right column width to guarantee true mathematical center */}
+                    <div aria-hidden="true" className="invisible select-none">
+                      <span className="block text-xs font-semibold">&nbsp;</span>
+                      <span className="text-[11px]">&nbsp;</span>
+                    </div>
 
-                  {/* Centered Title and Subtitle */}
-                  <div className="text-center pt-1 px-16 sm:px-20">
-                    <h1 id="foerderplan-header-title" className="text-2xl sm:text-3xl font-black tracking-wider uppercase text-black font-sans">
-                      F Ö R D E R P L A N
-                    </h1>
-                    <p className="text-xs text-neutral-800 italic mt-0.5">
-                      gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin
-                    </p>
+                    {/* Mathematically Centered Title and Subtitle */}
+                    <div className="text-center px-1">
+                      <h1 id="foerderplan-header-title" className="text-2xl sm:text-3xl print:text-2xl font-black tracking-widest uppercase text-black font-sans m-0 leading-tight">
+                        F Ö R D E R P L A N
+                      </h1>
+                      <p className="text-xs text-neutral-800 italic mt-0.5 m-0 leading-tight">
+                        gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin
+                      </p>
+                    </div>
+
+                    {/* School indication strictly in the upper right corner */}
+                    <div className="text-right text-xs leading-tight text-black">
+                      <span className="font-semibold block text-xs">{planDoc.profil.schule || 'Grundschule (Schule)'}</span>
+                      <span className="text-[11px] text-neutral-800">
+                        Schuljahr {new Date().getFullYear()}/{new Date().getFullYear() + 1}
+                      </span>
+                    </div>
                   </div>
                 </header>
 
                 {/* Formular-Abschnitt 1: Schülerdaten und Rahmenbedingungen (Page 82 Formularblock) */}
                 <section aria-labelledby="section-1-heading" className="border border-black font-sans">
-                  <h2 id="section-1-heading" className="bg-neutral-100 print:bg-white font-bold px-3 py-1.5 border-b border-black text-xs uppercase tracking-wide text-black">
+                  <h2 id="section-1-heading" className="bg-neutral-100 print:bg-white font-bold px-3 py-1.5 print:py-1 border-b border-black text-xs uppercase tracking-wide text-black">
                     1. Angaben zur Schülerin / zum Schüler und Rahmenbedingungen
                   </h2>
                   
-                  <dl className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-black m-0">
+                  <dl className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 divide-y md:divide-y-0 md:divide-x print:divide-y-0 print:divide-x divide-black m-0">
                     {/* Left Column */}
-                    <div className="p-3 space-y-2.5">
+                    <div className="p-3 print:p-2 space-y-2 print:space-y-1.5 text-xs sm:text-sm print:text-xs">
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[140px] text-black">Name / Kennung:</dt>
-                        <dd className="font-bold text-sm text-black flex-1 border-b border-black pb-0.5 m-0">
+                        <dt className="font-bold min-w-[130px] sm:min-w-[140px] print:min-w-[130px] text-black">Name / Kennung:</dt>
+                        <dd className="font-bold text-sm print:text-xs text-black flex-1 border-b border-black pb-0.5 m-0 truncate">
                           {planDoc.profil.name || '_______________________________'}
                         </dd>
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[140px] text-black">Geburtsdatum:</dt>
+                        <dt className="font-bold min-w-[130px] sm:min-w-[140px] print:min-w-[130px] text-black">Geburtsdatum:</dt>
                         <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                           {planDoc.profil.geburtsdatum || '_______________________________'}
                         </dd>
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[140px] text-black">Klasse / Lerngruppe:</dt>
+                        <dt className="font-bold min-w-[130px] sm:min-w-[140px] print:min-w-[130px] text-black">Klasse / Lerngruppe:</dt>
                         <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                           {planDoc.profil.klasse || '_______________________________'}
                         </dd>
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[140px] text-black">Erziehungsberechtigte:</dt>
-                        <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
+                        <dt className="font-bold min-w-[130px] sm:min-w-[140px] print:min-w-[130px] text-black">Erziehungsberechtigte:</dt>
+                        <dd className="text-black flex-1 border-b border-black pb-0.5 m-0 truncate">
                           {planDoc.profil.erziehungsberechtigte || '_______________________________'}
                         </dd>
                       </div>
                     </div>
 
                     {/* Right Column */}
-                    <div className="p-3 space-y-2.5">
+                    <div className="p-3 print:p-2 space-y-2 print:space-y-1.5 text-xs sm:text-sm print:text-xs">
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[150px] text-black">Förderschwerpunkt:</dt>
-                        <dd className="font-bold text-black flex-1 border-b border-black pb-0.5 m-0">
+                        <dt className="font-bold min-w-[140px] sm:min-w-[150px] print:min-w-[135px] text-black">Förderschwerpunkt:</dt>
+                        <dd className="font-bold text-black flex-1 border-b border-black pb-0.5 m-0 truncate">
                           {planDoc.profil.hauptschwerpunkt}
                           {planDoc.profil.weitererSchwerpunkt && ` / ${planDoc.profil.weitererSchwerpunkt}`}
                         </dd>
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[150px] text-black">Förderzeitraum:</dt>
+                        <dt className="font-bold min-w-[140px] sm:min-w-[150px] print:min-w-[135px] text-black">Förderzeitraum:</dt>
                         <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
                           {planDoc.profil.zeitraumVon || '______'} bis {planDoc.profil.zeitraumBis || '______'}
                         </dd>
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[150px] text-black">Klassenlehrkraft:</dt>
-                        <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
+                        <dt className="font-bold min-w-[140px] sm:min-w-[150px] print:min-w-[135px] text-black">Klassenlehrkraft:</dt>
+                        <dd className="text-black flex-1 border-b border-black pb-0.5 m-0 truncate">
                           {planDoc.profil.lehrkraft || '_______________________________'}
                         </dd>
                       </div>
 
                       <div className="flex items-baseline gap-2">
-                        <dt className="font-bold min-w-[150px] text-black">Status der Planung:</dt>
+                        <dt className="font-bold min-w-[140px] sm:min-w-[150px] print:min-w-[135px] text-black">Status der Planung:</dt>
                         <dd className="text-black flex-1 border-b border-black pb-0.5 uppercase font-semibold text-xs m-0">
                           {planDoc.status === 'abgeschlossen' ? '[X] Abgeschlossen & Genehmigt' : '[X] Laufender Förderplan-Entwurf'}
                         </dd>
@@ -479,11 +487,11 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
                   </dl>
 
                   {/* Ausgangslage & Ressourcen (Page 82 narrative block) */}
-                  <div className="border-t border-black p-3 bg-neutral-50/50 print:bg-white">
+                  <div className="border-t border-black p-3 print:p-2 bg-neutral-50/50 print:bg-white text-xs sm:text-sm print:text-xs">
                     <span className="font-bold text-black block mb-1 text-xs uppercase tracking-wide">
                       Ausgangslage, Ressourcen & bisherige Förderergebnisse (IST-Stand):
                     </span>
-                    <p className="text-xs sm:text-sm text-black whitespace-pre-line leading-relaxed min-h-[40px] m-0">
+                    <p className="text-xs text-black whitespace-pre-line leading-relaxed min-h-[35px] print:min-h-[25px] m-0">
                       {planDoc.profil.ausgangslageNotiz || 
                         'Das Kind verfügt über positive Motivation in handlungsorientierten Lernsituationen. Die Förderplanung zielt auf eine gezielte Stabilisierung der Kulturtechniken und des Arbeitsverhaltens.'}
                     </p>
@@ -501,7 +509,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           return (
             <section
               key={`page-${currentPage}`}
-              className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none page-break-before"
+              className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none"
             >
               <div className="flex-1 flex flex-col space-y-3 sm:space-y-4">
                 {/* Section 2 Header */}
@@ -528,7 +536,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           return (
             <section
               key={`page-${currentPage}`}
-              className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none page-break-before"
+              className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none"
             >
               <div className="flex-1 flex flex-col space-y-3">
                 {/* Section 2 Header with explicit continuation line if continuing from previous page */}
@@ -564,7 +572,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           return (
             <section
               key={`page-${currentPage}`}
-              className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none page-break-before"
+              className="a4-page-sheet bg-white rounded-2xl border border-slate-300 p-8 sm:p-10 shadow-md text-black font-sans text-xs sm:text-sm leading-normal flex flex-col justify-between min-h-[297mm] mb-8 print:mb-0 print:border-none print:shadow-none print:rounded-none"
             >
               <div className="flex-1 flex flex-col space-y-3 sm:space-y-4">
                 {/* Clear Continuation Line explaining that Sections 3 & 4 follow from previous pages */}

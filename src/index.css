@@ -52,50 +52,85 @@
       margin: 0;
     }
 
-    html, body {
+    html, body, #root, #root > div, main, #main-content {
       background: #ffffff !important;
       color: #000000 !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
       font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif !important;
-      font-size: 11pt !important;
-      line-height: 1.45 !important;
+      font-size: 10.5pt !important;
+      line-height: 1.35 !important;
       margin: 0 !important;
       padding: 0 !important;
+      width: 100% !important;
+      max-width: none !important;
+      min-height: 0 !important;
+      height: auto !important;
+      overflow: visible !important;
       text-rendering: optimizeLegibility;
+    }
+
+    /* Suppress vertical sibling margins introduced by screen space-y-* classes */
+    .space-y-6,
+    [class*="space-y-"] {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
     }
 
     /* Print-specific layout container that provides precise physical DIN-A4 page margins */
     .print-document-sheet,
     .a4-page-sheet {
-      padding: 10mm 12mm 8mm 12mm !important;
+      padding: 8mm 12mm 6mm 12mm !important;
       box-sizing: border-box !important;
-      width: 100% !important;
-      min-height: 297mm !important;
-      height: 297mm !important;
-      max-height: 297mm !important;
+      width: 210mm !important;
+      max-width: 210mm !important;
+      min-height: 295mm !important;
+      height: 295mm !important;
+      max-height: 295mm !important;
+      margin: 0 auto !important;
       display: flex !important;
       flex-direction: column !important;
       justify-content: space-between !important;
       font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif !important;
-      font-size: 11pt !important;
-      line-height: 1.4 !important;
+      font-size: 10.5pt !important;
+      line-height: 1.35 !important;
       color: #000000 !important;
       background: #ffffff !important;
-      page-break-after: always !important;
-      break-after: page !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
       page-break-inside: avoid !important;
       break-inside: avoid !important;
+      page-break-before: auto !important;
+      break-before: auto !important;
+      page-break-after: auto !important;
+      break-after: auto !important;
       overflow: hidden !important;
     }
 
-    .a4-page-sheet:last-of-type {
-      page-break-after: auto !important;
-      break-after: auto !important;
+    /*
+     * Standard Paged Media page breaks:
+     * Break strictly between consecutive pages (.a4-page-sheet + .a4-page-sheet).
+     * This prevents blank pages before page 1, prevents blank pages between pages,
+     * and eliminates trailing blank overflow pages at the end of the document.
+     */
+    .a4-page-sheet + .a4-page-sheet {
+      page-break-before: always !important;
+      break-before: page !important;
     }
 
-    .no-print, .print-hidden, .app-header, .app-navigation, .app-footer {
+    .a4-page-sheet:last-of-type,
+    .a4-page-sheet:last-child {
+      page-break-after: avoid !important;
+      break-after: avoid !important;
+    }
+
+    .no-print, .print-hidden, .app-header, .app-navigation, .app-footer, [class*="print:hidden"] {
       display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
     /* Guarantee document headers and footers are never suppressed in print */
@@ -112,16 +147,7 @@
     .document-footer {
       margin-top: auto !important;
       width: 100% !important;
-    }
-
-    .page-break-before {
-      page-break-before: always !important;
-      break-before: page !important;
-    }
-
-    .page-break-inside-avoid {
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
+      flex-shrink: 0 !important;
     }
 
     /* High contrast borders and pure black text on print */

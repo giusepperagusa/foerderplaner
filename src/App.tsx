@@ -249,7 +249,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100/70 text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-100/70 text-slate-900 flex flex-col font-sans print:bg-white print:min-h-0 print:m-0 print:p-0">
       {/* Skip to Content Link for Keyboard and Screen Reader Accessibility */}
       <a
         href="#main-content"
@@ -274,7 +274,7 @@ export default function App() {
         needRefresh={needRefresh}
       />
 
-      <main id="main-content" tabIndex={-1} className="flex-1 py-8 px-4 sm:px-6 lg:px-8 focus:outline-none">
+      <main id="main-content" tabIndex={-1} className="flex-1 py-8 px-4 sm:px-6 lg:px-8 print:p-0 print:m-0 print:w-full focus:outline-none">
         {currentStep === 1 && (
           <StudentProfileStep
             profile={activePlan.profil}
