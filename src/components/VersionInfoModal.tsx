@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.13-offline';
+export const APP_VERSION = 'v1.4.14-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -325,6 +325,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.14:</span>
+                <span>Automatische Erfassung von Erstellungs- und Änderungszeitstempeln: Jeder Förderplan verfügt nun über einen automatisch gepflegten, nicht editierbaren Datensatz mit Erstellungszeitpunkt (<i>„Erstellt am“</i>) und letztem Änderungszeitpunkt (<i>„Zuletzt geändert“</i>). Die Zeitstempel werden im Schritt 1 „Stammdaten &amp; Schwerpunkt“ im Bereich „Schüleridentifikation &amp; Basisangaben“ sowie in der „Plan-Verwaltung &amp; Übersicht“ formatgenau angezeigt und bleiben im amtlichen Förderplanformular (sowohl Web-Vorschau als auch PDF-/Druckversion) garantiert unberührt und unsichtbar.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.13:</span>
                 <span>PDF-/Druckausrichtung des Formularkopfs: Behebung der fehlerhaften Flex-Übersteuerung von <code>header</code> in den CSS-Druckregeln (Umstellung auf <code>display: block !important</code> und <code>width: 100% !important</code>); vollständige strukturelle Symmetrierung der 3-Spalten-Kopfzeile durch identisch dimensionierten Platzhalter auf der linken Seite. Die Schulangabe schließt im Druck und PDF nun exakt bündig am rechten Seitenrand ab, und der Dokumententitel samt SopädVO-Untertitel ist absolut zentriert.</span>

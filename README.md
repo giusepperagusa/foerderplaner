@@ -45,6 +45,7 @@ The application guides the teacher through a streamlined, multi-step process wit
 
 ### Step 1: Student Profile (`StudentProfileStep.tsx`)
 * Fields: Name/pseudonym/initials, date of birth, class/grade (1–6), school/school number, class teacher, legal guardians, support period (*von/bis*), primary and secondary support focus (*Förderschwerpunkt*: *Lernen*, *Sprache*, *Emotionale und soziale Entwicklung*, *Geistige Entwicklung*, *Körperliche und motorische Entwicklung*, etc.), narrative baseline observations (*Ausgangslage, Ressourcen & bisherige Förderergebnisse*).
+* **Automatic Uneditable Timestamps Record:** Displays an uneditable record containing the creation timestamp (*„Erstellt am“*) and last modification timestamp (*„Zuletzt geändert“*) within the *„Schüleridentifikation & Basisangaben“* card, formatted in German date/time syntax (`DD.MM.YYYY, HH:mm Uhr`) with an explicit non-editable assurance badge (*„Automatisch erfasst (nicht editierbar)“*). These timestamps are strictly internal and omitted from the final print/PDF plan form.
 * Dynamic Initialen Tool: Transforms an entered pupil name into valid uppercase initials (e.g. "Klaus Schmidt" -> "K. S.") to protect student privacy under GDPR, or generates random initials if the field is empty.
 * Anonymous Random ID generator (`ID-YYYY-XXX`).
 * Local privacy guarantee badge reassuring the teacher that no data is transmitted.
@@ -98,7 +99,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.13 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.14 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -128,6 +129,7 @@ The application guides the teacher through a streamlined, multi-step process wit
     * **Individual Plan Export:** Export a single pupil's support plan (`foerderplan_<Name>_<ID>.json`) directly from each plan card in the plan manager.
     * **Intelligent Collision Detection on Import:** When importing plans whose IDs already exist locally, the app detects the collision and prompts the teacher to either **update / overwrite** the existing local plan or **create a separate copy** (appending `(Kopie)`), preventing accidental data loss or duplication.
     * **Security & Storage Hygiene:** The application uses clean, standard JSON without proprietary file-level encryption. In school and public administration environments, security and GDPR compliance are guaranteed through full-disk encryption at rest (BitLocker, FileVault, LUKS) on client workstations and encrypted physical transfer media (e.g. encrypted USB drives). This avoids the risk of catastrophic data loss caused by forgotten passwords while ensuring long-term auditability, transparency, and zero vendor lock-in.
+  * **Automatic Lifecycle Timestamps:** Each plan automatically records its ISO creation timestamp (`erstelltAm`) and last modification timestamp (`aktualisiertAm`). Every edit across profile fields, checklist ratings, flags, measures, agreements, status toggles, duplicates, and imports updates `aktualisiertAm` in real time. Both timestamps are displayed formatted in German format in each student's card within the *„Plan-Verwaltung & Übersicht“* dialog and in Step 1, while remaining strictly excluded from exported and printed forms.
 
 ---
 
@@ -159,12 +161,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.13-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.14-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.13-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.13-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.14-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.14-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -334,6 +336,12 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.14 (2026-10-04):**
+  * **Automatic Creation and Modification Timestamps (Uneditable Plan Lifecycle Record):**
+    * *Automated Lifecycle Tracking:* Implemented persistent tracking of creation timestamps (`erstelltAm`) and last modification timestamps (`aktualisiertAm`) across the entire plan lifecycle. Any state mutation—including student profile edits, diagnostic checklist ratings and flags, plan rows, additional agreements, parent meeting data, status toggles (*„Entwurf“* / *„Abgeschlossen“*), duplications, and imports—automatically updates `aktualisiertAm` with precise ISO timestamps.
+    * *Display in Step 1 (Student Profile):* Embedded an uneditable metadata card within the *„Schüleridentifikation & Basisangaben“* section of Step 1 (*„Stammdaten & Schwerpunkt“*). Displays formatted German date and time values (`DD.MM.YYYY, HH:mm Uhr`) for *„Erstellt am:“* and *„Zuletzt geändert:“* alongside a security badge (*„Automatisch erfasst (nicht editierbar)“*). Form controls are read-only and uneditable.
+    * *Display in Plan Manager Dialog:* Added a dedicated metadata row to each student card in the *„Plan-Verwaltung & Übersicht“* modal dialog showing formatted creation and modification timestamps with calendar and clock indicators.
+    * *Strict Exclusion from Official Final Form:* Guaranteed that neither creation nor modification timestamps are exposed or printed in the official final support plan form (both web preview and vector PDF/printed version in `PrintPreviewStep.tsx`), strictly adhering to official Berlin Senate statutory template specifications.
 * **v1.4.13 (2026-10-04):**
   * **PDF & Print Header Layout Alignment & Centering Fix:**
     * *Document Header Print Display Override Fix:* Corrected the print stylesheet override in `src/index.css` where `.a4-page-sheet header` had been globally forced to `display: flex !important`, which previously prevented the inner header container from expanding to full width and caused the 3-column grid to shrink-wrap and misalign in print/PDF engines. Set `.a4-page-sheet header` to `display: block !important; width: 100% !important; box-sizing: border-box !important;`.

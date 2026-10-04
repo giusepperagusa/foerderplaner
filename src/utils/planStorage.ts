@@ -8,7 +8,7 @@ export const ACTIVE_PLAN_ID_KEY = 'foerderplan_active_id_v2';
  * STRICTLY NO default names, initials, or mock personal details.
  */
 export function createBlankPlan(customId?: string): FoerderplanDocument {
-  const now = new Date().toISOString().split('T')[0];
+  const now = new Date().toISOString();
   const newId = customId || `plan_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
   return {
@@ -49,14 +49,19 @@ export function getStoredPlans(): FoerderplanDocument[] {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed.map((p) => ({
-          ...p,
-          status: p.status || 'entwurf',
-          profil: {
-            ...p.profil,
-            name: p.profil?.name || '',
-          },
-        }));
+        return parsed.map((p) => {
+          const fallbackTime = new Date().toISOString();
+          return {
+            ...p,
+            status: p.status || 'entwurf',
+            erstelltAm: p.erstelltAm || p.aktualisiertAm || fallbackTime,
+            aktualisiertAm: p.aktualisiertAm || p.erstelltAm || fallbackTime,
+            profil: {
+              ...p.profil,
+              name: p.profil?.name || '',
+            },
+          };
+        });
       }
     }
 
@@ -127,7 +132,7 @@ export function setActivePlanId(id: string): void {
  * Duplicates an existing plan (e.g., for creating a follow-up plan or template).
  */
 export function duplicatePlan(source: FoerderplanDocument): FoerderplanDocument {
-  const now = new Date().toISOString().split('T')[0];
+  const now = new Date().toISOString();
   const newId = `plan_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const identifier = source.profil.name ? `${source.profil.name} (Folgeplan)` : 'Neuer Förderplan';
 
@@ -153,4 +158,34 @@ export function generateAnonymousIdentifier(): string {
   const year = new Date().getFullYear();
   const randNum = Math.floor(100 + Math.random() * 900);
   return `ID-${year}-${randNum}`;
+}
+
+/**
+ * Formats an ISO timestamp or date string into a user-friendly German format
+ * with date and time (e.g., "04.10.2026, 12:45 Uhr" or "04.10.2026").
+ */
+export function formatTimestamp(isoOrDateString?: string): string {
+  if (!isoOrDateString) return '—';
+  try {
+    const trimmed = isoOrDateString.trim();
+    // Check if the input is purely YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      const [year, month, day] = trimmed.split('-');
+      return `${day}.${month}.${year}`;
+    }
+    const d = new Date(trimmed);
+    if (isNaN(d.getTime())) return isoOrDateString;
+    const datePart = d.toLocaleDateString('de-DE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    const timePart = d.toLocaleTimeString('de-DE', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return `${datePart}, ${timePart} Uhr`;
+  } catch {
+    return isoOrDateString;
+  }
 }

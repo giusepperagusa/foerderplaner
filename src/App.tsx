@@ -93,14 +93,20 @@ export default function App() {
   // Helper to mutate active plan
   const updateActivePlan = (updater: (prev: FoerderplanDocument) => FoerderplanDocument) => {
     setPlans((prevPlans) => {
+      const now = new Date().toISOString();
       const idx = prevPlans.findIndex((p) => p.id === activePlanId);
       if (idx === -1) {
         const fresh = updater(createBlankPlan(activePlanId));
-        return [fresh, ...prevPlans];
+        return [{ ...fresh, erstelltAm: fresh.erstelltAm || now, aktualisiertAm: now }, ...prevPlans];
       }
-      const updated = updater(prevPlans[idx]);
+      const current = prevPlans[idx];
+      const updated = updater(current);
       const nextList = [...prevPlans];
-      nextList[idx] = updated;
+      nextList[idx] = {
+        ...updated,
+        erstelltAm: updated.erstelltAm || current.erstelltAm || now,
+        aktualisiertAm: now,
+      };
       return nextList;
     });
   };
@@ -109,7 +115,6 @@ export default function App() {
     updateActivePlan((prev) => ({
       ...prev,
       profil: updatedProfile,
-      aktualisiertAm: new Date().toISOString().split('T')[0],
     }));
   };
 
@@ -120,7 +125,6 @@ export default function App() {
         ...prev.checklistenBewertungen,
         [id]: value,
       },
-      aktualisiertAm: new Date().toISOString().split('T')[0],
     }));
   };
 
@@ -131,7 +135,6 @@ export default function App() {
         ...prev.checklistenFoerderbedarf,
         [id]: !prev.checklistenFoerderbedarf[id],
       },
-      aktualisiertAm: new Date().toISOString().split('T')[0],
     }));
   };
 
@@ -139,7 +142,6 @@ export default function App() {
     updateActivePlan((prev) => ({
       ...prev,
       planEintraege: [...prev.planEintraege, row],
-      aktualisiertAm: new Date().toISOString().split('T')[0],
     }));
   };
 
@@ -147,7 +149,6 @@ export default function App() {
     updateActivePlan((prev) => ({
       ...prev,
       planEintraege: rows,
-      aktualisiertAm: new Date().toISOString().split('T')[0],
     }));
   };
 
@@ -155,7 +156,6 @@ export default function App() {
     updateActivePlan((prev) => ({
       ...prev,
       [field]: val,
-      aktualisiertAm: new Date().toISOString().split('T')[0],
     }));
   };
 
@@ -206,7 +206,7 @@ export default function App() {
         return {
           ...p,
           status: nextStatus,
-          aktualisiertAm: new Date().toISOString().split('T')[0],
+          aktualisiertAm: new Date().toISOString(),
         };
       })
     );
@@ -214,26 +214,36 @@ export default function App() {
 
   const handleImportPlans = (imported: FoerderplanDocument[], mode: 'copy' | 'overwrite' = 'copy') => {
     setPlans((prev) => {
+      const now = new Date().toISOString();
+      const normalize = (doc: FoerderplanDocument): FoerderplanDocument => ({
+        ...doc,
+        erstelltAm: doc.erstelltAm || doc.aktualisiertAm || now,
+        aktualisiertAm: doc.aktualisiertAm || doc.erstelltAm || now,
+      });
+
       if (mode === 'overwrite') {
-        const importedMap = new Map(imported.map((p) => [p.id, p]));
+        const importedMap = new Map(imported.map((p) => [p.id, normalize(p)]));
         const updated = prev.map((p) => importedMap.get(p.id) || p);
         const existingIds = new Set(prev.map((p) => p.id));
-        const brandNew = imported.filter((p) => !existingIds.has(p.id));
+        const brandNew = imported.filter((p) => !existingIds.has(p.id)).map(normalize);
         return [...brandNew, ...updated];
       } else {
         const existingIds = new Set(prev.map((p) => p.id));
         const sanitized = imported.map((imp) => {
-          if (existingIds.has(imp.id)) {
+          const base = normalize(imp);
+          if (existingIds.has(base.id)) {
             return {
-              ...imp,
+              ...base,
               id: `plan_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
               profil: {
-                ...imp.profil,
-                name: imp.profil.name ? `${imp.profil.name} (Kopie)` : 'Importierte Kopie',
+                ...base.profil,
+                name: base.profil.name ? `${base.profil.name} (Kopie)` : 'Importierte Kopie',
               },
+              erstelltAm: now,
+              aktualisiertAm: now,
             };
           }
-          return imp;
+          return base;
         });
         return [...sanitized, ...prev];
       }
@@ -280,6 +290,8 @@ export default function App() {
             profile={activePlan.profil}
             onChange={handleUpdateProfile}
             onNext={() => setCurrentStep(2)}
+            createdAt={activePlan.erstelltAm}
+            updatedAt={activePlan.aktualisiertAm}
           />
         )}
 

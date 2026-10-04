@@ -1,16 +1,18 @@
 import React from 'react';
-import { User, Calendar, School, Award, ArrowRight, Info, ShieldCheck, Key, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { User, Calendar, School, Award, ArrowRight, Info, ShieldCheck, Key, RefreshCw, CheckCircle2, Clock } from 'lucide-react';
 import { StudentProfile, FoerderschwerpunktType } from '../types/foerderplan';
-import { generateAnonymousIdentifier } from '../utils/planStorage';
+import { generateAnonymousIdentifier, formatTimestamp } from '../utils/planStorage';
 import richtlinienRaw from '../data/richtlinien.json';
 
 interface Props {
   profile: StudentProfile;
   onChange: (updated: StudentProfile) => void;
   onNext: () => void;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext }) => {
+export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext, createdAt, updatedAt }) => {
   const schwerpunkte = (richtlinienRaw as any).foerderschwerpunkte;
   const currentDetails = schwerpunkte[profile.hauptschwerpunkt] || {};
 
@@ -226,6 +228,44 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext 
                 onChange={(e) => handleFieldChange('zeitraumBis', e.target.value)}
                 className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Uneditable Automatic Timestamps Record */}
+        <div className="pt-3 border-t border-slate-100">
+          <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <div className="flex items-center gap-2 text-slate-700">
+                <Calendar className="w-4 h-4 text-blue-600 shrink-0" aria-hidden="true" />
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 block">
+                    Erstellt am:
+                  </span>
+                  <span className="font-semibold text-slate-900 select-all font-mono text-[11px]">
+                    {formatTimestamp(createdAt)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-slate-700">
+                <Clock className="w-4 h-4 text-emerald-600 shrink-0" aria-hidden="true" />
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 block">
+                    Zuletzt geändert:
+                  </span>
+                  <span className="font-semibold text-slate-900 select-all font-mono text-[11px]">
+                    {formatTimestamp(updatedAt)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 self-start sm:self-center">
+              <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 bg-slate-200/70 border border-slate-300/60 px-2 py-0.5 rounded font-medium">
+                <ShieldCheck className="w-3 h-3 text-slate-500" />
+                Automatisch erfasst (nicht editierbar)
+              </span>
             </div>
           </div>
         </div>

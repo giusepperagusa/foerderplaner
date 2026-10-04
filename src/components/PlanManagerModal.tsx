@@ -16,9 +16,11 @@ import {
   Sparkles,
   FileText,
   AlertCircle,
+  Calendar,
+  History,
 } from 'lucide-react';
 import { FoerderplanDocument, PlanStatus } from '../types/foerderplan';
-import { duplicatePlan, createBlankPlan } from '../utils/planStorage';
+import { duplicatePlan, createBlankPlan, formatTimestamp } from '../utils/planStorage';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
@@ -354,10 +356,6 @@ export const PlanManagerModal: React.FC<Props> = ({
                             Pseudonym / ID
                           </span>
                         )}
-
-                        <span className="text-xs text-slate-400 font-normal">
-                          Zuletzt bearbeitet: {plan.aktualisiertAm || plan.erstelltAm}
-                        </span>
                       </div>
 
                       {/* Pupil identifier */}
@@ -385,6 +383,24 @@ export const PlanManagerModal: React.FC<Props> = ({
                         )}
                         <span>
                           <strong className="text-slate-700">Maßnahmen:</strong> {plan.planEintraege?.length || 0} definiert
+                        </span>
+                      </div>
+
+                      {/* Uneditable Timestamps Record (Creation & Last Modification) */}
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-slate-500 pt-1.5 border-t border-slate-100">
+                        <span className="inline-flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-blue-600 shrink-0" aria-hidden="true" />
+                          <span className="text-slate-500">Erstellt:</span>
+                          <span className="font-mono text-[11px] text-slate-800 font-semibold select-all">
+                            {formatTimestamp(plan.erstelltAm)}
+                          </span>
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0" aria-hidden="true" />
+                          <span className="text-slate-500">Zuletzt geändert:</span>
+                          <span className="font-mono text-[11px] text-slate-800 font-semibold select-all">
+                            {formatTimestamp(plan.aktualisiertAm)}
+                          </span>
                         </span>
                       </div>
                     </div>
