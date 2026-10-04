@@ -135,13 +135,21 @@
 
     /* Guarantee document headers and footers are never suppressed in print */
     .print-document-sheet header,
+    .a4-page-sheet header {
+      display: block !important;
+      visibility: visible !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
     .print-document-sheet footer,
     .print-document-sheet .document-footer,
-    .a4-page-sheet header,
     .a4-page-sheet footer,
     .a4-page-sheet .document-footer {
       display: flex !important;
       visibility: visible !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
     .document-footer {

@@ -387,12 +387,14 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
                     - School indication placed strictly in the upper right
                     - Title "F Ö R D E R P L A N" and legal subtitle centered mathematically across the entire width
                 */}
-                <header role="banner" className="border-b-2 border-black pb-2">
-                  <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-2">
-                    {/* Left balance placeholder matching right column width to guarantee true mathematical center */}
-                    <div aria-hidden="true" className="invisible select-none">
-                      <span className="block text-xs font-semibold">&nbsp;</span>
-                      <span className="text-[11px]">&nbsp;</span>
+                <header role="banner" className="border-b-2 border-black pb-2 w-full block">
+                  <div className="w-full grid grid-cols-[1fr_auto_1fr] items-start gap-2" style={{ width: '100%' }}>
+                    {/* Left balance placeholder matching right column structure & text to guarantee exact identical width */}
+                    <div aria-hidden="true" className="invisible select-none min-w-0 text-left text-xs leading-tight pointer-events-none" style={{ minWidth: 0 }}>
+                      <span className="font-semibold block text-xs">{planDoc.profil.schule || 'Grundschule (Schule)'}</span>
+                      <span className="text-[11px] block">
+                        Schuljahr {new Date().getFullYear()}/{new Date().getFullYear() + 1}
+                      </span>
                     </div>
 
                     {/* Mathematically Centered Title and Subtitle */}
@@ -406,9 +408,9 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
                     </div>
 
                     {/* School indication strictly in the upper right corner */}
-                    <div className="text-right text-xs leading-tight text-black">
+                    <div className="text-right text-xs leading-tight text-black min-w-0 w-full" style={{ minWidth: 0 }}>
                       <span className="font-semibold block text-xs">{planDoc.profil.schule || 'Grundschule (Schule)'}</span>
-                      <span className="text-[11px] text-neutral-800">
+                      <span className="text-[11px] text-neutral-800 block">
                         Schuljahr {new Date().getFullYear()}/{new Date().getFullYear() + 1}
                       </span>
                     </div>

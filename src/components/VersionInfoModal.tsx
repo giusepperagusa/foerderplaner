@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.12-offline';
+export const APP_VERSION = 'v1.4.13-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -325,6 +325,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.13:</span>
+                <span>PDF-/Druckausrichtung des Formularkopfs: Behebung der fehlerhaften Flex-Übersteuerung von <code>header</code> in den CSS-Druckregeln (Umstellung auf <code>display: block !important</code> und <code>width: 100% !important</code>); vollständige strukturelle Symmetrierung der 3-Spalten-Kopfzeile durch identisch dimensionierten Platzhalter auf der linken Seite. Die Schulangabe schließt im Druck und PDF nun exakt bündig am rechten Seitenrand ab, und der Dokumententitel samt SopädVO-Untertitel ist absolut zentriert.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.12:</span>
                 <span>Zentrierung des Dokumententitels & Beseitigung von Überlauf-Seiten: Der Haupttitel „F Ö R D E R P L A N“ und der SopädVO-Untertitel sind durch ein ausbalanciertes 3-Spalten-Raster mathematisch exakt über die gesamte Seitenbreite zentriert, ohne von der Schulangabe nach links verschoben zu werden; das Drucklayout wurde überarbeitet (Wurzel-Container-Resets, 295 mm DIN-A4-Höhe und Nachbar-Seitenumbrüche <code>.a4-page-sheet + .a4-page-sheet</code>), wodurch das Abrutschen der Fußzeile von Seite 1 auf eine leere zweite Seite sowie die finale Leerseite am Dokumentende vollständig behoben wurden.</span>

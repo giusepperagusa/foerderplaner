@@ -98,7 +98,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.12 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.13 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -159,12 +159,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.12-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.13-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.11-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.11-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.13-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.13-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -334,6 +334,11 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.13 (2026-10-04):**
+  * **PDF & Print Header Layout Alignment & Centering Fix:**
+    * *Document Header Print Display Override Fix:* Corrected the print stylesheet override in `src/index.css` where `.a4-page-sheet header` had been globally forced to `display: flex !important`, which previously prevented the inner header container from expanding to full width and caused the 3-column grid to shrink-wrap and misalign in print/PDF engines. Set `.a4-page-sheet header` to `display: block !important; width: 100% !important; box-sizing: border-box !important;`.
+    * *Symmetric Structural Balancer for Mathematical Centering:* Enhanced the Page 1 3-column header grid (`grid-cols-[1fr_auto_1fr]`) by embedding an identically dimensioned invisible counterpart in the left column matching the exact structure and text of the school indication on the right. This guarantees 100% identical intrinsic column width on both sides under all rendering engines, completely eliminating horizontal bias and ensuring the title *„F Ö R D E R P L A N“* and statutory subtitle (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) are perfectly centered across the page.
+    * *Strict Right Margin Alignment:* Ensured the school indication (*Schulangabe*) in the third column spans to the physical right border of the page with `text-right` and `w-full`, achieving true right alignment in exported PDFs and printouts.
 * **v1.4.12 (2026-10-02):**
   * **Centered Header Title & Elimination of Overflow Pages:**
     * *Mathematically Centered Title & Subtitle:* Restructured Page 1 header using a balanced 3-column CSS Grid (`grid-cols-[1fr_auto_1fr]`). The document title *„F Ö R D E R P L A N“* and legal subtitle (*„gemäß § 19 Sonderpädagogische Förderverordnung (SopädVO) Berlin“*) are now strictly centered across the entire physical page width, completely preventing the school indication on the upper right from pushing the centered title to the left.
