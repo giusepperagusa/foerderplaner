@@ -69,6 +69,7 @@ export default function App() {
   const [isConsentModalOpen, setIsConsentModalOpen] = useState<boolean>(false);
   const [isVersionInfoModalOpen, setIsVersionInfoModalOpen] = useState<boolean>(false);
   const [isLicenseModalOpen, setIsLicenseModalOpen] = useState<boolean>(false);
+  const [aiAssistantTab, setAiAssistantTab] = useState<'rules' | 'webllm'>('rules');
 
   // Active plan document
   const activePlan = useMemo(() => {
@@ -142,6 +143,13 @@ export default function App() {
     updateActivePlan((prev) => ({
       ...prev,
       planEintraege: [...prev.planEintraege, row],
+    }));
+  };
+
+  const handleRemovePlanRow = (rowId: string) => {
+    updateActivePlan((prev) => ({
+      ...prev,
+      planEintraege: prev.planEintraege.filter((r) => r.id !== rowId),
     }));
   };
 
@@ -313,6 +321,11 @@ export default function App() {
             flaggedForSupport={activePlan.checklistenFoerderbedarf}
             existingRows={activePlan.planEintraege}
             onAddPlanRow={handleAddPlanRow}
+            onRemovePlanRow={handleRemovePlanRow}
+            generatedText={activePlan.generierteKiTexte || ''}
+            onSaveGeneratedText={(text) => handleUpdateField('generierteKiTexte', text)}
+            activeTab={aiAssistantTab}
+            onTabChange={setAiAssistantTab}
             onNext={() => setCurrentStep(4)}
             onPrev={() => setCurrentStep(2)}
             onRequestOpenConsentModal={() => setIsConsentModalOpen(true)}

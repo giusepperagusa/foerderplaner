@@ -67,11 +67,16 @@ The application guides the teacher through a streamlined, multi-step process wit
 * Diagnostic Filter: Filter toggle (*„Nur Förderbedarf filtern“*) with real-time match counter, explanatory guideline banner, active reset pill, and clear empty state.
 
 ### Step 3: Recommendations & Optional AI Assistant (`AiAssistantStep.tsx`)
-* **Instant Deterministic Recommendations:** Generated instantly from `src/utils/localMatchingEngine.ts` by mapping identified deficits to matched interventions, materials, and concrete pedagogical methods from `richtlinien.json`.
-* **Optional On-Device Assistant (`webLlmManager.ts` & `wllamaStorage.ts`):**
+* **Instant Deterministic Recommendations (`rules` Tab):**
+  * Generated instantly from `src/utils/localMatchingEngine.ts` by mapping identified deficits to matched interventions, materials, and concrete pedagogical methods from `richtlinien.json`.
+  * **Visible Plan Selection & Reversibility:** Selected recommendations are clearly highlighted with an emerald border (`border-2 border-emerald-500 bg-emerald-50/40`), an explicit top banner (*„Ausgewählt: Dieser Baustein ist im Förderplan enthalten“*), and an *„Aktiv im Plan“* badge.
+  * **One-Click Removal:** Teachers can effortlessly reverse their selection directly on each recommendation card via *„Aus Förderplan entfernen“* without needing to navigate to Step 4.
+  * **Quick Selection Filter:** Quick-toggle checkbox (*„Nur übernommene Bausteine anzeigen“*) allows teachers to isolate and audit all selected measures in a clean view.
+* **Persistent In-Browser AI Assistant (`webllm` Tab):**
   * Teacher can request customized formulation proposals, differentiation strategies, or parent-communication talking points.
   * Powered by Wllama (`@wllama/wllama`) executing GGUF models directly on the CPU via WebAssembly SIMD.
   * Configured with an expanded **4,096-token context window** (`n_ctx: 4096`) and **8-bit quantized KV-cache** (`cache_type_k: 'q8_0'`, `cache_type_v: 'q8_0'`), cutting memory usage by 50% while comfortably accommodating comprehensive evaluation criteria prompts (~1,185 tokens) and rich generation.
+  * **State Preservation Across Navigation:** Generated drafts in the *„Generierte Förderbausteine“* section are permanently preserved when switching away to other steps or forms, eliminating accidental generation loss. Includes a dedicated *„Text leeren“* button to discard or reset when desired.
   * Single-sequence in-browser execution (`n_parallel: 1`) prevents sequence fragmentation and eliminates token-limit exhaustion errors.
   * Storage strictly utilizes OPFS (Origin Private File System) and IndexedDB, completely avoiding Cache Storage API eviction risks.
   * System prompt enforces German educational jargon (SMART criteria, positive formulation, Berlin curriculum orientation).
@@ -99,7 +104,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.14 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.15 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -161,12 +166,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.14-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.15-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.14-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.14-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.15-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.15-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -336,6 +341,11 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.15 (2026-10-04):**
+  * **Persistence of Generated AI Drafts, Guaranteed Hour:Minute Timestamps & Reversible Recommendation Selection:**
+    * *State Preservation for Local Language Model:* Resolved text loss under the *„Lokales Sprachmodell“* tab in Step 3 (*„KI-Förderempfehlungen“*). The generated output in the *„Generierte Förderbausteine“* section and active tab selection are now permanently preserved across step navigation, eliminating accidental generation loss when navigating to other forms or steps. Added a dedicated *„Text leeren“* button to discard or reset drafts.
+    * *Guaranteed Hour:Minute Indication on Modification Timestamps:* Updated timestamp formatting (`formatTimestamp()`) and plan storage migration so that whenever the last modification date is displayed (both in Step 1 *„Schüleridentifikation & Basisangaben“* and in the *„Plan-Verwaltung & Übersicht“* dialog), the exact hour and minute indication (`DD.MM.YYYY, HH:mm Uhr`) is strictly rendered, even for legacy date formats.
+    * *Intuitive Identification & 1-Click Reversibility for Guidelines Recommendations:* In Step 3 under *„Offizielle Richtlinien-Zuordnung“*, selected recommendations now stand out clearly with emerald borders (`border-2 border-emerald-500 bg-emerald-50/40 ring-2 ring-emerald-200/70`), an explicit top notification banner (*„Ausgewählt: Dieser Baustein ist im Förderplan enthalten“*), and an *„Aktiv im Plan“* badge. Added an immediate one-click *„Aus Förderplan entfernen“* button to each selected card to allow teachers to easily revert selections directly, plus a quick toggle (*„Nur übernommene Bausteine anzeigen“*) to audit all selected items at a glance.
 * **v1.4.14 (2026-10-04):**
   * **Automatic Creation and Modification Timestamps (Uneditable Plan Lifecycle Record):**
     * *Automated Lifecycle Tracking:* Implemented persistent tracking of creation timestamps (`erstelltAm`) and last modification timestamps (`aktualisiertAm`) across the entire plan lifecycle. Any state mutation—including student profile edits, diagnostic checklist ratings and flags, plan rows, additional agreements, parent meeting data, status toggles (*„Entwurf“* / *„Abgeschlossen“*), duplications, and imports—automatically updates `aktualisiertAm` with precise ISO timestamps.

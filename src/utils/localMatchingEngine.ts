@@ -176,6 +176,7 @@ REGELN:
 export function convertProposalToPlanRow(proposal: RecommendationProposal, defaultTeacher = 'Klassenlehrkraft'): PlanRow {
   return {
     id: `row_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+    proposalId: proposal.id,
     bereich: proposal.schwerpunkt,
     kategorie: proposal.kategorie,
     ist: proposal.ist,

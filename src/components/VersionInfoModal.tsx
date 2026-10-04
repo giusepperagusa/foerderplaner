@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.14-offline';
+export const APP_VERSION = 'v1.4.15-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -325,6 +325,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.15:</span>
+                <span>Dauerhafte Beibehaltung generierter KI-Texte, Zeitanzeige mit Uhrzeit &amp; intuitive Auswahl/Rücknahme von Förderempfehlungen: Vollständige Beibehaltung der generierten Förderbausteine unter „Lokales Sprachmodell“ bei Schrittwechseln (kein Textverlust mehr bei Wechsel zu anderen Abschnitten, inkl. neuer Schaltfläche „Text leeren“); lückenlose Anzeige von Datum und exakter Uhrzeit („HH:mm Uhr“) bei allen Zeitstempeln der letzten Änderung; prominente optische Hervorhebung ausgewählter Richtlinien-Empfehlungen (smaragdgrüne Umrandung, Status-Banner und Kennzeichnung „Aktiv im Plan“) samt direkter 1-Klick-Rücknahme („Aus Förderplan entfernen“) und Schnellfilter („Nur übernommene Bausteine anzeigen“).</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.14:</span>
                 <span>Automatische Erfassung von Erstellungs- und Änderungszeitstempeln: Jeder Förderplan verfügt nun über einen automatisch gepflegten, nicht editierbaren Datensatz mit Erstellungszeitpunkt (<i>„Erstellt am“</i>) und letztem Änderungszeitpunkt (<i>„Zuletzt geändert“</i>). Die Zeitstempel werden im Schritt 1 „Stammdaten &amp; Schwerpunkt“ im Bereich „Schüleridentifikation &amp; Basisangaben“ sowie in der „Plan-Verwaltung &amp; Übersicht“ formatgenau angezeigt und bleiben im amtlichen Förderplanformular (sowohl Web-Vorschau als auch PDF-/Druckversion) garantiert unberührt und unsichtbar.</span>

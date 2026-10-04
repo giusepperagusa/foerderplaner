@@ -39,6 +39,7 @@ export interface StudentProfile {
 
 export interface PlanRow {
   id: string;
+  proposalId?: string; // ID of the originating official recommendation proposal
   bereich: string;
   kategorie: string;
   ist: string;
@@ -61,5 +62,6 @@ export interface FoerderplanDocument {
   gespraechsDatum: string;
   anwesendePersonen: string;
   informationElternErfolgt: boolean;
+  generierteKiTexte?: string; // Persisted AI generated draft text for Step 3
 }
 

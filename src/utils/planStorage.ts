@@ -162,16 +162,17 @@ export function generateAnonymousIdentifier(): string {
 
 /**
  * Formats an ISO timestamp or date string into a user-friendly German format
- * with date and time (e.g., "04.10.2026, 12:45 Uhr" or "04.10.2026").
+ * guaranteed to include both date and hour:minute indication
+ * (e.g., "04.10.2026, 12:45 Uhr").
  */
 export function formatTimestamp(isoOrDateString?: string): string {
   if (!isoOrDateString) return '—';
   try {
     const trimmed = isoOrDateString.trim();
-    // Check if the input is purely YYYY-MM-DD
+    // Check if the input is purely YYYY-MM-DD (e.g. legacy stored dates)
     if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
       const [year, month, day] = trimmed.split('-');
-      return `${day}.${month}.${year}`;
+      return `${day}.${month}.${year}, 00:00 Uhr`;
     }
     const d = new Date(trimmed);
     if (isNaN(d.getTime())) return isoOrDateString;
