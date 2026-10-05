@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.16-offline';
+export const APP_VERSION = 'v1.4.17-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -286,12 +286,17 @@ export const VersionInfoModal: React.FC<Props> = ({
 
           {/* Model & Architecture Info */}
           <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-              Datenschutz & Lokale Engine (Wllama CPU + OPFS/IndexedDB)
-            </span>
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <Cpu className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                Datenschutz &amp; Lokale Engine (Wllama CPU + OPFS/IndexedDB)
+              </span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300">
+                KI rein experimentell &amp; optional
+              </span>
+            </div>
             <p className="text-[11px] text-slate-600 leading-relaxed">
-              Die App verarbeitet Schülerdaten ausschließlich lokal im Browser (LocalStorage & On-Device WebAssembly). Das KI-Modell (Qwen2.5-0.5B) läuft direkt auf der CPU ohne WebGPU-Zwang. Die Speicherung erfolgt geschützt im OPFS (Origin Private File System) oder IndexedDB – die instabile Cache API wird nicht genutzt.
+              Die App verarbeitet Schülerdaten ausschließlich lokal im Browser (LocalStorage &amp; On-Device WebAssembly). Sämtliche KI-Funktionen sind <strong>rein experimentell und vollständig optional</strong>: Die Anwendung kann zu 100% ohne Aktivierung von KI über den amtlichen Berliner Richtlinien-Katalog (107 Bausteine) und manuelle Bearbeitung genutzt werden. Wird ein Modell (z. B. Qwen2.5-1.5B oder 0.5B) optional geladen, läuft es direkt auf der CPU ohne WebGPU-Zwang im geschützten OPFS oder IndexedDB – die instabile Cache API wird nicht genutzt.
             </p>
           </div>
 
@@ -325,6 +330,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.17:</span>
+                <span>Bedarfsgesteuerte Zeitstempelaktivierung, dynamische Modell-Reaktivität &amp; transparente Kennzeichnung experimenteller/optionaler KI: Zeitstempel für Erstellung (<i>„Erstellt am“</i>) und letzte Änderung (<i>„Zuletzt geändert“</i>) werden erst bei einer tatsächlichen inhaltlichen Bearbeitung des Förderplans aktiviert (reines Betrachten/Browsen belässt unberührte Pläne bei <i>„Noch nicht bearbeitet“</i>); der Tab-Titel in Schritt 3 passt sich nun dynamisch an das gewählte lokale Modell an (z. B. <i>„Lokales Sprachmodell (Qwen2.5-1.5B...)“</i> bzw. <i>„Qwen2.5-0.5B...“</i>); sämtliche KI-Funktionen sind in der gesamten Benutzeroberfläche (Schritt 3 Tabs, lokaler KI-Zustimmungsdialog, Kopf- und Fußleisten, Lizenz- und Versionsdialog) unmissverständlich als <b>experimentell und vollständig optional</b> gekennzeichnet mit dem klaren Hinweis, dass die App vollumfänglich und uneingeschränkt ohne KI nutzbar ist.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.16:</span>
                 <span>Zuverlässiger Offline-Modellstatus, Download-Resilienz (Wake Lock &amp; OPFS-Fehlerbehandlung) &amp; Live-Inferenz-Abbruch: Beseitigung der irreführenden Download-Aufforderung nach App-Aktualisierungen (bereits heruntergeladene Modelle im OPFS/IndexedDB werden sofort verlässlich als lokal gespeichert erkannt und nahtlos ohne erneuten Download-Dialog in den Arbeitsspeicher geladen); Behebung von ERR_NETWORK_IO_SUSPENDED und „Cannot close a ERRORED writable stream“ durch automatischen Screen-Wake-Lock während des Ladevorgangs, automatische Wiederholungsversuche bei Verbindungsabbrüchen und sicheres Schließen/Bereinigen von OPFS-Streams; Echtzeit-Fortschrittsanzeige während der Token-Generierung (aktuelle Token-Zahl, Geschwindigkeit in Tokens/s, vergangene Zeit und Schreib-Cursor) sowie sofortige Abbruchmöglichkeit („Inferenz abbrechen“) unter Erhalt des bereits generierten Textes.</span>

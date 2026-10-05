@@ -54,7 +54,7 @@ export const Navigation: React.FC<Props> = ({
   const steps = [
     { num: 1, label: 'Stammdaten & Schwerpunkt', icon: User },
     { num: 2, label: 'Einschätzungsbogen', icon: CheckSquare },
-    { num: 3, label: 'KI-Förderempfehlungen', icon: Sparkles },
+    { num: 3, label: 'KI-Förderempfehlungen (Optional)', icon: Sparkles },
     { num: 4, label: 'Förderplan-Editor', icon: Table },
     { num: 5, label: 'Druck & Export', icon: Printer },
   ];
@@ -175,11 +175,11 @@ export const Navigation: React.FC<Props> = ({
               type="button"
               onClick={onOpenModelConsent}
               className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg transition border border-indigo-200 cursor-pointer"
-              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
-              aria-label="Lokale KI (Wllama)"
+              title="Lokale KI (Wllama, optional & experimentell) verwalten & Modell-Status prüfen"
+              aria-label="Lokale KI (Optional)"
             >
               <Cpu className="w-3.5 h-3.5 text-indigo-600" />
-              <span className="hidden md:inline">Lokale KI (Wllama)</span>
+              <span className="hidden md:inline">Lokale KI (Optional)</span>
             </button>
 
             {/* Guidelines button */}

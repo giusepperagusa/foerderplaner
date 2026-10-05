@@ -159,9 +159,14 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
               <Cpu className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-200" />
             </div>
             <div>
-              <h2 id="model-consent-title" className="text-xl font-bold">Lokales Sprachmodell (Wllama Wasm)</h2>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 id="model-consent-title" className="text-xl font-bold">Lokales Sprachmodell (Wllama Wasm)</h2>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 uppercase tracking-wider">
+                  Optional &amp; Experimentell
+                </span>
+              </div>
               <p className="text-xs text-indigo-200">
-                On-Device KI via CPU WebAssembly & OPFS/IndexedDB • 100% DSGVO-konform ohne Cloud & Cache API
+                On-Device KI via CPU WebAssembly &amp; OPFS/IndexedDB • Rein optionales Hilfsmittel • 100% DSGVO-konform
               </p>
             </div>
           </div>
@@ -178,6 +183,19 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
 
         {/* Content */}
         <div className="p-4 sm:p-6 space-y-5 overflow-y-auto flex-1 min-h-0">
+
+          {/* Prominent Optional & Experimental Callout */}
+          <div className="p-4 bg-amber-50/90 border border-amber-300/80 rounded-xl flex items-start gap-3 shadow-2xs">
+            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="text-xs text-amber-950 space-y-1">
+              <span className="font-bold block text-sm text-amber-900">
+                Vollständig optional &amp; experimentell
+              </span>
+              <p className="leading-relaxed">
+                Die Nutzung lokaler neuronaler Sprachmodelle ist im Förderplan-Assistenten <strong>rein optional und experimentell</strong>. Der Förderplan-Assistent ist vollständig und ohne jegliche Funktionseinschränkungen <strong>ohne KI</strong> nutzbar: Sie können alle 107 amtlichen Berliner Förderrichtlinien-Bausteine direkt in Schritt 3 (Tab „Offizielle Richtlinien-Zuordnung“) übernehmen und in Schritt 4 beliebig manuell editieren. Ein Download ist für die reguläre Arbeit mit der Anwendung <u>nicht</u> erforderlich.
+              </p>
+            </div>
+          </div>
 
           {/* WebAssembly Support Status */}
           {!cacheStatus.isSupported && !isChecking && (
@@ -402,7 +420,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
             disabled={isDownloading}
             className="w-full sm:w-auto px-4 py-2 border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
           >
-            Abbrechen / Sofort-Regelmodus nutzen
+            Ohne KI fortfahren (Regelmodus)
           </button>
 
           <button

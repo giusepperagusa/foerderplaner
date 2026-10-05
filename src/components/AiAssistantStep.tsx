@@ -18,6 +18,7 @@ import {
   ListPlus,
   Trash2,
   X,
+  AlertTriangle,
 } from 'lucide-react';
 import { StudentProfile, RatingValue, PlanRow } from '../types/foerderplan';
 import {
@@ -26,7 +27,7 @@ import {
   convertProposalToPlanRow,
   RecommendationProposal,
 } from '../utils/localMatchingEngine';
-import { webLlmManager, CURRENT_MODEL_CONFIG, ModelCacheStatus, GenerationStats } from '../utils/webLlmManager';
+import { webLlmManager, CURRENT_MODEL_CONFIG, ModelCacheStatus, GenerationStats, ModelOption } from '../utils/webLlmManager';
 import { ModelConsentModal } from './ModelConsentModal';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import richtlinienRaw from '../data/richtlinien.json';
@@ -81,12 +82,20 @@ export const AiAssistantStep: React.FC<Props> = ({
     onClose: () => setShowPromptModal(false),
   });
 
+  // Active model state & display tag
+  const [activeModel, setActiveModel] = useState<ModelOption>(() => webLlmManager.getModelConfig());
+  const modelDisplayTag = activeModel.id.toLowerCase().includes('1.5b')
+    ? 'Qwen2.5-1.5B'
+    : activeModel.id.toLowerCase().includes('0.5b')
+    ? 'Qwen2.5-0.5B'
+    : activeModel.shortName.split(' ')[0];
+
   // Wllama State with immediate localStorage verification to avoid momentary false un-cached state on reload
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>(() => {
-    const activeModel = webLlmManager.getModelConfig();
+    const currentConfig = webLlmManager.getModelConfig();
     const hasLocalFlag =
       typeof window !== 'undefined' &&
-      localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
+      localStorage.getItem(`foerderplaner_model_cached_${currentConfig.id}`) === 'true';
     return {
       isSupported: true,
       isCached: hasLocalFlag,
@@ -146,6 +155,7 @@ export const AiAssistantStep: React.FC<Props> = ({
   }, [profile, selectedCriteria, proposals]);
 
   const checkModelStatus = async () => {
+    setActiveModel(webLlmManager.getModelConfig());
     const status = await webLlmManager.checkCacheStatus();
     setCacheStatus(status);
   };
@@ -330,7 +340,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               </h2>
             </div>
             <p className="text-xs text-blue-200 leading-relaxed max-w-2xl">
-              Wählen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen oder nutzen Sie das integrierte lokale KI-Sprachmodell (Qwen2.5-0.5B via Wllama WebAssembly & OPFS/IndexedDB), um passgenaue Formulierungen offline direkt im Browser zu generieren.
+              Wählen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen (sofort ohne KI nutzbar) oder nutzen Sie das rein optionale, experimentelle lokale KI-Sprachmodell ({modelDisplayTag} via Wllama WebAssembly &amp; OPFS/IndexedDB), um individuelle Formulierungen offline direkt im Browser zu generieren.
             </p>
           </div>
 
@@ -348,11 +358,11 @@ export const AiAssistantStep: React.FC<Props> = ({
               type="button"
               onClick={() => setShowConsentModal(true)}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs whitespace-nowrap cursor-pointer"
-              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
-              aria-label="Lokale KI (Wllama)"
+              title="Lokale KI (Wllama, optional & experimentell) verwalten & Modell-Status prüfen"
+              aria-label="Lokale KI (Wllama, optional)"
             >
               <Cpu className="w-4 h-4 text-indigo-200" />
-              <span>Lokale KI (Wllama)</span>
+              <span>Lokale KI (Optional)</span>
             </button>
           </div>
         </div>
@@ -390,8 +400,11 @@ export const AiAssistantStep: React.FC<Props> = ({
           }`}
         >
           <Cpu className="w-4 h-4" />
-          <span>Lokales Sprachmodell (Qwen2.5-0.5B Wllama CPU/OPFS)</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-50 text-purple-700 font-normal">
+          <span>Lokales Sprachmodell ({modelDisplayTag} Wllama CPU/OPFS)</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-medium">
+            Experimentell &amp; Optional
+          </span>
+          <span className="hidden sm:inline-block text-[10px] px-1.5 py-0.2 rounded-full bg-purple-50 text-purple-700 font-normal">
             Wasm • CPU • Offline
           </span>
         </button>
@@ -568,14 +581,32 @@ export const AiAssistantStep: React.FC<Props> = ({
       {activeTab === 'webllm' && (
         <div className="space-y-5 bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
           
+          {/* Prominent Experimental & Optional Notice */}
+          <div className="p-4 bg-amber-50/90 border border-amber-300/80 rounded-xl flex items-start gap-3 text-xs text-amber-950 shadow-2xs">
+            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-bold text-amber-900">
+                  Experimentelle &amp; vollständig optionale Zusatzfunktion
+                </span>
+                <span className="text-[10px] px-2 py-0.2 rounded-full bg-amber-200/80 text-amber-900 font-semibold border border-amber-400/50">
+                  App ohne KI uneingeschränkt nutzbar
+                </span>
+              </div>
+              <p className="text-amber-900 leading-relaxed">
+                Die Nutzung des lokalen Sprachmodells ist zu 100% freiwillig und optional. Sie können Ihren Förderplan jederzeit vollständig und ohne jegliche KI erstellen: Alle 107 offiziellen Berliner Förderrichtlinien-Bausteine stehen Ihnen in <button type="button" onClick={() => setActiveTab('rules')} className="underline font-bold text-amber-950 hover:text-blue-800 cursor-pointer">Tab 1 (Offizielle Richtlinien-Zuordnung)</button> sofort zur Verfügung, und alle Felder können in Schritt 4 frei manuell formuliert werden. Es werden keinerlei Daten an externe Server übertragen.
+              </p>
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-purple-50/70 border border-purple-200 rounded-xl">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-purple-950 text-sm">
-                  {webLlmManager.getModelConfig().name}
+                  {activeModel.name}
                 </span>
                 <span className="text-[10px] font-mono bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full font-bold">
-                  {webLlmManager.getModelConfig().quantization}
+                  {activeModel.quantization}
                 </span>
               </div>
               <p className="text-xs text-purple-800 leading-relaxed">
@@ -587,7 +618,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               type="button"
               onClick={() => setShowConsentModal(true)}
               className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto cursor-pointer"
-              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
+              title="Lokale KI (Wllama, optional & experimentell) verwalten & Modell-Status prüfen"
               aria-label="Lokale KI (Wllama)"
             >
               <Cpu className="w-3.5 h-3.5 text-purple-700" />
@@ -611,7 +642,7 @@ export const AiAssistantStep: React.FC<Props> = ({
               ) : (
                 <span className="flex items-center gap-1.5 text-slate-500">
                   <AlertCircle className="w-4 h-4 text-amber-500" />
-                  Modell noch nicht heruntergeladen (~{webLlmManager.getModelConfig().downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
+                  Modell noch nicht heruntergeladen (~{activeModel.downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
                 </span>
               )}
             </div>

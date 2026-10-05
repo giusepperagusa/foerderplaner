@@ -261,7 +261,7 @@ export default function App() {
   const handleResetActivePlan = () => {
     if (window.confirm('Möchten Sie alle Angaben dieses Förderplans wirklich leeren?')) {
       const blank = createBlankPlan(activePlanId);
-      updateActivePlan(() => blank);
+      setPlans((prev) => prev.map((p) => (p.id === activePlanId ? blank : p)));
       setCurrentStep(1);
     }
   };
@@ -401,10 +401,10 @@ export default function App() {
               type="button"
               onClick={() => setIsConsentModalOpen(true)}
               className="hover:text-indigo-700 transition flex items-center gap-1 cursor-pointer font-medium text-slate-700"
-              title="Lokale KI (Wllama) verwalten & Modell-Status prüfen"
+              title="Lokale KI (Wllama, optional & experimentell) verwalten & Modell-Status prüfen"
             >
               <Cpu className="w-3.5 h-3.5 text-indigo-700" />
-              <span>Lokale KI (Wllama)</span>
+              <span>Lokale KI (Optional)</span>
             </button>
 
             <button

@@ -391,14 +391,14 @@ export const PlanManagerModal: React.FC<Props> = ({
                         <span className="inline-flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5 text-blue-600 shrink-0" aria-hidden="true" />
                           <span className="text-slate-500">Erstellt:</span>
-                          <span className="font-mono text-[11px] text-slate-800 font-semibold select-all">
+                          <span className={`font-mono text-[11px] select-all ${plan.erstelltAm ? 'text-slate-800 font-semibold' : 'text-slate-500 italic'}`}>
                             {formatTimestamp(plan.erstelltAm)}
                           </span>
                         </span>
                         <span className="inline-flex items-center gap-1.5">
                           <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0" aria-hidden="true" />
                           <span className="text-slate-500">Zuletzt geändert:</span>
-                          <span className="font-mono text-[11px] text-slate-800 font-semibold select-all">
+                          <span className={`font-mono text-[11px] select-all ${plan.aktualisiertAm ? 'text-slate-800 font-semibold' : 'text-slate-500 italic'}`}>
                             {formatTimestamp(plan.aktualisiertAm)}
                           </span>
                         </span>

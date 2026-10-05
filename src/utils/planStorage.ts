@@ -8,14 +8,13 @@ export const ACTIVE_PLAN_ID_KEY = 'foerderplan_active_id_v2';
  * STRICTLY NO default names, initials, or mock personal details.
  */
 export function createBlankPlan(customId?: string): FoerderplanDocument {
-  const now = new Date().toISOString();
   const newId = customId || `plan_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
   return {
     id: newId,
     status: 'entwurf',
-    erstelltAm: now,
-    aktualisiertAm: now,
+    erstelltAm: '',
+    aktualisiertAm: '',
     profil: {
       name: '',
       isAnonymized: false,
@@ -50,12 +49,11 @@ export function getStoredPlans(): FoerderplanDocument[] {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
         return parsed.map((p) => {
-          const fallbackTime = new Date().toISOString();
           return {
             ...p,
             status: p.status || 'entwurf',
-            erstelltAm: p.erstelltAm || p.aktualisiertAm || fallbackTime,
-            aktualisiertAm: p.aktualisiertAm || p.erstelltAm || fallbackTime,
+            erstelltAm: p.erstelltAm || '',
+            aktualisiertAm: p.aktualisiertAm || '',
             profil: {
               ...p.profil,
               name: p.profil?.name || '',
@@ -132,7 +130,6 @@ export function setActivePlanId(id: string): void {
  * Duplicates an existing plan (e.g., for creating a follow-up plan or template).
  */
 export function duplicatePlan(source: FoerderplanDocument): FoerderplanDocument {
-  const now = new Date().toISOString();
   const newId = `plan_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const identifier = source.profil.name ? `${source.profil.name} (Folgeplan)` : 'Neuer Förderplan';
 
@@ -140,8 +137,8 @@ export function duplicatePlan(source: FoerderplanDocument): FoerderplanDocument 
     ...JSON.parse(JSON.stringify(source)),
     id: newId,
     status: 'entwurf',
-    erstelltAm: now,
-    aktualisiertAm: now,
+    erstelltAm: '',
+    aktualisiertAm: '',
     profil: {
       ...source.profil,
       name: identifier,
@@ -165,8 +162,8 @@ export function generateAnonymousIdentifier(): string {
  * guaranteed to include both date and hour:minute indication
  * (e.g., "04.10.2026, 12:45 Uhr").
  */
-export function formatTimestamp(isoOrDateString?: string): string {
-  if (!isoOrDateString) return '—';
+export function formatTimestamp(isoOrDateString?: string, fallback = 'Noch nicht bearbeitet'): string {
+  if (!isoOrDateString || !isoOrDateString.trim()) return fallback;
   try {
     const trimmed = isoOrDateString.trim();
     // Check if the input is purely YYYY-MM-DD (e.g. legacy stored dates)

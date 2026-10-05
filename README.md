@@ -104,7 +104,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.16 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.17 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -134,7 +134,7 @@ The application guides the teacher through a streamlined, multi-step process wit
     * **Individual Plan Export:** Export a single pupil's support plan (`foerderplan_<Name>_<ID>.json`) directly from each plan card in the plan manager.
     * **Intelligent Collision Detection on Import:** When importing plans whose IDs already exist locally, the app detects the collision and prompts the teacher to either **update / overwrite** the existing local plan or **create a separate copy** (appending `(Kopie)`), preventing accidental data loss or duplication.
     * **Security & Storage Hygiene:** The application uses clean, standard JSON without proprietary file-level encryption. In school and public administration environments, security and GDPR compliance are guaranteed through full-disk encryption at rest (BitLocker, FileVault, LUKS) on client workstations and encrypted physical transfer media (e.g. encrypted USB drives). This avoids the risk of catastrophic data loss caused by forgotten passwords while ensuring long-term auditability, transparency, and zero vendor lock-in.
-  * **Automatic Lifecycle Timestamps:** Each plan automatically records its ISO creation timestamp (`erstelltAm`) and last modification timestamp (`aktualisiertAm`). Every edit across profile fields, checklist ratings, flags, measures, agreements, status toggles, duplicates, and imports updates `aktualisiertAm` in real time. Both timestamps are displayed formatted in German format in each student's card within the *„Plan-Verwaltung & Übersicht“* dialog and in Step 1, while remaining strictly excluded from exported and printed forms.
+  * **Deferred Lifecycle Timestamps Activated Upon Edit:** Each plan records an ISO creation timestamp (`erstelltAm`) and last modification timestamp (`aktualisiertAm`). Timestamps are activated and updated strictly once the user performs an actual modification/editing operation in the plan. Pure browsing across steps or switching between plans leaves unedited plans marked *„Noch nicht bearbeitet“*. As soon as any edit occurs, `erstelltAm` is set to that exact moment and `aktualisiertAm` tracks subsequent updates in real time. Both timestamps are displayed formatted in German format in the plan manager card and in Step 1, while remaining strictly excluded from exported and printed forms.
 
 ---
 
@@ -166,12 +166,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.16-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.17-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.16-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.16-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.17-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.17-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -339,8 +339,11 @@ To ensure full compliance with public administration mandates (including Europea
   * **PATCH (`+0.0.1`):** Bug fixes, visual/CSS adjustments, typographical fixes, dependency patches.
 * **Synchronization Mandate:** `package.json`, `VersionInfoModal.tsx`, `README.md`, and distribution archive names (`foerderplaner-vX.Y.Z-*.tar.gz`) must always share the exact same version number.
 
-### Historical Changelog
-
+* **v1.4.17 (2026-10-05):**
+  * **Deferred Lifecycle Timestamp Activation, Dynamic Model Tab Reactivity & Transparent Marking of AI Capabilities as Experimental and Optional:**
+    * *Deferred Timestamp Activation Upon Actual Modification:* The creation timestamp (`erstelltAm`) and last modification timestamp (`aktualisiertAm`) now remain unrecorded and blank while a support plan is merely browsed, viewed, or navigated through. Newly created blank plans, duplicated template copies, or unedited plans explicitly display *„Noch nicht bearbeitet“* (along with *„Wird bei erster Änderung erfasst“* in Step 1). As soon as the user enters or edits any content (such as student data, checklist evaluations, support measures, or agreements), `erstelltAm` is immediately established for that moment and `aktualisiertAm` tracks subsequent edits in real time.
+    * *Dynamic Step 3 Model Tab Reactivity:* The tab title under Step 3 (*„KI-Förderempfehlungen“*) now dynamically adapts to reflect the currently selected local model (e.g. *„Lokales Sprachmodell (Qwen2.5-1.5B Wllama CPU/OPFS)“* when the 1.5B model is active, or *„Qwen2.5-0.5B...“* when the 0.5B model is chosen), resolving the issue where the tab label was previously static and fixed to *„Qwen2.5-0.5B“*.
+    * *Clear Marking of AI Capabilities as Experimental & Fully Optional:* All AI-related features and local language model capabilities are now prominently marked across the entire user interface as experimental and optional (*„Experimentell & Optional“* / *„Vollständig optional & experimentell“*). Distinct callouts in the Step 3 tab bar, the offline model consent dialog, top navigation, footer bar, license overview, and version dialog clearly inform teachers that the application can be fully and comprehensively used without activating AI models at all, relying on the 107 official Berlin guideline building blocks and manual form inputs.
 * **v1.4.16 (2026-10-05):**
   * **Reliable Offline Model Status Recognition, Download Resilience (Wake Lock & Stream Error Handling) & Live Inference Progress/Abort:**
     * *Reassuring Offline Model Status Across App Updates & Reloads:* Resolved the issue where updating the application instance or changing versions caused the UI to show an alarming *„Modell noch nicht geladen“* prompt and a *„Modell laden / Zustimmen“* download button even when model weights were already 100% downloaded in OPFS/IndexedDB. The UI now distinguishes between *stored locally* and *loaded into RAM*, proactively acknowledging local presence (*„Modell ist lokal gespeichert (OPFS, 100% offline einsatzbereit)“*) with a green indicator, and offers immediate 1-click execution that seamlessly initializes the model into memory in 1–2 seconds without opening the download consent dialog.

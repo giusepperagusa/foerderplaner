@@ -242,8 +242,8 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext,
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 block">
                     Erstellt am:
                   </span>
-                  <span className="font-semibold text-slate-900 select-all font-mono text-[11px]">
-                    {formatTimestamp(createdAt)}
+                  <span className={`font-semibold select-all font-mono text-[11px] ${createdAt ? 'text-slate-900' : 'text-slate-500 italic'}`}>
+                    {createdAt ? formatTimestamp(createdAt) : 'Noch nicht bearbeitet'}
                   </span>
                 </div>
               </div>
@@ -254,8 +254,8 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext,
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 block">
                     Zuletzt geändert:
                   </span>
-                  <span className="font-semibold text-slate-900 select-all font-mono text-[11px]">
-                    {formatTimestamp(updatedAt)}
+                  <span className={`font-semibold select-all font-mono text-[11px] ${updatedAt ? 'text-slate-900' : 'text-slate-500 italic'}`}>
+                    {updatedAt ? formatTimestamp(updatedAt) : 'Noch nicht bearbeitet'}
                   </span>
                 </div>
               </div>
@@ -264,7 +264,7 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext,
             <div className="flex items-center gap-1.5 self-start sm:self-center">
               <span className="inline-flex items-center gap-1 text-[10px] text-slate-500 bg-slate-200/70 border border-slate-300/60 px-2 py-0.5 rounded font-medium">
                 <ShieldCheck className="w-3 h-3 text-slate-500" />
-                Automatisch erfasst (nicht editierbar)
+                {createdAt ? 'Automatisch erfasst (nicht editierbar)' : 'Wird bei erster Änderung erfasst'}
               </span>
             </div>
           </div>
