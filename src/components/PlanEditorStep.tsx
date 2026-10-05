@@ -11,6 +11,7 @@ import {
   FileEdit,
 } from 'lucide-react';
 import { PlanRow } from '../types/foerderplan';
+import { GermanDateInput } from './GermanDateInput';
 
 interface Props {
   rows: PlanRow[];
@@ -234,12 +235,11 @@ export const PlanEditorStep: React.FC<Props> = ({
             <label htmlFor="plan-gespraechs-datum" className="text-xs font-semibold text-slate-800 block mb-1">
               Gespräch wurde durchgeführt am
             </label>
-            <input
+            <GermanDateInput
               id="plan-gespraechs-datum"
-              type="date"
               value={gespraechsDatum}
-              onChange={(e) => onUpdateField('gespraechsDatum', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
+              onChange={(val) => onUpdateField('gespraechsDatum', val)}
+              placeholder="TT/MM/JJJJ"
             />
           </div>
 
@@ -281,7 +281,7 @@ export const PlanEditorStep: React.FC<Props> = ({
           className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Zurück zu Empfehlungen</span>
+          <span>Zurück zu Förderempfehlungen</span>
         </button>
 
         <button

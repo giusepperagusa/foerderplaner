@@ -2,6 +2,7 @@ import React from 'react';
 import { User, Calendar, School, Award, ArrowRight, Info, ShieldCheck, Key, RefreshCw, CheckCircle2, Clock } from 'lucide-react';
 import { StudentProfile, FoerderschwerpunktType } from '../types/foerderplan';
 import { generateAnonymousIdentifier, formatTimestamp } from '../utils/planStorage';
+import { GermanDateInput } from './GermanDateInput';
 import richtlinienRaw from '../data/richtlinien.json';
 
 interface Props {
@@ -153,12 +154,11 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext,
             <label htmlFor="student-geburtsdatum-input" className="text-xs font-semibold text-slate-800 block mb-1">
               Geburtsdatum (optional)
             </label>
-            <input
+            <GermanDateInput
               id="student-geburtsdatum-input"
-              type="date"
               value={profile.geburtsdatum}
-              onChange={(e) => handleFieldChange('geburtsdatum', e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
+              onChange={(val) => handleFieldChange('geburtsdatum', val)}
+              placeholder="TT/MM/JJJJ (z. B. 15/08/2016)"
             />
           </div>
 
@@ -209,24 +209,22 @@ export const StudentProfileStep: React.FC<Props> = ({ profile, onChange, onNext,
               <label htmlFor="student-zeitraum-von" className="text-xs font-semibold text-slate-800 block mb-1">
                 Förderzeitraum von
               </label>
-              <input
+              <GermanDateInput
                 id="student-zeitraum-von"
-                type="date"
                 value={profile.zeitraumVon}
-                onChange={(e) => handleFieldChange('zeitraumVon', e.target.value)}
-                className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
+                onChange={(val) => handleFieldChange('zeitraumVon', val)}
+                placeholder="TT/MM/JJJJ"
               />
             </div>
             <div>
               <label htmlFor="student-zeitraum-bis" className="text-xs font-semibold text-slate-800 block mb-1">
                 Bis (Evaluation)
               </label>
-              <input
+              <GermanDateInput
                 id="student-zeitraum-bis"
-                type="date"
                 value={profile.zeitraumBis}
-                onChange={(e) => handleFieldChange('zeitraumBis', e.target.value)}
-                className="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-hidden text-slate-900"
+                onChange={(val) => handleFieldChange('zeitraumBis', val)}
+                placeholder="TT/MM/JJJJ"
               />
             </div>
           </div>

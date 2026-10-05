@@ -336,11 +336,11 @@ export const AiAssistantStep: React.FC<Props> = ({
                 <Sparkles className="w-5 h-5 text-blue-300" />
               </span>
               <h2 className="text-base font-bold">
-                Schritt 3: Lokale Förderempfehlungen & KI-Generierung
+                Schritt 3: Förderempfehlungen &amp; Maßnahmen
               </h2>
             </div>
             <p className="text-xs text-blue-200 leading-relaxed max-w-2xl">
-              Wählen Sie aus 107 offiziellen Berliner Richtlinien-Bausteinen (sofort ohne KI nutzbar) oder nutzen Sie das rein optionale, experimentelle lokale KI-Sprachmodell ({modelDisplayTag} via Wllama WebAssembly &amp; OPFS/IndexedDB), um individuelle Formulierungen offline direkt im Browser zu generieren.
+              Wählen Sie bewährte pädagogische Fördermaßnahmen aus den 107 amtlichen Berliner Richtlinien-Bausteinen (Standard-Modus ohne KI) oder nutzen Sie das lokale Sprachmodell ({modelDisplayTag}) als optionale, experimentelle Formulierungshilfe.
             </p>
           </div>
 
@@ -382,9 +382,9 @@ export const AiAssistantStep: React.FC<Props> = ({
           }`}
         >
           <ListPlus className="w-4 h-4" />
-          <span>Offizielle Richtlinien-Zuordnung ({filteredProposals.length} Treffer)</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-blue-50 text-blue-700 font-normal">
-            0 MB • Sofort
+          <span>Amtliche Richtlinien-Bausteine ({filteredProposals.length} Treffer)</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-semibold border border-blue-200">
+            Standard (Ohne KI) • Sofort
           </span>
         </button>
 
@@ -400,12 +400,12 @@ export const AiAssistantStep: React.FC<Props> = ({
           }`}
         >
           <Cpu className="w-4 h-4" />
-          <span>Lokales Sprachmodell ({modelDisplayTag} Wllama CPU/OPFS)</span>
+          <span>Optionale KI-Formulierungshilfe ({modelDisplayTag})</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-medium">
             Experimentell &amp; Optional
           </span>
           <span className="hidden sm:inline-block text-[10px] px-1.5 py-0.2 rounded-full bg-purple-50 text-purple-700 font-normal">
-            Wasm • CPU • Offline
+            Wasm • Offline
           </span>
         </button>
       </div>
@@ -893,7 +893,7 @@ export const AiAssistantStep: React.FC<Props> = ({
           className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Zurück zur Einschätzung</span>
+          <span>Zurück zum Einschätzungsbogen</span>
         </button>
 
         <button

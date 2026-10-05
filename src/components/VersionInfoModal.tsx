@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.17-offline';
+export const APP_VERSION = 'v1.4.18-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -330,6 +330,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.18:</span>
+                <span>Entschärfung der Schritt-3-Benennung, Harmonisierung der Navigationsschaltflächen &amp; Standard-Datumsformat (TT/MM/JJJJ): Schritt 3 wurde in der Hauptnavigation, im Schritt-Kopf und auf allen Vor-/Zurück-Schaltflächen in <i>„Förderempfehlungen“</i> umbenannt, um das Missverständnis auszuräumen, dass der gesamte Schritt ein KI-Feature sei; interne Reiter in Schritt 3 heben den Standard-Modus (Tab 1: <i>„Amtliche Richtlinien-Bausteine (Standard ohne KI • Sofort)“</i>) und die optionale Formulierungshilfe (Tab 2: <i>„Optionale KI-Formulierungshilfe (Experimentell &amp; Optional)“</i>) trennscharf voneinander ab; alle Datumsfelder in Schritt 1 (<i>„Geburtsdatum“</i>, <i>„Förderzeitraum von“</i>, <i>„Bis (Evaluation)“</i>) und in Schritt 4 (<i>„Gespräch wurde durchgeführt am“</i>) wurden auf das Standard-Format TT/MM/JJJJ (inkl. Kalender-Schnellauswahl) umgestellt und werden auch im Druck/PDF-Export lückenlos in diesem Format ausgegeben.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.17:</span>
                 <span>Bedarfsgesteuerte Zeitstempelaktivierung, dynamische Modell-Reaktivität &amp; transparente Kennzeichnung experimenteller/optionaler KI: Zeitstempel für Erstellung (<i>„Erstellt am“</i>) und letzte Änderung (<i>„Zuletzt geändert“</i>) werden erst bei einer tatsächlichen inhaltlichen Bearbeitung des Förderplans aktiviert (reines Betrachten/Browsen belässt unberührte Pläne bei <i>„Noch nicht bearbeitet“</i>); der Tab-Titel in Schritt 3 passt sich nun dynamisch an das gewählte lokale Modell an (z. B. <i>„Lokales Sprachmodell (Qwen2.5-1.5B...)“</i> bzw. <i>„Qwen2.5-0.5B...“</i>); sämtliche KI-Funktionen sind in der gesamten Benutzeroberfläche (Schritt 3 Tabs, lokaler KI-Zustimmungsdialog, Kopf- und Fußleisten, Lizenz- und Versionsdialog) unmissverständlich als <b>experimentell und vollständig optional</b> gekennzeichnet mit dem klaren Hinweis, dass die App vollumfänglich und uneingeschränkt ohne KI nutzbar ist.</span>

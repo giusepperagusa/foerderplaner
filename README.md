@@ -104,7 +104,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.17 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.18 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -166,12 +166,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.17-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.18-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.17-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.17-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.18-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.18-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -338,6 +338,18 @@ To ensure full compliance with public administration mandates (including Europea
   * **MINOR (`+0.1.0`):** New functional steps, compliance template restructuring, new matching engines, export format additions, significant pedagogical enhancements.
   * **PATCH (`+0.0.1`):** Bug fixes, visual/CSS adjustments, typographical fixes, dependency patches.
 * **Synchronization Mandate:** `package.json`, `VersionInfoModal.tsx`, `README.md`, and distribution archive names (`foerderplaner-vX.Y.Z-*.tar.gz`) must always share the exact same version number.
+
+* **v1.4.18 (2026-10-05):**
+  * **Step 3 Renaming & Tab Clarification, Navigation Button Alignment, and Standard German Date Format (`DD/MM/YYYY`):**
+    * *Step 3 Clarification & Decoupling from AI Labeling:* Renamed Step 3 across the entire application—including the main header step indicator, the step header banner, and all forward/back page navigation buttons—from *„KI-Förderempfehlungen (Optional)“* to simply *„Förderempfehlungen“*. This eliminates the misunderstanding that Step 3 is strictly an AI-driven stage or that Tab 1 requires AI execution.
+    * *Internal Tab Labels in Step 3:* Explicitly re-labeled the internal tabs to clearly delineate the standard guideline workflow from optional AI drafting:
+      * Tab 1: *„Amtliche Richtlinien-Bausteine ({count} Treffer)“* with badge *„Standard (Ohne KI) • Sofort“* (0 MB download, immediate access to all 107 official Senate measures).
+      * Tab 2: *„Optionale KI-Formulierungshilfe ({modelDisplayTag})“* with badge *„Experimentell & Optional“* and *„Wasm • Offline“*.
+    * *Aligned Navigation Buttons Across All Steps:* Harmonized all forward and back navigation buttons at the bottom of every page to consistently and accurately reflect step titles (*„Zurück zu Stammdaten“* / *„Weiter zu Förderempfehlungen“* in Step 2; *„Zurück zum Einschätzungsbogen“* / *„Weiter zum Förderplan-Editor“* in Step 3; *„Zurück zu Förderempfehlungen“* / *„Weiter zu Druck & Export“* in Step 4; *„Zurück zum Förderplan-Editor“* in Step 5).
+    * *Standard German Date Format (`DD/MM/YYYY`):* Replaced HTML5 ISO date pickers (`YYYY-MM-DD`) with custom German date input components (`GermanDateInput`) for:
+      * Step 1: *„Geburtsdatum“*, *„Förderzeitraum von“*, and *„Bis (Evaluation)“*.
+      * Step 4: *„Gespräch wurde durchgeführt am“*.
+      Inputs now accept and display dates strictly in standard German `DD/MM/YYYY` format (`TT/MM/JJJJ`), featuring smart normalization on blur (supporting slash, dot, hyphen, or continuous 8-digit inputs like `15082016` -> `15/08/2016`), an integrated calendar picker dialog button, and synchronized `DD/MM/YYYY` formatting in the final print and PDF vector output.
 
 * **v1.4.17 (2026-10-05):**
   * **Deferred Lifecycle Timestamp Activation, Dynamic Model Tab Reactivity & Transparent Marking of AI Capabilities as Experimental and Optional:**

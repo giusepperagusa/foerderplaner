@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { FoerderplanDocument, PlanRow } from '../types/foerderplan';
 import { APP_VERSION } from './VersionInfoModal';
+import { formatDateToGerman } from '../utils/dateUtils';
 
 interface Props {
   planDoc: FoerderplanDocument;
@@ -132,12 +133,12 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
     out += `1. SCHÜLERDATEN & RAHMENBEDINGUNGEN\n`;
     out += `Name/Kennung: ${planDoc.profil.name || '---'}\n`;
     out += `Klasse/Lerngruppe: ${planDoc.profil.klasse || '---'}\n`;
-    out += `Geburtsdatum: ${planDoc.profil.geburtsdatum || '---'}\n`;
+    out += `Geburtsdatum: ${formatDateToGerman(planDoc.profil.geburtsdatum) || '---'}\n`;
     out += `Schule/Schul-Nr.: ${planDoc.profil.schule || '---'}\n`;
     out += `Verantwortliche Lehrkraft: ${planDoc.profil.lehrkraft || '---'}\n`;
     out += `Erziehungsberechtigte: ${planDoc.profil.erziehungsberechtigte || '---'}\n`;
     out += `Förderschwerpunkt: ${planDoc.profil.hauptschwerpunkt}\n`;
-    out += `Förderzeitraum: von ${planDoc.profil.zeitraumVon || '---'} bis ${planDoc.profil.zeitraumBis || '---'}\n\n`;
+    out += `Förderzeitraum: von ${formatDateToGerman(planDoc.profil.zeitraumVon) || '---'} bis ${formatDateToGerman(planDoc.profil.zeitraumBis) || '---'}\n\n`;
     
     if (planDoc.profil.ausgangslageNotiz) {
       out += `Ausgangslage & Ressourcen:\n${planDoc.profil.ausgangslageNotiz}\n\n`;
@@ -160,7 +161,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
     }
 
     out += `4. GESPRÄCH & KENNTNISNAHME\n`;
-    out += `Gespräch geführt am: ${planDoc.gespraechsDatum || '---'}\n`;
+    out += `Gespräch geführt am: ${formatDateToGerman(planDoc.gespraechsDatum) || '---'}\n`;
     out += `Beteiligte/Anwesende: ${planDoc.anwesendePersonen || '---'}\n`;
     out += `Information Erziehungsberechtigte: ${planDoc.informationElternErfolgt ? 'Erfolgt' : 'Ausstehend'}\n`;
 
@@ -287,7 +288,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           <div>
             <span className="font-bold block text-xs text-neutral-800">Gespräch geführt am:</span>
             <span className="text-black font-semibold">
-              {planDoc.gespraechsDatum || '_____._____.20___'}
+              {formatDateToGerman(planDoc.gespraechsDatum) || '__/__/20__'}
             </span>
           </div>
           <div className="sm:col-span-2">
@@ -436,7 +437,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
                       <div className="flex items-baseline gap-2">
                         <dt className="font-bold min-w-[130px] sm:min-w-[140px] print:min-w-[130px] text-black">Geburtsdatum:</dt>
                         <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
-                          {planDoc.profil.geburtsdatum || '_______________________________'}
+                          {formatDateToGerman(planDoc.profil.geburtsdatum) || '_______________________________'}
                         </dd>
                       </div>
 
@@ -468,7 +469,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
                       <div className="flex items-baseline gap-2">
                         <dt className="font-bold min-w-[140px] sm:min-w-[150px] print:min-w-[135px] text-black">Förderzeitraum:</dt>
                         <dd className="text-black flex-1 border-b border-black pb-0.5 m-0">
-                          {planDoc.profil.zeitraumVon || '______'} bis {planDoc.profil.zeitraumBis || '______'}
+                          {formatDateToGerman(planDoc.profil.zeitraumVon) || '______'} bis {formatDateToGerman(planDoc.profil.zeitraumBis) || '______'}
                         </dd>
                       </div>
 
@@ -611,7 +612,7 @@ export const PrintPreviewStep: React.FC<Props> = ({ planDoc, onPrev }) => {
           className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl transition cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Zurück zum Editor</span>
+          <span>Zurück zum Förderplan-Editor</span>
         </button>
 
         <button

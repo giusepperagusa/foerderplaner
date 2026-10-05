@@ -54,7 +54,7 @@ export const Navigation: React.FC<Props> = ({
   const steps = [
     { num: 1, label: 'Stammdaten & Schwerpunkt', icon: User },
     { num: 2, label: 'Einschätzungsbogen', icon: CheckSquare },
-    { num: 3, label: 'KI-Förderempfehlungen (Optional)', icon: Sparkles },
+    { num: 3, label: 'Förderempfehlungen', icon: Sparkles },
     { num: 4, label: 'Förderplan-Editor', icon: Table },
     { num: 5, label: 'Druck & Export', icon: Printer },
   ];

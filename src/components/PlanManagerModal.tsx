@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { FoerderplanDocument, PlanStatus } from '../types/foerderplan';
 import { duplicatePlan, createBlankPlan, formatTimestamp } from '../utils/planStorage';
+import { formatDateToGerman } from '../utils/dateUtils';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
@@ -378,7 +379,7 @@ export const PlanManagerModal: React.FC<Props> = ({
                         </span>
                         {plan.profil.zeitraumVon && plan.profil.zeitraumBis && (
                           <span>
-                            <strong className="text-slate-700">Zeitraum:</strong> {plan.profil.zeitraumVon} bis {plan.profil.zeitraumBis}
+                            <strong className="text-slate-700">Zeitraum:</strong> {formatDateToGerman(plan.profil.zeitraumVon)} bis {formatDateToGerman(plan.profil.zeitraumBis)}
                           </span>
                         )}
                         <span>
