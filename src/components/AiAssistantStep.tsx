@@ -11,6 +11,7 @@ import {
   DownloadCloud,
   RefreshCw,
   Play,
+  Square,
   CheckCircle2,
   AlertCircle,
   FileText,
@@ -25,7 +26,7 @@ import {
   convertProposalToPlanRow,
   RecommendationProposal,
 } from '../utils/localMatchingEngine';
-import { webLlmManager, CURRENT_MODEL_CONFIG, ModelCacheStatus } from '../utils/webLlmManager';
+import { webLlmManager, CURRENT_MODEL_CONFIG, ModelCacheStatus, GenerationStats } from '../utils/webLlmManager';
 import { ModelConsentModal } from './ModelConsentModal';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import richtlinienRaw from '../data/richtlinien.json';
@@ -80,15 +81,30 @@ export const AiAssistantStep: React.FC<Props> = ({
     onClose: () => setShowPromptModal(false),
   });
 
-  // Wllama State
-  const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>({
-    isSupported: true,
-    isCached: false,
-    isLoaded: false,
-    storageBackend: 'OPFS',
-    cacheKeys: [],
+  // Wllama State with immediate localStorage verification to avoid momentary false un-cached state on reload
+  const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>(() => {
+    const activeModel = webLlmManager.getModelConfig();
+    const hasLocalFlag =
+      typeof window !== 'undefined' &&
+      localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
+    return {
+      isSupported: true,
+      isCached: hasLocalFlag,
+      isLoaded: webLlmManager.isEngineReady(),
+      storageBackend: 'OPFS',
+      cacheKeys: [],
+    };
   });
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isInitializingEngine, setIsInitializingEngine] = useState(false);
+  const [tokenStats, setTokenStats] = useState<GenerationStats>({
+    tokenCount: 0,
+    tokensPerSec: 0,
+    elapsedSec: 0,
+  });
+  const [generationStage, setGenerationStage] = useState<
+    'idle' | 'initializing' | 'prefill' | 'generating' | 'stopped'
+  >('idle');
   const [generatedText, setGeneratedText] = useState<string>(initialGeneratedText);
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [insertSuccess, setInsertSuccess] = useState(false);
@@ -129,9 +145,14 @@ export const AiAssistantStep: React.FC<Props> = ({
     return buildLocalModelPrompt(profile, selectedCriteria, proposals);
   }, [profile, selectedCriteria, proposals]);
 
+  const checkModelStatus = async () => {
+    const status = await webLlmManager.checkCacheStatus();
+    setCacheStatus(status);
+  };
+
   useEffect(() => {
     checkModelStatus();
-  }, []);
+  }, [activeTab]);
 
   // Close prompt modal on Escape key press
   useEffect(() => {
@@ -144,11 +165,6 @@ export const AiAssistantStep: React.FC<Props> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showPromptModal]);
-
-  const checkModelStatus = async () => {
-    const status = await webLlmManager.checkCacheStatus();
-    setCacheStatus(status);
-  };
 
   const handleCopyPrompt = () => {
     navigator.clipboard.writeText(localModelPrompt);
@@ -182,17 +198,43 @@ export const AiAssistantStep: React.FC<Props> = ({
     onSaveGeneratedText?.('');
   };
 
-  // Run Web Worker generation
+  // Immediately stop/cancel local LLM generation
+  const handleStopGeneration = () => {
+    webLlmManager.abortGeneration();
+    setIsGenerating(false);
+    setGenerationStage('stopped');
+  };
+
+  // Run Web Worker generation with seamless offline memory loading
   const handleRunLocalLlm = async () => {
     setGenerationError(null);
 
-    // If model not loaded, trigger consent & download modal
-    if (!webLlmManager.isEngineReady()) {
+    // If model is not yet cached in OPFS/IndexedDB, open consent & download dialog
+    if (!cacheStatus.isCached && !webLlmManager.isEngineReady()) {
       setShowConsentModal(true);
       return;
     }
 
+    // If already stored offline in OPFS/IndexedDB but not yet loaded into RAM, initialize smoothly
+    if (!webLlmManager.isEngineReady()) {
+      setIsInitializingEngine(true);
+      setGenerationStage('initializing');
+      try {
+        await webLlmManager.initModel();
+        setCacheStatus((prev) => ({ ...prev, isLoaded: true }));
+      } catch (err: any) {
+        setIsInitializingEngine(false);
+        setGenerationStage('idle');
+        setGenerationError('Initialisierung aus lokalem Speicher fehlgeschlagen: ' + (err.message || ''));
+        return;
+      } finally {
+        setIsInitializingEngine(false);
+      }
+    }
+
     setIsGenerating(true);
+    setGenerationStage('prefill');
+    setTokenStats({ tokenCount: 0, tokensPerSec: 0, elapsedSec: 0 });
     setGeneratedText('');
     setInsertSuccess(false);
 
@@ -202,10 +244,16 @@ export const AiAssistantStep: React.FC<Props> = ({
       const userPrompt = localModelPrompt;
 
       let finalFullText = '';
-      await webLlmManager.generateStreaming(systemPrompt, userPrompt, (_delta, fullText) => {
-        finalFullText = fullText;
-        setGeneratedText(fullText);
-      });
+      await webLlmManager.generateStreaming(
+        systemPrompt,
+        userPrompt,
+        (_delta, fullText, stats) => {
+          finalFullText = fullText;
+          setGenerationStage('generating');
+          setTokenStats(stats);
+          setGeneratedText(fullText);
+        }
+      );
       if (finalFullText) {
         onSaveGeneratedText?.(finalFullText);
       }
@@ -214,6 +262,7 @@ export const AiAssistantStep: React.FC<Props> = ({
       setGenerationError(err.message || 'Fehler während der lokalen Inferenz.');
     } finally {
       setIsGenerating(false);
+      setGenerationStage('idle');
     }
   };
 
@@ -548,42 +597,62 @@ export const AiAssistantStep: React.FC<Props> = ({
 
           {/* Trigger Button & Status */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-            <div className="text-xs text-slate-600">
+            <div className="text-xs">
               {webLlmManager.isEngineReady() ? (
                 <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  Modell ist im Speicher initialisiert & bereit für Inferenz.
+                  Modell ist im Arbeitsspeicher geladen & sofort einsatzbereit.
+                </span>
+              ) : cacheStatus.isCached ? (
+                <span className="flex items-center gap-1.5 text-emerald-700 font-semibold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  Modell ist lokal gespeichert ({cacheStatus.storageBackend}, 100% offline einsatzbereit).
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-slate-500">
                   <AlertCircle className="w-4 h-4 text-amber-500" />
-                  Modell noch nicht geladen (~{webLlmManager.getModelConfig().downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
+                  Modell noch nicht heruntergeladen (~{webLlmManager.getModelConfig().downloadSizeMB} MB in OPFS/IndexedDB erforderlich).
                 </span>
               )}
             </div>
 
-            <button
-              onClick={handleRunLocalLlm}
-              disabled={isGenerating}
-              className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
-            >
-              {isGenerating ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Inferenz läuft via WebAssembly...</span>
-                </>
-              ) : webLlmManager.isEngineReady() ? (
-                <>
-                  <Play className="w-4 h-4" />
-                  <span>Passgenaue Förderbausteine generieren</span>
-                </>
-              ) : (
-                <>
-                  <DownloadCloud className="w-4 h-4" />
-                  <span>Modell laden / Zustimmen (~{webLlmManager.getModelConfig().downloadSizeMB} MB)</span>
-                </>
-              )}
-            </button>
+            {isGenerating ? (
+              <button
+                type="button"
+                onClick={handleStopGeneration}
+                className="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+                title="Laufende Inferenz abbrechen"
+              >
+                <Square className="w-4 h-4 fill-current" />
+                <span>Inferenz abbrechen ({tokenStats.tokenCount} Tokens)</span>
+              </button>
+            ) : isInitializingEngine ? (
+              <button
+                disabled
+                className="w-full sm:w-auto px-5 py-2.5 bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center justify-center gap-2 cursor-wait opacity-85"
+              >
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                <span>Initialisiere Modell aus lokalem Speicher...</span>
+              </button>
+            ) : (cacheStatus.isCached || webLlmManager.isEngineReady()) ? (
+              <button
+                type="button"
+                onClick={handleRunLocalLlm}
+                className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Play className="w-4 h-4" />
+                <span>Passgenaue Förderbausteine generieren</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleRunLocalLlm}
+                className="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <DownloadCloud className="w-4 h-4" />
+                <span>Modell laden / Zustimmen (~{webLlmManager.getModelConfig().downloadSizeMB} MB)</span>
+              </button>
+            )}
           </div>
 
           {/* Error Message */}
@@ -600,22 +669,61 @@ export const AiAssistantStep: React.FC<Props> = ({
           {/* Streaming Output Box */}
           {(generatedText || isGenerating) && (
             <div className="p-5 bg-slate-900 text-slate-100 rounded-xl space-y-3 font-sans">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
                 <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5 font-mono">
-                  <Cpu className="w-3.5 h-3.5" />
-                  Generierte Förderbausteine (Qwen2.5-0.5B Lokal):
+                  <Cpu className="w-3.5 h-3.5 text-indigo-400" />
+                  Generierte Förderbausteine ({webLlmManager.getModelConfig().shortName}):
                 </span>
-                
-                {isGenerating && (
-                  <span className="flex items-center gap-1 text-[11px] text-amber-400 font-mono">
-                    <RefreshCw className="w-3 h-3 animate-spin" />
-                    Generiere Tokens...
-                  </span>
-                )}
+
+                <div className="flex items-center gap-2">
+                  {isGenerating && generationStage === 'prefill' && (
+                    <span className="flex items-center gap-1.5 text-[11px] text-amber-300 font-mono animate-pulse">
+                      <RefreshCw className="w-3 h-3 animate-spin" />
+                      Prompt-Verarbeitung & Kontext laden...
+                    </span>
+                  )}
+
+                  {isGenerating && generationStage === 'generating' && (
+                    <div className="flex items-center gap-2 text-[11px] font-mono text-amber-300">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <span>Generiere Tokens:</span>
+                      <span className="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-emerald-400 font-bold">
+                        {tokenStats.tokenCount} Tokens
+                      </span>
+                      <span className="text-slate-400 text-[10px]">
+                        ({tokenStats.tokensPerSec} Tok/s • {tokenStats.elapsedSec.toFixed(1)}s)
+                      </span>
+                    </div>
+                  )}
+
+                  {generationStage === 'stopped' && (
+                    <span className="text-[11px] font-mono text-rose-300 bg-rose-950/70 border border-rose-800/80 px-2 py-0.5 rounded">
+                      Inferenz gestoppt ({tokenStats.tokenCount} Tokens)
+                    </span>
+                  )}
+
+                  {isGenerating && (
+                    <button
+                      type="button"
+                      onClick={handleStopGeneration}
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-rose-300 bg-rose-950/80 border border-rose-700 hover:bg-rose-900 rounded-lg transition-colors cursor-pointer"
+                      title="Generierung sofort stoppen"
+                    >
+                      <Square className="w-3 h-3 fill-current" />
+                      <span>Abbrechen</span>
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="text-xs leading-relaxed whitespace-pre-wrap font-sans text-slate-200 max-h-80 overflow-y-auto p-1">
                 {generatedText}
+                {isGenerating && (
+                  <span className="inline-block w-2 h-4 bg-indigo-400 animate-pulse align-middle ml-1" title="Inferenz aktiv" />
+                )}
               </div>
 
               {!isGenerating && generatedText && (

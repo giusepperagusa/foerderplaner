@@ -66,30 +66,50 @@ export class OPFSStorageBackend implements StorageBackend {
             await writable.write(value);
           }
         }
-      } finally {
         await writable.close();
+      } catch (err: any) {
+        // When stream errors or disconnects, never call close() on an errored stream
+        try {
+          await writable.abort(err);
+        } catch {
+          // Ignore secondary abort error
+        }
+        // Remove corrupted partial entry from OPFS directory
+        try {
+          await dir.removeEntry(key);
+        } catch {
+          // Ignore cleanup error if already removed
+        }
+        throw err;
       }
     } else {
       // Fallback for environments where createWritable is restricted
-      const reader = stream.getReader();
-      const chunks: Uint8Array[] = [];
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        if (value) chunks.push(value);
-      }
-      const blob = new Blob(chunks as any);
-      // Access handle sync write if in worker or standard write
-      if ('createSyncAccessHandle' in fileHandle) {
-        const accessHandle = await (fileHandle as any).createSyncAccessHandle();
-        try {
-          accessHandle.truncate(0);
-          const buffer = await blob.arrayBuffer();
-          accessHandle.write(buffer, { at: 0 });
-          accessHandle.flush();
-        } finally {
-          accessHandle.close();
+      try {
+        const reader = stream.getReader();
+        const chunks: Uint8Array[] = [];
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value) chunks.push(value);
         }
+        const blob = new Blob(chunks as any);
+        // Access handle sync write if in worker or standard write
+        if ('createSyncAccessHandle' in fileHandle) {
+          const accessHandle = await (fileHandle as any).createSyncAccessHandle();
+          try {
+            accessHandle.truncate(0);
+            const buffer = await blob.arrayBuffer();
+            accessHandle.write(buffer, { at: 0 });
+            accessHandle.flush();
+          } finally {
+            accessHandle.close();
+          }
+        }
+      } catch (err) {
+        try {
+          await dir.removeEntry(key);
+        } catch {}
+        throw err;
       }
     }
   }

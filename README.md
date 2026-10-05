@@ -104,7 +104,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.15 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.16 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -166,12 +166,12 @@ The application guides the teacher through a streamlined, multi-step process wit
   * Workbox precaching with support for large model worker scripts (`maximumFileSizeToCacheInBytes: 16MB`).
   * Custom download middleware setting explicit `Content-Type: application/gzip` and `Content-Disposition: attachment` headers for `.tar.gz` endpoints.
 * **Versioned Download Dialog (`VersionInfoModal.tsx`):**
-  * Shows app version (`v1.4.15-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
+  * Shows app version (`v1.4.16-offline`), license status (`GPL-3.0-or-later`), and official guidelines edition.
   * Direct link to the open source GitHub repository: [github.com/giusepperagusa/foerderplaner](https://github.com/giusepperagusa/foerderplaner).
   * Interactive PWA update check.
   * Direct one-click download buttons for:
-    * `foerderplaner-v1.4.15-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
-    * `foerderplaner-v1.4.15-source-code.tar.gz` (Complete project source tree).
+    * `foerderplaner-v1.4.16-web-dist.tar.gz` (Pre-compiled production bundle ready for static hosting).
+    * `foerderplaner-v1.4.16-source-code.tar.gz` (Complete project source tree).
   * Uses forced client-side `Blob` download to prevent inline browser text rendering.
 * **Automated CI/CD Workflow (`.github/workflows/deploy.yml`):**
   * **Typechecking & Build:** Runs `tsc --noEmit` and `vite build` on every push to `main`.
@@ -341,6 +341,16 @@ To ensure full compliance with public administration mandates (including Europea
 
 ### Historical Changelog
 
+* **v1.4.16 (2026-10-05):**
+  * **Reliable Offline Model Status Recognition, Download Resilience (Wake Lock & Stream Error Handling) & Live Inference Progress/Abort:**
+    * *Reassuring Offline Model Status Across App Updates & Reloads:* Resolved the issue where updating the application instance or changing versions caused the UI to show an alarming *„Modell noch nicht geladen“* prompt and a *„Modell laden / Zustimmen“* download button even when model weights were already 100% downloaded in OPFS/IndexedDB. The UI now distinguishes between *stored locally* and *loaded into RAM*, proactively acknowledging local presence (*„Modell ist lokal gespeichert (OPFS, 100% offline einsatzbereit)“*) with a green indicator, and offers immediate 1-click execution that seamlessly initializes the model into memory in 1–2 seconds without opening the download consent dialog.
+    * *Fix for `ERR_NETWORK_IO_SUSPENDED` & `Cannot close a ERRORED writable stream`:*
+      * Screen Wake Lock Integration: Automatically requests a screen wake lock via `navigator.wakeLock.request('screen')` during model downloads and local inference, preventing macOS Sequoia / Chrome from suspending network I/O (`net::ERR_NETWORK_IO_SUSPENDED`) due to system inactivity or energy-saving sleep on laptops (such as MacBook Air on battery).
+      * Writable Stream Error Handling in OPFS: Fixed `OPFSStorageBackend.write` so it no longer attempts to invoke `writable.close()` inside a `finally` block when a stream is already errored (which previously threw `TypeError: Cannot close a ERRORED writable stream`). If an I/O error occurs, it aborts the writable handle via `writable.abort()`, deletes the corrupted partial file, and rethrows the underlying error cleanly.
+      * Multi-Attempt Auto-Retry: Added automatic retry (up to 3 attempts with exponential backoff) for transient network glitches during model download from Hugging Face.
+    * *Live Token Progress & Immediate Generation Interruption:*
+      * Live Inference Metrics: Replaced the static *„Generiere Tokens...“* message with dynamic real-time telemetry, including active token counter (`{count} Tokens`), generation speed in tokens per second (`{rate} Tok/s`), elapsed execution time (`{time}s`), an animated typing cursor, and distinct prefill (*„Prompt-Verarbeitung & Kontext laden...“*) vs. generation stages.
+      * 1-Click Generation Abort (*„Inferenz abbrechen“*): Added immediate cancel controls both in the streaming output header and on the primary action button, allowing teachers to interrupt long-running generation at any moment without freezing the UI while preserving whatever content was already generated.
 * **v1.4.15 (2026-10-04):**
   * **Persistence of Generated AI Drafts, Guaranteed Hour:Minute Timestamps & Reversible Recommendation Selection:**
     * *State Preservation for Local Language Model:* Resolved text loss under the *„Lokales Sprachmodell“* tab in Step 3 (*„KI-Förderempfehlungen“*). The generated output in the *„Generierte Förderbausteine“* section and active tab selection are now permanently preserved across step navigation, eliminating accidental generation loss when navigating to other forms or steps. Added a dedicated *„Text leeren“* button to discard or reset drafts.

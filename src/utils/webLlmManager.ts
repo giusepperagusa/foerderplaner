@@ -129,6 +129,12 @@ export interface InitProgressReport {
   timeElapsed?: number;
 }
 
+export interface GenerationStats {
+  tokenCount: number;
+  tokensPerSec: number;
+  elapsedSec: number;
+}
+
 export type ProgressCallback = (report: InitProgressReport) => void;
 
 class WllamaManager {
@@ -136,6 +142,7 @@ class WllamaManager {
   private cacheManager: CacheManager | null = null;
   private isLoading = false;
   private currentLoadedModelId: string | null = null;
+  private currentAbortController: AbortController | null = null;
 
   public getSelectedModelKey(): string {
     if (typeof window !== 'undefined') {
@@ -216,15 +223,30 @@ class WllamaManager {
         (f) =>
           f.name.toLowerCase().includes('qwen') ||
           f.name.toLowerCase().includes('0.5b') ||
+          f.name.toLowerCase().includes('1.5b') ||
           f.name.toLowerCase().includes('.gguf')
       );
 
       // Check if active model file is cached with at least 50MB
+      const activeFileLower = activeModel.hfFile.toLowerCase();
+      const activeIdLower = activeModel.id.toLowerCase();
       const isCached = modelFiles.some(
-        (f) => (f.name.toLowerCase().includes(activeModel.id.toLowerCase()) || f.name.toLowerCase().includes(activeModel.hfFile.toLowerCase())) && f.size > 50 * 1024 * 1024
+        (f) =>
+          (f.name.toLowerCase().includes(activeIdLower) ||
+           f.name.toLowerCase().includes(activeFileLower)) &&
+          f.size > 50 * 1024 * 1024
       ) || (modelFiles.some(f => f.size > 200 * 1024 * 1024));
 
       const cachedBytes = modelFiles.reduce((acc, f) => acc + (f.size || 0), 0);
+
+      // Persist status flag in localStorage to maintain user reassurance across app updates and reloads
+      if (typeof window !== 'undefined') {
+        if (isCached) {
+          localStorage.setItem(`foerderplaner_model_cached_${activeModel.id}`, 'true');
+        } else if (modelFiles.length === 0) {
+          localStorage.removeItem(`foerderplaner_model_cached_${activeModel.id}`);
+        }
+      }
 
       return {
         isSupported: true,
@@ -237,15 +259,25 @@ class WllamaManager {
       };
     } catch (e) {
       console.warn('Could not inspect OPFS/IndexedDB storage:', e);
+      // Fallback check against localStorage flag
+      const hasLocalFlag = typeof window !== 'undefined' && localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
       return {
         isSupported: true,
-        isCached: false,
+        isCached: hasLocalFlag,
         isLoaded: !!this.wllama && this.currentLoadedModelId === activeModel.id,
         storageBackend,
         cacheKeys: [],
         activeModelName: activeModel.name,
       };
     }
+  }
+
+  public isModelCachedLocally(): boolean {
+    const activeModel = this.getModelConfig();
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
+    }
+    return false;
   }
 
   /**
@@ -293,6 +325,16 @@ class WllamaManager {
 
     this.isLoading = true;
 
+    // Acquire Wake Lock to prevent macOS / Chrome from suspending network IO during download
+    let wakeLock: any = null;
+    if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
+      try {
+        wakeLock = await (navigator as any).wakeLock.request('screen');
+      } catch (e) {
+        console.warn('Screen wakeLock request non-fatal:', e);
+      }
+    }
+
     try {
       // Request persistent storage protection for OPFS / IndexedDB
       await ensureStoragePersistence();
@@ -324,41 +366,70 @@ class WllamaManager {
         Math.max(1, typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 2 : 2)
       );
 
-      // Load model from Hugging Face or cached OPFS/IDB storage with explicit 4096 context & 8-bit quantized KV cache
-      await this.wllama.loadModelFromHF(
-        {
-          repo: modelConfig.hfRepo,
-          file: modelConfig.hfFile,
-        },
-        {
-          useCache: true,
-          n_gpu_layers: 0, // Enforce CPU execution and suppress "No available adapters" WebGPU probes
-          n_threads: threadCount,
-          n_ctx: modelConfig.contextWindow, // 4096 tokens (prevents 1024 token limit error)
-          n_parallel: 1, // Single-user in-browser sequence
-          cache_type_k: 'q8_0', // Quantize KV cache K to 8-bit for minimal RAM overhead
-          cache_type_v: 'q8_0', // Quantize KV cache V to 8-bit for minimal RAM overhead
-          progressCallback: ({ loaded, total }) => {
-            const progress = total > 0 ? loaded / total : 0;
-            const elapsed = Math.round((Date.now() - startTime) / 1000);
-            const loadedMB = Math.round(loaded / (1024 * 1024));
-            const totalMB = Math.round(total / (1024 * 1024));
+      // Load model from Hugging Face or cached OPFS/IDB storage with automatic retry for network glitches
+      let lastErr: any = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          await this.wllama.loadModelFromHF(
+            {
+              repo: modelConfig.hfRepo,
+              file: modelConfig.hfFile,
+            },
+            {
+              useCache: true,
+              n_gpu_layers: 0, // Enforce CPU execution and suppress WebGPU probes
+              n_threads: threadCount,
+              n_ctx: modelConfig.contextWindow, // 4096 tokens (prevents 1024 token limit error)
+              n_parallel: 1, // Single-user in-browser sequence
+              cache_type_k: 'q8_0', // Quantize KV cache K to 8-bit for minimal RAM overhead
+              cache_type_v: 'q8_0', // Quantize KV cache V to 8-bit for minimal RAM overhead
+              progressCallback: ({ loaded, total }) => {
+                const progress = total > 0 ? loaded / total : 0;
+                const elapsed = Math.round((Date.now() - startTime) / 1000);
+                const loadedMB = Math.round(loaded / (1024 * 1024));
+                const totalMB = Math.round(total / (1024 * 1024));
 
+                if (onProgress) {
+                  onProgress({
+                    progress,
+                    text: total > 0
+                      ? `Lade ${modelConfig.quantization}-Modell (${loadedMB} MB von ${totalMB} MB)...`
+                      : `Lade Daten (${loadedMB} MB)...`,
+                    timeElapsed: elapsed,
+                  });
+                }
+              },
+            }
+          );
+          lastErr = null;
+          break;
+        } catch (err: any) {
+          lastErr = err;
+          console.warn(`Model loading attempt ${attempt}/3 encountered issue:`, err);
+          if (attempt < 3) {
             if (onProgress) {
               onProgress({
-                progress,
-                text: total > 0
-                  ? `Lade ${modelConfig.quantization}-Modell in OPFS/IndexedDB (${loadedMB} MB von ${totalMB} MB)...`
-                  : `Lade Daten (${loadedMB} MB)...`,
-                timeElapsed: elapsed,
+                progress: 0,
+                text: `Netzwerkunterbrechung erkannt. Starte erneuten Versuch ${attempt + 1}/3...`,
+                timeElapsed: Math.round((Date.now() - startTime) / 1000),
               });
             }
-          },
+            await new Promise((r) => setTimeout(r, 1500));
+            continue;
+          }
+          throw err;
         }
-      );
+      }
+
+      if (lastErr) throw lastErr;
 
       this.currentLoadedModelId = modelConfig.id;
       this.isLoading = false;
+
+      // Mark model as cached in localStorage for immediate reassuring UI recognition on reload
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(`foerderplaner_model_cached_${modelConfig.id}`, 'true');
+      }
 
       if (onProgress) {
         onProgress({
@@ -381,94 +452,153 @@ class WllamaManager {
         this.wllama = null;
       }
       throw err;
+    } finally {
+      if (wakeLock) {
+        try {
+          await wakeLock.release();
+        } catch {
+          // ignore
+        }
+      }
     }
   }
 
   /**
-   * Stream a completion using Wllama CPU inference with anti-repetition guards
+   * Immediately aborts any ongoing local inference generation
+   */
+  public abortGeneration(): void {
+    if (this.currentAbortController) {
+      this.currentAbortController.abort();
+      this.currentAbortController = null;
+    }
+  }
+
+  /**
+   * Stream a completion using Wllama CPU inference with live token progress and interruption support
    */
   public async generateStreaming(
     systemPrompt: string,
     userPrompt: string,
-    onToken: (token: string, fullText: string) => void
+    onToken: (token: string, fullText: string, stats: GenerationStats) => void,
+    externalSignal?: AbortSignal
   ): Promise<string> {
     if (!this.wllama) {
       throw new Error('Modell ist noch nicht geladen. Bitte Modell zuerst initialisieren.');
     }
 
+    this.currentAbortController = new AbortController();
+    const abortCtrl = this.currentAbortController;
+
+    // WakeLock to prevent CPU throttling or screen sleep during inference
+    let wakeLock: any = null;
+    if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
+      try {
+        wakeLock = await (navigator as any).wakeLock.request('screen');
+      } catch {
+        // non-fatal
+      }
+    }
+
     let fullText = '';
+    let tokenCount = 0;
+    const startTime = Date.now();
+    let isInterrupted = false;
 
-    const stream = await (this.wllama as any).createChatCompletion({
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      stream: true,
-      temp: 0.6, // Native llama.cpp sampling temperature
-      temperature: 0.6,
-      top_p: 0.85,
-      top_k: 40,
-      penalty_repeat: 1.35, // Strong penalty against repeating identical n-grams
-      penalty_last_n: 512, // Look back across the full response context
-      penalty_freq: 0.5, // Frequency penalty against repeatedly chosen words
-      penalty_present: 0.4, // Presence penalty encouraging vocabulary variety
-      max_tokens: 420,
-      stop: [
-        '<|im_end|>',
-        '<|endoftext|>',
-        '### Ermutigung',
-        '### Bedeutung',
-        '### Fazit',
-        'Hinweis:',
-        'AUFGABE:',
-        'Schuelerdaten:',
-        'Ausgangslage:',
-      ],
-    });
+    const checkAborted = () => {
+      return abortCtrl.signal.aborted || (externalSignal && externalSignal.aborted);
+    };
 
-    for await (const chunk of stream) {
-      const delta = chunk.choices[0]?.delta?.content || '';
-      if (delta) {
-        fullText += delta;
-        onToken(delta, fullText);
+    try {
+      const stream = await (this.wllama as any).createChatCompletion({
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        stream: true,
+        temp: 0.6, // Native llama.cpp sampling temperature
+        temperature: 0.6,
+        top_p: 0.85,
+        top_k: 40,
+        penalty_repeat: 1.35, // Strong penalty against repeating identical n-grams
+        penalty_last_n: 512, // Look back across the full response context
+        penalty_freq: 0.5, // Frequency penalty against repeatedly chosen words
+        penalty_present: 0.4, // Presence penalty encouraging vocabulary variety
+        max_tokens: 420,
+        stop: [
+          '<|im_end|>',
+          '<|endoftext|>',
+          '### Ermutigung',
+          '### Bedeutung',
+          '### Fazit',
+          'Hinweis:',
+          'AUFGABE:',
+          'Schuelerdaten:',
+          'Ausgangslage:',
+        ],
+      });
 
-        // Completion guard: once REFLEXION section is generated, detect end of required content
-        const reflexionIdx = fullText.toUpperCase().indexOf('REFLEXION');
-        if (reflexionIdx !== -1) {
-          const afterReflexion = fullText.slice(reflexionIdx);
-          // If the model finishes the REFLEXION sentence and tries to output meta-commentary
-          if (
-            afterReflexion.includes('\n\n') ||
-            afterReflexion.includes('###') ||
-            afterReflexion.toLowerCase().includes('ermutigung') ||
-            afterReflexion.toLowerCase().includes('bedeutung') ||
-            afterReflexion.toLowerCase().includes('fazit')
-          ) {
-            console.log('Finished 5 standard sections, stopping stream cleanly.');
-            break;
-          }
-        }
-
-        // Repetition guard 1: detect degenerate loop of identical adjacent text
-        if (fullText.length > 80) {
-          const tail = fullText.slice(-60);
-          const firstHalf = tail.slice(0, 30);
-          const secondHalf = tail.slice(30);
-          if (firstHalf === secondHalf && firstHalf.trim().length > 10) {
-            console.warn('Repetition loop detected, stopping generation gracefully');
-            break;
-          }
-        }
-
-        // Repetition guard 2: detect duplicate sentences across different sections (e.g. copying bullet to IST/SOLL/LERNWEG)
-        const lines = fullText
-          .split('\n')
-          .map((l) => l.trim().toLowerCase())
-          .filter((l) => l.length > 25 && !l.startsWith('ist:') && !l.startsWith('soll:') && !l.startsWith('absp'));
-        const uniqueLines = new Set(lines);
-        if (lines.length - uniqueLines.size >= 1) {
-          console.warn('Cross-section duplicate sentence detected, stopping stream to prevent repetition cascade');
+      for await (const chunk of stream) {
+        if (checkAborted()) {
+          isInterrupted = true;
+          console.log('Local model inference interrupted by user.');
           break;
+        }
+
+        const delta = chunk.choices[0]?.delta?.content || '';
+        if (delta) {
+          tokenCount++;
+          fullText += delta;
+          const elapsedSec = Math.max(0.1, (Date.now() - startTime) / 1000);
+          const tokensPerSec = Math.round((tokenCount / elapsedSec) * 10) / 10;
+          onToken(delta, fullText, { tokenCount, tokensPerSec, elapsedSec });
+
+          // Completion guard: once REFLEXION section is generated, detect end of required content
+          const reflexionIdx = fullText.toUpperCase().indexOf('REFLEXION');
+          if (reflexionIdx !== -1) {
+            const afterReflexion = fullText.slice(reflexionIdx);
+            // If the model finishes the REFLEXION sentence and tries to output meta-commentary
+            if (
+              afterReflexion.includes('\n\n') ||
+              afterReflexion.includes('###') ||
+              afterReflexion.toLowerCase().includes('ermutigung') ||
+              afterReflexion.toLowerCase().includes('bedeutung') ||
+              afterReflexion.toLowerCase().includes('fazit')
+            ) {
+              console.log('Finished 5 standard sections, stopping stream cleanly.');
+              break;
+            }
+          }
+
+          // Repetition guard 1: detect degenerate loop of identical adjacent text
+          if (fullText.length > 80) {
+            const tail = fullText.slice(-60);
+            const firstHalf = tail.slice(0, 30);
+            const secondHalf = tail.slice(30);
+            if (firstHalf === secondHalf && firstHalf.trim().length > 10) {
+              console.warn('Repetition loop detected, stopping generation gracefully');
+              break;
+            }
+          }
+
+          // Repetition guard 2: detect duplicate sentences across different sections (e.g. copying bullet to IST/SOLL/LERNWEG)
+          const lines = fullText
+            .split('\n')
+            .map((l) => l.trim().toLowerCase())
+            .filter((l) => l.length > 25 && !l.startsWith('ist:') && !l.startsWith('soll:') && !l.startsWith('absp'));
+          const uniqueLines = new Set(lines);
+          if (lines.length - uniqueLines.size >= 1) {
+            console.warn('Cross-section duplicate sentence detected, stopping stream to prevent repetition cascade');
+            break;
+          }
+        }
+      }
+    } finally {
+      this.currentAbortController = null;
+      if (wakeLock) {
+        try {
+          await wakeLock.release();
+        } catch {
+          // ignore
         }
       }
     }
@@ -485,17 +615,18 @@ class WllamaManager {
       cleaned = cleaned.split('### Fazit')[0].trim();
     }
 
-    // Prevent truncated dangling half-sentences at the end (e.g. "...aufgesch")
-    const lastPunctuation = Math.max(
-      cleaned.lastIndexOf('.'),
-      cleaned.lastIndexOf('!'),
-      cleaned.lastIndexOf('?')
-    );
-    if (lastPunctuation !== -1 && cleaned.length - lastPunctuation > 10) {
-      const trailing = cleaned.slice(lastPunctuation + 1).trim();
-      // If trailing fragment is incomplete and does not look like a closed bullet or label, trim back to terminal punctuation
-      if (!trailing.endsWith('.') && trailing.split(' ').length < 8) {
-        cleaned = cleaned.slice(0, lastPunctuation + 1).trim();
+    // Prevent truncated dangling half-sentences at the end (e.g. "...aufgesch") if not interrupted
+    if (!isInterrupted) {
+      const lastPunctuation = Math.max(
+        cleaned.lastIndexOf('.'),
+        cleaned.lastIndexOf('!'),
+        cleaned.lastIndexOf('?')
+      );
+      if (lastPunctuation !== -1 && cleaned.length - lastPunctuation > 10) {
+        const trailing = cleaned.slice(lastPunctuation + 1).trim();
+        if (!trailing.endsWith('.') && trailing.split(' ').length < 8) {
+          cleaned = cleaned.slice(0, lastPunctuation + 1).trim();
+        }
       }
     }
 

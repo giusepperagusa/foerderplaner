@@ -40,12 +40,17 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
   const [selectedKey, setSelectedKey] = useState<string>(() => webLlmManager.getSelectedModelKey());
   const activeModel: ModelOption = AVAILABLE_MODELS[selectedKey] || AVAILABLE_MODELS['qwen2.5-0.5b-q8_0'];
 
-  const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>({
-    isSupported: true,
-    isCached: false,
-    isLoaded: false,
-    storageBackend: 'OPFS',
-    cacheKeys: []
+  const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>(() => {
+    const hasLocalFlag =
+      typeof window !== 'undefined' &&
+      localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
+    return {
+      isSupported: true,
+      isCached: hasLocalFlag,
+      isLoaded: webLlmManager.isEngineReady(),
+      storageBackend: 'OPFS',
+      cacheKeys: []
+    };
   });
   const [isChecking, setIsChecking] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -75,6 +80,11 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
     webLlmManager.setSelectedModelKey(key);
     setStatusMessage(null);
     setDownloadError(null);
+    const targetModel = AVAILABLE_MODELS[key];
+    if (targetModel && typeof window !== 'undefined') {
+      const isCachedFlag = localStorage.getItem(`foerderplaner_model_cached_${targetModel.id}`) === 'true';
+      setCacheStatus(prev => ({ ...prev, isCached: isCachedFlag }));
+    }
   };
 
   const handleStartDownload = async () => {
