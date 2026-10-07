@@ -1,28 +1,28 @@
 {
-  "dokument": "Foerdermassnahmen konkret! Eine Handreichung fuer paedagogische Fachkraefte zur Entwicklung von Foerdermassnahmen",
+  "dokument": "Fördermaßnahmen konkret! Eine Handreichung für pädagogische Fachkräfte zur Entwicklung von Fördermaßnahmen",
   "version": "1.0",
   "gueltigAb": "2018-11-01",
-  "herausgeber": "Senatsverwaltung fuer Bildung, Jugend und Familie Berlin",
-  "hinweis": "Vollstaendig extrahiert aus dem amtlichen Dokument 'Foerdermassnahmen konkret!' (Berlin, Stand November 2018). Alle deutschen Umlaute und Sonderzeichen wurden normalisiert (ae, oe, ue, ss), um ein deterministisches und ressourcenschonendes Pattern-Matching fuer ressourcenarme lokale GenAI-Modelle auf mobilen Endgeraeten und Offline-Geraeten zu ermoeglichen.",
+  "herausgeber": "Senatsverwaltung für Bildung, Jugend und Familie Berlin",
+  "hinweis": "Vollständig extrahiert aus dem amtlichen Dokument 'Fördermaßnahmen konkret!' (Berlin, Stand November 2018) der Senatsverwaltung für Bildung, Jugend und Familie mit authentischer deutscher Rechtschreibung (ä, ö, ü, Ä, Ö, Ü, ß).",
   "foerderschwerpunkte": {
     "Lernen": {
       "kuerzel": "LE",
-      "definition": "Umfassende und anhaltende Lernbeeintraechtigungen im Erwerb grundlegender Kulturtechniken sowie in kognitiven Faehigkeiten und Lern- und Arbeitsstrategien. Der Unterricht orientiert sich zieldifferent an den individuellen Lernvoraussetzungen.",
+      "definition": "Umfassende und anhaltende Lernbeeintraechtigungen im Erwerb grundlegender Kulturtechniken sowie in kognitiven Fähigkeiten und Lern- und Arbeitsstrategien. Der Unterricht orientiert sich zieldifferent an den individuellen Lernvoraussetzungen.",
       "bewertungskriterien": [
         "Lernstand in den schulischen Lernbereichen (Lesen, Schreiben, Rechnen) deutlich unter der Altersnorm",
-        "Einschraenkungen der Merk-, Reproduktions- und Transferfaehigkeit",
-        "Schwierigkeiten im Lern- und Arbeitsverhalten (Motivation, Konzentration, Ausdauer, Aufgabenverstaendnis)",
-        "Probleme bei der selbststaendigen Arbeitsorganisation und Materialfuehrung",
+        "Einschränkungen der Merk-, Reproduktions- und Transferfähigkeit",
+        "Schwierigkeiten im Lern- und Arbeitsverhalten (Motivation, Konzentration, Ausdauer, Aufgabenverständnis)",
+        "Probleme bei der selbstständigen Arbeitsorganisation und Materialfuehrung",
         "Notwendigkeit von handelndem, anschaulichem Lernen nach dem EIS-Prinzip"
       ],
       "foerderschwerpunkte_innerhalb": [
-        "Kognitive Faehigkeiten - Merkfaehigkeit",
-        "Kognitive Faehigkeiten - Reproduktionsfaehigkeit",
-        "Kognitive Faehigkeiten - Transferfaehigkeit",
+        "Kognitive Fähigkeiten - Merkfähigkeit",
+        "Kognitive Fähigkeiten - Reproduktionsfähigkeit",
+        "Kognitive Fähigkeiten - Transferfähigkeit",
         "Lern- und Arbeitsverhalten - Lernbereitschaft/Motivation",
         "Lern- und Arbeitsverhalten - Ausdauer/Konzentration",
-        "Lern- und Arbeitsverhalten - Aufgabenverstaendnis",
-        "Lern- und Arbeitsverhalten - Selbststaendigkeit",
+        "Lern- und Arbeitsverhalten - Aufgabenverständnis",
+        "Lern- und Arbeitsverhalten - Selbstständigkeit",
         "Lern- und Arbeitsverhalten - Arbeitsorganisation",
         "Schulische Lernbereiche - Lesen",
         "Schulische Lernbereiche - Rechtschreiben",
@@ -33,40 +33,40 @@
       "empfohlene_foerdermassnahmen": [
         "Handlungsorientiertes Vorgehen vom Konkreten zum Abstrakten (EIS-Prinzip: enaktiv - ikonisch - symbolisch)",
         "Strukturierte Arbeitsphasen mit klaren Regeln, Signalkarten, Sanduhren und Laermschutzkopfhoerern",
-        "Textoptimierung von Aufgabenblaettern: kurze Hauptsaetze, grosse Schrift, Hervorhebungen",
+        "Textoptimierung von Aufgabenblaettern: kurze Hauptsätze, große Schrift, Hervorhebungen",
         "Selbstinstruktionstraining mit Leitfragen ('Was ist meine Aufgabe? Was mache ich zuerst?')",
         "Kooperative Lernformen wie Partnerlesen, Lerntheken und Wochenplanarbeit",
-        "Einsatz haptischer Anschauungsmaterialien (z.B. Dienes-Zehnermaterial, 1x1-Tafeln, Fuenf-Faecher-Lernbox)"
+        "Einsatz haptischer Anschauungsmaterialien (z.B. Dienes-Zehnermaterial, 1x1-Tafeln, Fünf-Fächer-Lernbox)"
       ],
       "kategorien": [
         {
-          "kategorie": "Merkfaehigkeit",
-          "beschreibung": "Faehigkeit, aufgenommene Informationen im Gedaechtnis zu behalten und abzurufen.",
+          "kategorie": "Merkfähigkeit",
+          "beschreibung": "Fähigkeit, aufgenommene Informationen im Gedächtnis zu behalten und abzurufen.",
           "eintraege": [
             {
               "ist": "Kann sich keine Anweisungen oder Inhalte merken.",
-              "soll": "Kann Inhalte im Gedaechtnis behalten und zu einem spaeteren Zeitpunkt abrufen.",
+              "soll": "Kann Inhalte im Gedächtnis behalten und zu einem späteren Zeitpunkt abrufen.",
               "lernweg": [
                 "Ultrakurzzeitgedaechtnistraining: Zahlen- und Wortreihen sowie Bildkarten nachsprechen/merken.",
                 "Kurzzeitgedaechtnistraining mit Zwischenhandlungen (Laufdiktate, Dosendiktat).",
-                "Langzeitgedaechtnis: Taegliche Wiederholungszeiten mit der Fuenf-Faecher-Lernbox.",
-                "Techniken zum Auswendiglernen: Mehrfach hoeren/lesen, Reime markieren, Lueckentexte, Bilder zeichnen, mit verschiedenen Stimmen aufsagen."
+                "Langzeitgedaechtnis: Tägliche Wiederholungszeiten mit der Fünf-Fächer-Lernbox.",
+                "Techniken zum Auswendiglernen: Mehrfach hören/lesen, Reime markieren, Lückentexte, Bilder zeichnen, mit verschiedenen Stimmen aufsagen."
               ]
             },
             {
-              "ist": "Kann Inhalte nicht in zusammenhaengenden Saetzen erfassen und wiedergeben.",
-              "soll": "Kann Informationen zunehmend in groesseren Sinnzusammenhaengen verstehen und zusammenfassen.",
+              "ist": "Kann Inhalte nicht in zusammenhängenden Sätzen erfassen und wiedergeben.",
+              "soll": "Kann Informationen zunehmend in größeren Sinnzusammenhängen verstehen und zusammenfassen.",
               "lernweg": [
                 "Alltagsbezogene Reflexionsfragen stellen ('Was hast du gestern gemacht?').",
                 "Methode des 'Roten Fadens' im Deutschunterricht einsetzen.",
-                "Gespraeche mit Wortkarten und Bildern strukturieren; Verzicht auf Schachtelsaetze."
+                "Gespräche mit Wortkarten und Bildern strukturieren; Verzicht auf Schachtelsätze."
               ]
             },
             {
-              "ist": "Entwickelt keine eigenen Ideen zur Steigerung der Merkfaehigkeit.",
-              "soll": "Verwendet Strategien zur Steigerung der Merkfaehigkeit.",
+              "ist": "Entwickelt keine eigenen Ideen zur Steigerung der Merkfähigkeit.",
+              "soll": "Verwendet Strategien zur Steigerung der Merkfähigkeit.",
               "lernweg": [
-                "Merkstrategien und Eselsbruecken einueben.",
+                "Merkstrategien und Eselsbrücken Einüben.",
                 "Visuelle Vorstellungsuebungen ('Kopfkino' / inneres Foto machen).",
                 "Gestaltung der Angebote nach Lerntypen."
               ]
@@ -74,14 +74,14 @@
           ]
         },
         {
-          "kategorie": "Reproduktionsfaehigkeit",
-          "beschreibung": "Faehigkeit, erlerntes Wissen verstaendlich und mit zeitlichem Abstand sicher wiederzugeben.",
+          "kategorie": "Reproduktionsfähigkeit",
+          "beschreibung": "Fähigkeit, erlerntes Wissen verständlich und mit zeitlichem Abstand sicher wiederzugeben.",
           "eintraege": [
             {
               "ist": "Kann erworbenes Wissen nicht reproduzieren.",
-              "soll": "Ist in der Lage, erworbenes Wissen auch mit zeitlichem Abstand verstaendlich wiederzugeben.",
+              "soll": "Ist in der Lage, erworbenes Wissen auch mit zeitlichem Abstand verständlich wiederzugeben.",
               "lernweg": [
-                "Erinnerungshilfen wie Schlagwoerter und Stichpunktzettel (Spickzettel) als Unterrichtsinhalt erstellen.",
+                "Erinnerungshilfen wie Schlagwörter und Stichpunktzettel (Spickzettel) als Unterrichtsinhalt erstellen.",
                 "Mnemotechniken und Merksatzgeschichten nutzen.",
                 "Wiederholungen in Quizform, Dominos oder Partnerabfragen einbinden."
               ]
@@ -89,23 +89,23 @@
           ]
         },
         {
-          "kategorie": "Transferfaehigkeit",
-          "beschreibung": "Faehigkeit, Gelerntes in neuen oder vergleichbaren Aufgabenstellungen sinnvoll anzuwenden.",
+          "kategorie": "Transferfähigkeit",
+          "beschreibung": "Fähigkeit, Gelerntes in neuen oder vergleichbaren Aufgabenstellungen sinnvoll anzuwenden.",
           "eintraege": [
             {
-              "ist": "Kann Gelerntes nicht auf andere Situationen oder Aufgaben uebertragen.",
+              "ist": "Kann Gelerntes nicht auf andere Situationen oder Aufgaben Übertragen.",
               "soll": "Setzt erworbenes Wissen in vergleichbaren und neuen Situationen sinnvoll ein.",
               "lernweg": [
-                "Detektivfragen zur Identifikation von Zusammenhaengen stellen.",
+                "Detektivfragen zur Identifikation von Zusammenhängen stellen.",
                 "Kleinschrittige Steigerung: erst bekannte Aufgaben sichern, dann geringe Modifikationen.",
-                "Alltaegliche Handlungsbezuege herstellen (z.B. Mengenangaben beim Backen, Textbausteine fuer Steckbriefe)."
+                "Alltägliche Handlungsbezuege herstellen (z.B. Mengenangaben beim Backen, Textbausteine für Steckbriefe)."
               ]
             },
             {
               "ist": "Arbeitet impulsiv, beginnt gar nicht erst oder bricht die Bearbeitung ab.",
               "soll": "Wendet erworbene Lernstrategien auf Aufgabenstellungen an.",
               "lernweg": [
-                "Automatisierung der 6-Schritte-Selbstinstruktion: 1. Was ist meine Aufgabe? 2. Kenne ich das? 3. Was brauche ich? 4. Was ist Schritt 1? 5. Ruhig Schritt fuer Schritt arbeiten. 6. Eigenlob nach Fertigstellung."
+                "Automatisierung der 6-Schritte-Selbstinstruktion: 1. Was ist meine Aufgabe? 2. Kenne ich das? 3. Was brauche ich? 4. Was ist Schritt 1? 5. Ruhig Schritt für Schritt arbeiten. 6. Eigenlob nach Fertigstellung."
               ]
             }
           ]
@@ -115,47 +115,47 @@
           "beschreibung": "Bereitschaft, sich auf Aufgaben einzulassen und Lernziele beharrlich zu verfolgen.",
           "eintraege": [
             {
-              "ist": "Ist unmotiviert, unkonzentriert, motorisch unruhig und beschaeftigt sich mit anderem.",
+              "ist": "Ist unmotiviert, unkonzentriert, motorisch unruhig und beschäftigt sich mit anderem.",
               "soll": "Folgt dem Unterricht aufgeschlossener, konzentrierter und aufmerksamer.",
               "lernweg": [
                 "Tages- und Stundenablaufplan visualisieren und Schritte abhaken lassen.",
                 "Feste Stillarbeitszeiten mit Sanduhr begrenzen.",
-                "Motorische Entlastung durch Sitzkissen, Sandsaeckchen, Knautschbaelle und Braingymnastik.",
-                "Forschermittel zur Unterstuetzung bereitstellen (Pfeile, Plaettchen, Markierungen)."
+                "Motorische Entlastung durch Sitzkissen, Sandsäckchen, Knautschbälle und Braingymnastik.",
+                "Forschermittel zur Unterstützung bereitstellen (Pfeile, Plättchen, Markierungen)."
               ]
             },
             {
-              "ist": "Interessiert sich nicht fuer Lernangebote; zeigt Desinteresse.",
-              "soll": "Laesst sich fuer neue Lerninhalte begeistern und beteiligt sich aktiver.",
+              "ist": "Interessiert sich nicht für Lernangebote; zeigt Desinteresse.",
+              "soll": "Lässt sich für neue Lerninhalte begeistern und beteiligt sich aktiver.",
               "lernweg": [
-                "Ich-Naehe und Lebensweltbezug: Themen aus persoenlichen Interessen einbinden (z.B. Tornados, Kung-Fu).",
-                "Strichliste fuer jede aktive Wortmeldung als visuelle Erinnerung.",
-                "Einfuehrung einer Motivationsfigur."
+                "Ich-Nähe und Lebensweltbezug: Themen aus persönlichen Interessen einbinden (z.B. Tornados, Kung-Fu).",
+                "Strichliste für jede aktive Wortmeldung als visuelle Erinnerung.",
+                "Einführung einer Motivationsfigur."
               ]
             },
             {
               "ist": "Verweigert die Mitarbeit bei Wiederholungen; zeigt keine Anstrengungsbereitschaft.",
               "soll": "Zeigt Einsatzbereitschaft auch bei weniger beliebten Inhalten.",
               "lernweg": [
-                "Anforderungsniveau passgenau abstimmen, um Ueber-/Unterforderung zu vermeiden.",
+                "Anforderungsniveau passgenau abstimmen, um Über-/Unterforderung zu vermeiden.",
                 "Minimalziele transparent festlegen (Kreuzchen im Buch) und zeitnah loben.",
                 "Alternative Praesentationsformen anbieten (Lapbook, Plakat, Portfolio statt langem Aufsatz).",
-                "Verstaerkerprogramm und enge Rueckmeldung an Eltern."
+                "Verstärkerprogramm und enge Rückmeldung an Eltern."
               ]
             }
           ]
         },
         {
           "kategorie": "Ausdauer und Konzentration",
-          "beschreibung": "Faehigkeit, aufmerksam zu bleiben, Stoerreize auszublenden und Aufgaben zu Ende zu bringen.",
+          "beschreibung": "Fähigkeit, aufmerksam zu bleiben, Stoerreize auszublenden und Aufgaben zu Ende zu bringen.",
           "eintraege": [
             {
-              "ist": "Kann sich nicht laengere Zeit konzentrieren, arbeitet ueberhastet oder traeumt.",
+              "ist": "Kann sich nicht längere Zeit konzentrieren, arbeitet überhastet oder träumt.",
               "soll": "Arbeitet zunehmend planvoll und konzentriert.",
               "lernweg": [
-                "Klare Regeln fuer Arbeitsphasen sichtbar machen ('Ich bleibe am Platz, denke nach, frage bei Bedarf').",
-                "Signalkarten (Fex-Aufgabenhelfer) und Sanduhren fuer Zeiteinteilung.",
-                "Unterrichtsinhalte portionieren: Arbeitsblaetter halbieren, kleine Haeppchen statt ganzer Mappen.",
+                "Klare Regeln für Arbeitsphasen sichtbar machen ('Ich bleibe am Platz, denke nach, frage bei Bedarf').",
+                "Signalkarten (Fex-Aufgabenhelfer) und Sanduhren für Zeiteinteilung.",
+                "Unterrichtsinhalte portionieren: Arbeitsblätter halbieren, kleine Haeppchen statt ganzer Mappen.",
                 "Marburger Konzentrationstraining (MKT)."
               ]
             },
@@ -163,62 +163,62 @@
               "ist": "Zeigt sehr geringe Konzentrationsspanne.",
               "soll": "Beteiligt sich ausdauernder am Unterricht.",
               "lernweg": [
-                "Haeufiger Methodenwechsel im Unterricht.",
+                "Häufiger Methodenwechsel im Unterricht.",
                 "Entspannungsreisen, progressive Muskelentspannung, Kinderyoga und Bewegungspausen nach Teilzielen einplanen."
               ]
             },
             {
-              "ist": "Beendet Arbeiten haeufig nicht oder zerstoert sie.",
-              "soll": "Bringt Arbeiten zu Ende und geht wertschaetzend mit Material um.",
+              "ist": "Beendet Arbeiten häufig nicht oder zerstört sie.",
+              "soll": "Bringt Arbeiten zu Ende und geht wertschätzend mit Material um.",
               "lernweg": [
-                "Erfolgstagebuch und Stempelheft zur Staerkung des Selbstwirksamkeitserlebens.",
+                "Erfolgstagebuch und Stempelheft zur Stärkung des Selbstwirksamkeitserlebens.",
                 "Portfoliosammlung gelungener Arbeiten.",
-                "Regelmaessige Hilfestellung bei der Materialordnung."
+                "Regelmäßige Hilfestellung bei der Materialordnung."
               ]
             },
             {
-              "ist": "Laesst sich von kleinsten Geraeuschen/optischen Reizen ablenken; spielt mit Stiften.",
+              "ist": "Lässt sich von kleinsten Geräuschen/optischen Reizen ablenken; spielt mit Stiften.",
               "soll": "Arbeitet zunehmend ohne sich ablenken zu lassen.",
               "lernweg": [
                 "Ablenkungsarmer Arbeitsplatz mit Stellwand und Blick zur Wand.",
-                "Laermschutzkopfhoerer in Stillarbeitsphasen einsetzen.",
+                "Lärmschutzkopfhörer in Stillarbeitsphasen einsetzen.",
                 "Ruhigen Sitznachbarn waehlen; Massageball zur taktilen Eigenstimulation."
               ]
             }
           ]
         },
         {
-          "kategorie": "Aufgabenverstaendnis",
-          "beschreibung": "Faehigkeit, Handlungsanweisungen zu verstehen und Arbeitsmaterialien sachgerecht zu verwenden.",
+          "kategorie": "Aufgabenverständnis",
+          "beschreibung": "Fähigkeit, Handlungsanweisungen zu verstehen und Arbeitsmaterialien sachgerecht zu verwenden.",
           "eintraege": [
             {
-              "ist": "Versteht viele muendliche und schriftliche Arbeitsanweisungen nicht.",
+              "ist": "Versteht viele mündliche und schriftliche Arbeitsanweisungen nicht.",
               "soll": "Kann Handlungsanweisungen besser verstehen und umsetzen.",
               "lernweg": [
-                "Textoptimierung: kurze Hauptsaetze in leichter Sprache ('Lies zuerst! Unterstreiche das Verb!').",
+                "Textoptimierung: kurze Hauptsätze in leichter Sprache ('Lies zuerst! Unterstreiche das Verb!').",
                 "Uebersichtliches Layout mit Zeilenabstand, Fettdruck und Symbolen/Piktogrammen.",
-                "Schueler die Schritte ohne Beschaemung wiederholen lassen."
+                "Schüler die Schritte ohne Beschämung wiederholen lassen."
               ]
             },
             {
-              "ist": "Hat Probleme, Aufgaben allein zu beginnen und zu loesen.",
-              "soll": "Bearbeitet gestellte Aufgaben selbststaendig und eigenverantwortlich.",
+              "ist": "Hat Probleme, Aufgaben allein zu beginnen und zu lösen.",
+              "soll": "Bearbeitet gestellte Aufgaben selbstständig und eigenverantwortlich.",
               "lernweg": [
                 "Selbstinstruktion mit Signalkarten laut, leise und schliesslich als inneres Sprechen.",
-                "Beispielaufgabe gemeinsam loesen und auf dem Blatt als Muster belassen."
+                "Beispielaufgabe gemeinsam lösen und auf dem Blatt als Muster belassen."
               ]
             },
             {
-              "ist": "Findet Materialien nicht oder setzt sie nicht zielfuehrend ein.",
-              "soll": "Setzt benoetigte Arbeitsmaterialien angemessen ein.",
+              "ist": "Findet Materialien nicht oder setzt sie nicht zielführend ein.",
+              "soll": "Setzt benötigte Arbeitsmaterialien angemessen ein.",
               "lernweg": [
-                "Feste Ordnung am Tisch ('Maeppchenparkplatz', Schablonen zur Materialablage).",
+                "Feste Ordnung am Tisch ('Mäppchenparkplatz', Schablonen zur Materialablage).",
                 "Reduzierung der Utensilien auf das Wesentliche.",
-                "Gezieltes Methodentraining fuer Lineal, Zirkel und Geodreieck."
+                "Gezieltes Methodentraining für Lineal, Zirkel und Geodreieck."
               ]
             },
             {
-              "ist": "Weiss nicht, wo Hilfen zu finden sind.",
+              "ist": "Weiß nicht, wo Hilfen zu finden sind.",
               "soll": "Nutzt Informationsquellen sinnvoll und holt sich bei Bedarf Hilfe.",
               "lernweg": [
                 "Festes 4-Schritte-Helfersystem etablieren: 1. Dreimal lesen, 2. Nachbarn fragen, 3. Expertenliste nutzen, 4. Lehrkraft fragen."
@@ -227,43 +227,43 @@
           ]
         },
         {
-          "kategorie": "Selbststaendigkeit",
-          "beschreibung": "Faehigkeit, ohne staendiges Nachfragen zu beginnen und eigenstaendig Loesungen zu erarbeiten.",
+          "kategorie": "Selbstständigkeit",
+          "beschreibung": "Fähigkeit, ohne staendiges Nachfragen zu beginnen und eigenstaendig Lösungen zu erarbeiten.",
           "eintraege": [
             {
               "ist": "Fragt sofort nach der Aufgabenstellung: 'Was soll ich machen?'.",
               "soll": "Beginnt die Arbeit ohne mehrmaliges Nachfragen.",
               "lernweg": [
                 "Konsequente Einhaltung des Helfersystems (erst Nachbar und Expertenliste kontaktieren).",
-                "Staerkung des Selbstvertrauens durch leicht zu bewaeltigende Einstiegsaufgaben."
+                "Stärkung des Selbstvertrauens durch leicht zu bewaeltigende Einstiegsaufgaben."
               ]
             },
             {
-              "ist": "Fordert staendig Unterstuetzung durch die Lehrkraft ein.",
-              "soll": "Wendet Problemloesestrategien an, um zu eigenen Loesungen zu gelangen.",
+              "ist": "Fordert ständig Unterstützung durch die Lehrkraft ein.",
+              "soll": "Wendet Problemlösestrategien an, um zu eigenen Lösungen zu gelangen.",
               "lernweg": [
                 "Automatisierung von Schrittfolgen zur Aufgabenbewaeltigung.",
-                "Einfuehrung von Kontrollstationen zur selbststaendigen Ergebnispruefung."
+                "Einführung von Kontrollstationen zur selbstständigen Ergebnispruefung."
               ]
             }
           ]
         },
         {
           "kategorie": "Arbeitsorganisation",
-          "beschreibung": "Planvolles Handeln, Materialbereitschaft, Zeiteinteilung und zuverlaessige Hausaufgabenerledigung.",
+          "beschreibung": "Planvolles Handeln, Materialbereitschaft, Zeiteinteilung und zuverlässige Hausaufgabenerledigung.",
           "eintraege": [
             {
               "ist": "Hat keine Ordnung in der Schultasche; Materialien fehlen oder sind unbrauchbar.",
-              "soll": "Bringt benoetigte Materialien mit und haelt sie in Ordnung.",
+              "soll": "Bringt benötigte Materialien mit und hält sie in Ordnung.",
               "lernweg": [
                 "Checkliste zum Packen der Schultasche.",
                 "Klassenpool an Verbrauchsmaterialien (Schere, Kleber).",
-                "Ritualisiertes gemeinsames Aufraeumen von Ablagen und Heftern.",
+                "Ritualisiertes gemeinsames Aufräumen von Ablagen und Heftern.",
                 "Einbindung der Eltern zur Packhilfe."
               ]
             },
             {
-              "ist": "Beginnt ueberhastet oder gar nicht; haelt Arbeitsphasen nicht durch.",
+              "ist": "Beginnt überhastet oder gar nicht; hält Arbeitsphasen nicht durch.",
               "soll": "Teilt Arbeitszeit gut ein und arbeitet im angemessenen Tempo.",
               "lernweg": [
                 "Arbeitsumfang an Leistungsvermoegen anpassen.",
@@ -272,11 +272,11 @@
               ]
             },
             {
-              "ist": "Hat keine oder unvollstaendige Hausaufgaben.",
-              "soll": "Erledigt Hausaufgaben zuverlaessig.",
+              "ist": "Hat keine oder unvollständige Hausaufgaben.",
+              "soll": "Erledigt Hausaufgaben zuverlässig.",
               "lernweg": [
                 "Differenzierte, realistische und motivierende Hausaufgabenstellungen.",
-                "Nutzung schulischer Hausaufgabenbetreuung und ergaenzender Lernfoerderung.",
+                "Nutzung schulischer Hausaufgabenbetreuung und ergaenzender Lernförderung.",
                 "Bei haeuslichen Konflikten zeitweises Aussetzen der Hausaufgaben nach Absprache."
               ]
             }
@@ -284,33 +284,33 @@
         },
         {
           "kategorie": "Schulische Lernbereiche - Lesen",
-          "beschreibung": "Graphemerkennung, Synthese, Lesefluessigkeit und sinnentnehmendes Lesen.",
+          "beschreibung": "Graphemerkennung, Synthese, Leseflüssigkeit und sinnentnehmendes Lesen.",
           "eintraege": [
             {
               "ist": "Kann sich Grapheme nicht merken; ordnet sie Lauten falsch zu.",
               "soll": "Kann Buchstaben und Laute unterscheiden und korrekt zuordnen.",
               "lernweg": [
-                "Taegliche Hoeruebungen zur auditiven Differenzierung.",
+                "Tägliche Hörübungen zur auditiven Differenzierung.",
                 "Buchstabenerarbeitung mit Handzeichen und haptischen Verfahren (Kneten, Nachspuren in Sand).",
-                "Uebungen zur Raum-Lage- und Figur-Hintergrund-Wahrnehmung."
+                "Übungen zur Raum-Lage- und Figur-Hintergrund-Wahrnehmung."
               ]
             },
             {
               "ist": "Liest synthetisierend, langsam und stockend.",
-              "soll": "Liest zunehmend fluessig.",
+              "soll": "Liest zunehmend flüssig.",
               "lernweg": [
-                "Grosses Schriftformat (A3 statt A4), klare Schriften (z.B. Arial 12pt+, grosser Zeilenabstand).",
-                "Erste Syntheseuebungen mit Silbenteppichen und Blitzlesen der 100 Haeufigkeitswoerter.",
-                "Lautleseverfahren mit Lesepartner und taegliches 10-Minuten-Leseritual."
+                "Großes Schriftformat (A3 statt A4), klare Schriften (z.B. Arial 12pt+, großer Zeilenabstand).",
+                "Erste Syntheseübungen mit Silbenteppichen und Blitzlesen der 100 Haeufigkeitswoerter.",
+                "Lautleseverfahren mit Lesepartner und Tägliches 10-Minuten-Leseritual."
               ]
             },
             {
-              "ist": "Liest ohne Sinnverstaendnis.",
+              "ist": "Liest ohne Sinnverständnis.",
               "soll": "Liest zunehmend sinnerfassend.",
               "lernweg": [
                 "Textoptimierte Sachtexte in leichter Sprache mit Bildern.",
                 "Handlungsorientierte Lesehefte (z.B. Lies-Mal).",
-                "Lesestrategien: Schlagwoerter markieren, Teilueberschriften nutzen, W-Fragen beantworten."
+                "Lesestrategien: Schlagwörter markieren, Teilüberschriften nutzen, W-Fragen beantworten."
               ]
             }
           ]
@@ -323,16 +323,16 @@
               "ist": "Verwechselt Buchstaben und schreibt unleserlich.",
               "soll": "Beherrscht die Laut-Buchstaben-Zuordnung und schreibt normgerecht.",
               "lernweg": [
-                "Uebungen zum Buchstaben-Nachspuren, Lautgebaerdendiktat und deutliches Vorsprechen.",
-                "Gezielte Zuordnung von Gross- und Kleinbuchstaben."
+                "Übungen zum Buchstaben-Nachspuren, Lautgebärdendiktat und deutliches Vorsprechen.",
+                "Gezielte Zuordnung von Groß- und Kleinbuchstaben."
               ]
             },
             {
               "ist": "Schreibt fehlerhaft.",
-              "soll": "Kann einfache Woerter richtig schreiben.",
+              "soll": "Kann einfache Wörter richtig schreiben.",
               "lernweg": [
                 "Abschreibtraining nach festen Schrittfolgen.",
-                "Taegliches Training von 5-10 Woertern des Grundwortschatzes mit der 5-Faecher-Lernbox.",
+                "Tägliches Training von 5-10 Wörtern des Grundwortschatzes mit der 5-Fächer-Lernbox.",
                 "Lautgetreues Schreiben nach Silben."
               ]
             },
@@ -340,7 +340,7 @@
               "ist": "Nutzt keine Rechtschreibregeln.",
               "soll": "Verwendet zunehmend Rechtschreibregeln.",
               "lernweg": [
-                "Gezieltes Einueben von Rechtschreibstrategien mit Symbolen (z.B. Ankerwoerter Hund - Hunde fuer Auslautverhaertung).",
+                "Gezieltes Einüben von Rechtschreibstrategien mit Symbolen (z.B. Ankerwörter Hund - Hunde für Auslautverhaertung).",
                 "Markieren von Stolperstellen; Arbeit mit Rechtschreibkarteien."
               ]
             }
@@ -352,17 +352,17 @@
           "eintraege": [
             {
               "ist": "Bleibt nicht beim Thema.",
-              "soll": "Kann eine Geschichte zu einem Thema strukturiert erzaehlen.",
+              "soll": "Kann eine Geschichte zu einem Thema strukturiert erzählen.",
               "lernweg": [
-                "Zusammenhaengende Saetze zu Bildgeschichten bilden und dem Partner diktieren.",
-                "Erzaehlen mithilfe der 'Roter Faden'-Methode oder Lueckentexten."
+                "Zusammenhängende Sätze zu Bildgeschichten bilden und dem Partner diktieren.",
+                "Erzählen mithilfe der 'Roter Faden'-Methode oder Lueckentexten."
               ]
             },
             {
-              "ist": "Hat Hemmungen, Woerter, Saetze oder Texte aufzuschreiben.",
-              "soll": "Schreibt Woerter und kurze Saetze zu vorgegebenen Inhalten auf.",
+              "ist": "Hat Hemmungen, Wörter, Sätze oder Texte aufzuschreiben.",
+              "soll": "Schreibt Wörter und kurze Sätze zu vorgegebenen Inhalten auf.",
               "lernweg": [
-                "Gemeinsames Finden von Woertern und Diktieren kurzer Saetze an die Lehrkraft.",
+                "Gemeinsames Finden von Wörtern und Diktieren kurzer Sätze an die Lehrkraft.",
                 "Vorgegebene Satzmuster, Wortlisten und Dominoformate nutzen."
               ]
             },
@@ -371,8 +371,8 @@
               "soll": "Kann Schreibideen der Absicht entsprechend notieren.",
               "lernweg": [
                 "Gemeinsame Mindmaps (Ideensterne) entwickeln.",
-                "Lebenspraktische Schreibanlaesse (Postkarten, Briefe, Steckbriefe, Bewerbungen).",
-                "Woechentliche freie Schreibzeiten einplanen."
+                "Lebenspraktische Schreibanlässe (Postkarten, Briefe, Steckbriefe, Bewerbungen).",
+                "Wöchentliche freie Schreibzeiten einplanen."
               ]
             }
           ]
@@ -382,19 +382,19 @@
           "beschreibung": "Mengenverstaendnis, Zahlwortreihe, Grundrechenarten und Zahlenraumerweiterung.",
           "eintraege": [
             {
-              "ist": "Kann Mengen nicht sicher abzaehlen.",
+              "ist": "Kann Mengen nicht sicher abzählen.",
               "soll": "Erfasst Mengen schneller, sicherer und kann sie darstellen.",
               "lernweg": [
-                "Uebungen zur Mengen-Ziffern-Zuordnung mit Wuerfelbildern.",
+                "Übungen zur Mengen-Ziffern-Zuordnung mit Wuerfelbildern.",
                 "Darstellungswechsel von Beginn an: strukturierte Menge, Bild, Wort und Ziffer.",
-                "Uebungen zur simultanen Mengenerfassung und Ordnen nach Eigenschaften."
+                "Übungen zur simultanen Mengenerfassung und Ordnen nach Eigenschaften."
               ]
             },
             {
               "ist": "Kann die Zahlwortreihe nicht fehlerfrei aufsagen und schreiben.",
               "soll": "Beherrscht die Zahlwortreihe.",
               "lernweg": [
-                "Haeufige muendliche und schriftliche Zaehluebungen.",
+                "Häufige mündliche und schriftliche Zählübungen.",
                 "Spiele und Bildaufgaben zur Unterscheidung von Ordnungs- und Kardinalzahlen."
               ]
             },
@@ -409,49 +409,49 @@
               ]
             },
             {
-              "ist": "Zeigt Unsicherheiten bei der Erarbeitung neuer Zahlenraeume.",
-              "soll": "Erfasst neue Zahlenraeume sicherer.",
+              "ist": "Zeigt Unsicherheiten bei der Erarbeitung neuer Zahlenräume.",
+              "soll": "Erfasst neue Zahlenräume sicherer.",
               "lernweg": [
-                "Teilnahme am Klassenunterricht zur Erhaltung des natuerlichen Interesses an grossen Zahlen bei gleichzeitiger paralleler Festigung der kleineren Zahlenraeume."
+                "Teilnahme am Klassenunterricht zur Erhaltung des natürlichen Interesses an großen Zahlen bei gleichzeitiger paralleler Festigung der kleineren Zahlenräume."
               ]
             }
           ]
         },
         {
           "kategorie": "Schulische Lernbereiche - Englisch",
-          "beschreibung": "Hoer-Sehverstehen, Aussprache, Chunks und elementare schriftliche Aeusserungen.",
+          "beschreibung": "Hör-Sehverstehen, Aussprache, Chunks und elementare schriftliche Äußerungen.",
           "eintraege": [
             {
-              "ist": "Hat Angst vor Hoeren und Sprechen; zeigt geringe Motivation.",
-              "soll": "Hoert motivierter zu und spricht zunehmend angstfrei.",
+              "ist": "Hat Angst vor Hören und Sprechen; zeigt geringe Motivation.",
+              "soll": "Hört motivierter zu und spricht zunehmend angstfrei.",
               "lernweg": [
-                "Kurze, einfache Hoer-Seh-Texte mit Bildunterstuetzung.",
-                "Fokus auf kommunikative Absicht und Verstaendlichkeit statt auf grammatische Perfektion.",
-                "Einsatz von Scaffolding: Baugerueste aus Textbausteinen und Redemitteln."
+                "Kurze, einfache Hör-Seh-Texte mit Bildunterstuetzung.",
+                "Fokus auf kommunikative Absicht und Verständlichkeit statt auf grammatische Perfektion.",
+                "Einsatz von Scaffolding: Baugerüste aus Textbausteinen und Redemitteln."
               ]
             },
             {
               "ist": "Fehlt sprachliches Vorwissen zum Textverstehen.",
               "soll": "Versteht vorgegebene englische Texte zunehmend.",
               "lernweg": [
-                "Vorentlastung durch Bild-Wort-Erlaeuterungen und Schluesselwortmarkierung.",
+                "Vorentlastung durch Bild-Wort-Erläuterungen und Schluesselwortmarkierung.",
                 "Wortschatzspeicher am Rand des Arbeitsblattes bereitstellen."
               ]
             },
             {
               "ist": "Schwierigkeiten bei Lautsegmentierung und Nachsprechen.",
-              "soll": "Kann genauer zuhoeren und nachsprechen.",
+              "soll": "Kann genauer zuhören und nachsprechen.",
               "lernweg": [
-                "Schwierige Laute und Woerter in Silben zerlegen und im Chor/Partner ueben.",
+                "Schwierige Laute und Wörter in Silben zerlegen und im Chor/Partner Üben.",
                 "Imitation englischer Muttersprachler durch Videoclips und Lieder; kein lautes Vorlesen vor der gesamten Klasse."
               ]
             },
             {
-              "ist": "Behaelt englische Woerter und Saetze wegen schwachem Kurzzeitgedaechtnis kaum.",
+              "ist": "Behält englische Wörter und Sätze wegen schwachem Kurzzeitgedächtnis kaum.",
               "soll": "Merkt sich gelernten Wortschatz verlaesslicher.",
               "lernweg": [
-                "Haeufig vorkommende Wendungen als Classroom Posters visualisieren.",
-                "Ueben von Chunks (festen Redewendungen) im kooperativen Dialog (Kugellager)."
+                "Häufig vorkommende Wendungen als Classroom Posters visualisieren.",
+                "Üben von Chunks (festen Redewendungen) im kooperativen Dialog (Kugellager)."
               ]
             }
           ]
@@ -460,26 +460,26 @@
     },
     "Sprache": {
       "kuerzel": "SP",
-      "definition": "Beeintraechtigungen der Sprachentwicklung und Kommunikation, die das Lernen und die soziale Teilhabe in Schule und Alltag erschweren. Ziel ist die Befaehigung zu dialoggerichteter Verstaendigung und alltagsintegrierter Sprachfoerderung.",
+      "definition": "Beeinträchtigungen der Sprachentwicklung und Kommunikation, die das Lernen und die soziale Teilhabe in Schule und Alltag erschweren. Ziel ist die Befaehigung zu dialoggerichteter Verständigung und alltagsintegrierter Sprachförderung.",
       "bewertungskriterien": [
         "Eingeschraenkter Wortschatz und Schwierigkeiten im Satzbau bzw. Grammatik",
         "Artikulationsstoerungen und undeutliche Lautbildung",
-        "Schwierigkeiten bei phonologischer Bewusstheit und auditiver Merkfaehigkeit",
+        "Schwierigkeiten bei phonologischer Bewusstheit und auditiver Merkfähigkeit",
         "Sprachverstaendnisstoerungen bei komplexen Anweisungen",
         "Schwierigkeiten im Rede- und Kommunikationsverhalten (z.B. Schweigen, Mutismus, Poltern, Stottern)"
       ],
       "foerderschwerpunkte_innerhalb": [
         "Artikulation",
         "Phonologische Bewusstheit",
-        "Auditive Merkfaehigkeit",
-        "Sprachverstaendnis",
+        "Auditive Merkfähigkeit",
+        "Sprachverständnis",
         "Wortschatz",
         "Grammatik",
         "Kommunikation"
       ],
       "empfohlene_foerdermassnahmen": [
-        "Alltagsintegrierte Sprachfoerderung in allen Faechern mit Lehrkraft als Sprachvorbild",
-        "Regelmaessige gesichts-, mund- und zungenmotorische Uebungen",
+        "Alltagsintegrierte Sprachförderung in allen Fächern mit Lehrkraft als Sprachvorbild",
+        "Regelmäßige gesichts-, mund- und zungenmotorische Übungen",
         "Training der phonologischen Bewusstheit (Silbenklatschen, Reime, Laut-Synthese)",
         "Gezielte Wortschatzarbeit mit Bildkarten, Wortschatzkiste und Wortfeldern",
         "Satzmuster-Karten, Signalwoerter und visualisierte Satzstrukturen",
@@ -488,169 +488,169 @@
       "kategorien": [
         {
           "kategorie": "Artikulation",
-          "beschreibung": "Die Anbahnung von Lauten sollte im Rahmen einer logopaedischen Therapie oder in Sprachtherapiestunden erfolgen; im Unterricht regelmaessige mundmotorische Unterstuetzung.",
+          "beschreibung": "Die Anbahnung von Lauten sollte im Rahmen einer logopädischen Therapie oder in Sprachtherapiestunden erfolgen; im Unterricht regelmäßige mundmotorische Unterstützung.",
           "eintraege": [
             {
-              "ist": "Spricht Laute und Woerter undeutlich und nicht gut verstaendlich.",
+              "ist": "Spricht Laute und Wörter undeutlich und nicht gut verständlich.",
               "soll": "Spricht Laute richtig aus.",
               "lernweg": [
-                "Regelmaessiger Einsatz von gesichts-, mund- und zungenmotorischen Uebungen als ritualisierte Unterstuetzung im Unterricht.",
-                "Lippenuebungen: Schmatz-Tag, Schnaebeln wie Voegel (Rosinen mit Lippen aufheben), Lippenabdruck auf Spiegel/Karte, Dinge mit Lippen festhalten, Wangen einsaugen.",
-                "Puste- und Ansauguebungen: Luftschlangen pusten, Seifenblasen, Wattekugel/Feder durch Bausteinparcours pusten, Papierschnipsel mit Strohhalm ansaugen."
+                "Regelmäßiger Einsatz von gesichts-, mund- und zungenmotorischen Übungen als ritualisierte Unterstützung im Unterricht.",
+                "Lippenübungen: Schmatz-Tag, Schnäbeln wie Vögel (Rosinen mit Lippen aufheben), Lippenabdruck auf Spiegel/Karte, Dinge mit Lippen festhalten, Wangen einsaugen.",
+                "Puste- und Ansaugübungen: Luftschlangen pusten, Seifenblasen, Wattekugel/Feder durch Bausteinparcours pusten, Papierschnipsel mit Strohhalm ansaugen."
               ]
             },
             {
-              "ist": "Laesst Laute aus (etwa Bume fuer Blume).",
-              "soll": "Laesst Laute nicht aus.",
+              "ist": "Lässt Laute aus (etwa Bume für Blume).",
+              "soll": "Lässt Laute nicht aus.",
               "lernweg": [
-                "Angebot vieler Hoeruebungen bei der Einfuehrung neuer Buchstaben.",
+                "Angebot vieler Hörübungen bei der Einführung neuer Buchstaben.",
                 "Visualisierungshilfen wie phonembasiertes Handzeichen verwenden.",
-                "Haeufige Verwendung der zu uebenden Laute/Lautverbindung und extra Betonung in der Uebungsphase.",
-                "Gezielte Auswahl des Wortmaterials, in dem der zu uebende Laut vorkommt."
+                "Häufige Verwendung der zu übenden Laute/Lautverbindung und extra Betonung in der Übungsphase.",
+                "Gezielte Auswahl des Wortmaterials, in dem der zu übende Laut vorkommt."
               ]
             },
             {
-              "ist": "Ersetzt Laute (z.B. Tuchen fuer Kuchen).",
+              "ist": "Ersetzt Laute (z.B. Tuchen für Kuchen).",
               "soll": "Verwendet Laute, die er/sie in der Uebungssprache bilden kann, zunehmend in der Spontansprache (Alltagssprache).",
               "lernweg": [
-                "Austausch mit Logopaeden/Sonderpaedagogen ueber Tricks und Hilfen zur Lautbildung.",
+                "Austausch mit Logopäden/Sonderpädagogen über Tricks und Hilfen zur Lautbildung.",
                 "Erinnerung an Lautbildungshilfen z.B. mit einem geheimen, vorher verabredeten Zeichen.",
                 "Gezielte Kontrastierungsuebungen (Minimalpaare)."
               ]
             },
             {
               "ist": "Hat Schwierigkeiten, die Zunge koordiniert zu bewegen.",
-              "soll": "Kann Zungenbewegungen nach Vorgabe gezielt ausfuehren.",
+              "soll": "Kann Zungenbewegungen nach Vorgabe gezielt ausführen.",
               "lernweg": [
-                "Zungenuebungen: Grimassen schneiden/Zungenspiele vor dem Spiegel (mit der Zunge die Nase beruehren, Zunge weit herausstrecken, Zaehne putzen mit der Zunge).",
+                "Zungenübungen: Grimassen schneiden/Zungenspiele vor dem Spiegel (mit der Zunge die Nase berühren, Zunge weit herausstrecken, Zähne putzen mit der Zunge).",
                 "Streusel, Cornflakes oder Rosinen mit der Zunge aufsammeln.",
                 "Formen mit der Zunge erraten (z.B. Apfelstuecke)."
               ]
             },
             {
-              "ist": "Bewegt Mund- und Gesichtsmuskeln bei der Bildung von Lauten ungewoehnlich mit.",
+              "ist": "Bewegt Mund- und Gesichtsmuskeln bei der Bildung von Lauten ungewöhnlich mit.",
               "soll": "Verbessert die Beweglichkeit der Mund-, Zungen- bzw. Gesichtsmuskeln.",
               "lernweg": [
                 "Sensibilisierung der Mund- und Gesichtsmuskulatur durch Spiegeluebungen.",
-                "Entspannungsuebungen fuer den Kiefer- und Gesichtsbereich."
+                "Entspannungsuebungen für den Kiefer- und Gesichtsbereich."
               ]
             },
             {
-              "ist": "Hat einen geringen Muskeltonus (Mund steht haeufig offen).",
-              "soll": "Verbessert den Muskeltonus; haelt den Mund in Stillarbeitsphasen geschlossen.",
+              "ist": "Hat einen geringen Muskeltonus (Mund steht häufig offen).",
+              "soll": "Verbessert den Muskeltonus; hält den Mund in Stillarbeitsphasen geschlossen.",
               "lernweg": [
-                "Regelmaessige Lippen- und Mundschlussuebungen (z.B. Holzspatel oder Papiere zwischen den Lippen halten).",
+                "Regelmäßige Lippen- und Mundschlussuebungen (z.B. Holzspatel oder Papiere zwischen den Lippen halten).",
                 "Sanfte visuelle oder taktile Erinnerungshilfen an den Mundschluss im Unterricht."
               ]
             }
           ],
           "tipps_sekundarstufe": [
-            "Artikulatorische Beeintraechtigungen liegen bei Jugendlichen seltener vor.",
-            "Uebungen zum Umgang mit verbleibenden Auffaelligkeiten (Rollenspiele: 'Jeder ist anders!').",
-            "Prinzip der Verantwortung: mit Jugendlichen gemeinsam Foerderziele auswaehlen."
+            "Artikulatorische Beeinträchtigungen liegen bei Jugendlichen seltener vor.",
+            "Übungen zum Umgang mit verbleibenden Auffälligkeiten (Rollenspiele: 'Jeder ist anders!').",
+            "Prinzip der Verantwortung: mit Jugendlichen gemeinsam Förderziele auswählen."
           ]
         },
         {
           "kategorie": "Phonologische Bewusstheit",
-          "beschreibung": "Grundvoraussetzung fuer das Lesen- und Schreibenlernen; auditive Wahrnehmung und Lautdifferenzierung.",
+          "beschreibung": "Grundvoraussetzung für das Lesen- und Schreibenlernen; auditive Wahrnehmung und Lautdifferenzierung.",
           "eintraege": [
             {
-              "ist": "Kann Reimwoerter nur schwer erkennen und bilden.",
-              "soll": "Kann Reimwoerter erkennen und bilden.",
+              "ist": "Kann Reimwörter nur schwer erkennen und bilden.",
+              "soll": "Kann Reimwörter erkennen und bilden.",
               "lernweg": [
-                "Bilderbuecher im Reimschema vorlesen; das Reimwort von den Schuelern ergaenzen lassen.",
+                "Bilderbücher im Reimschema vorlesen; das Reimwort von den Schülern ergaenzen lassen.",
                 "Reimspiele: 'Tiere zaubern' (Eene meene Fratze, du bist jetzt eine Katze...).",
-                "Bildkarten angeln: Zuordnungsuebungen mit Reim-Bildpaaren."
+                "Bildkarten angeln: Zuordnungsübungen mit Reim-Bildpaaren."
               ]
             },
             {
-              "ist": "Hat Schwierigkeiten, Woerter in Silben zu zerlegen (z.B. Lo-ko-mo-ti-ve).",
-              "soll": "Kann Woerter in Silben zerlegen und diese klatschend begleiten.",
+              "ist": "Hat Schwierigkeiten, Wörter in Silben zu zerlegen (z.B. Lo-ko-mo-ti-ve).",
+              "soll": "Kann Wörter in Silben zerlegen und diese klatschend begleiten.",
               "lernweg": [
-                "Silbenzerlegung mit zweisilbigen Woertern beginnen, langsam zu mehrsilbigen steigern.",
-                "Koerperbegleitung: Schwingen, Huepfen, Klatschen bei Silbensprechweise.",
-                "Einsilber getrennt ueben und im Wechsel mit Mehrsilbern festigen."
+                "Silbenzerlegung mit zweisilbigen Wörtern beginnen, langsam zu mehrsilbigen steigern.",
+                "Koerperbegleitung: Schwingen, Hüpfen, Klatschen bei Silbensprechweise.",
+                "Einsilber getrennt Üben und im Wechsel mit Mehrsilbern festigen."
               ]
             },
             {
               "ist": "Laut-Synthese gelingt nicht (m-a werden nicht zu ma zusammengezogen).",
-              "soll": "Kann Laute zu Silben oder Woertern zusammenfuegen.",
+              "soll": "Kann Laute zu Silben oder Wörtern zusammenfügen.",
               "lernweg": [
                 "Buchstabenfahrstuhl: Konsonanten wohnen in Etagen, Vokale fahren hoch und runter (M-A -> MA).",
-                "Silben- oder Quatschwoerterwuerfeln mit Blankowuerfeln.",
+                "Silben- oder Quatschwörterwürfeln mit Blankowuerfeln.",
                 "Kaugummi-Sprache (gedehntes Sprechen) und Roboter-Sprache (abgehackte Laute verbinden)."
               ]
             },
             {
               "ist": "Synthese auf Silbenebene gelingt nicht (Do-mi-no wird nicht zusammengezogen).",
-              "soll": "Kann Silben zu Woertern zusammenfuegen.",
+              "soll": "Kann Silben zu Wörtern zusammenfügen.",
               "lernweg": [
                 "Kaugummi-Sprache (langsam gedehnt die Silben verschleifen).",
                 "Silbenkaertchen zusammenlegen und versprachlichen."
               ]
             },
             {
-              "ist": "Hat Schwierigkeiten Anlaute zu hoeren und dem richtigen Buchstaben zuzuordnen.",
+              "ist": "Hat Schwierigkeiten Anlaute zu hören und dem richtigen Buchstaben zuzuordnen.",
               "soll": "Kann Anlaute erkennen und dem entsprechenden Phonem zuordnen.",
               "lernweg": [
-                "Buchstaben einzeln einfuehren mit vielen Hoeruebungen.",
-                "Flugzeugspiel: Schueler 'fliegen' auf Signal zu Plakaten mit passendem Anlaut-Buchstaben.",
+                "Buchstaben einzeln Einführen mit vielen Hörübungen.",
+                "Flugzeugspiel: Schüler 'fliegen' auf Signal zu Plakaten mit passendem Anlaut-Buchstaben.",
                 "Anlauttabellen und phonembasierte Handzeichen einsetzen."
               ]
             },
             {
-              "ist": "Hat Schwierigkeiten beim Hoeren der richtigen Endlaute.",
+              "ist": "Hat Schwierigkeiten beim Hören der richtigen Endlaute.",
               "soll": "Kann Endlaute erkennen.",
               "lernweg": [
-                "Sicherung der Grundfaehigkeit des Anlauthoerens vor Uebungen zu Endlauten.",
-                "Anlaut-Endlaut-Spiel: Das naechste Wort muss mit dem Endlaut des vorigen Wortes beginnen (Achtung vor Auslautverhaertung wie Hund-/t)."
+                "Sicherung der Grundfähigkeit des Anlauthörens vor Übungen zu Endlauten.",
+                "Anlaut-Endlaut-Spiel: Das nächste Wort muss mit dem Endlaut des vorigen Wortes beginnen (Achtung vor Auslautverhaertung wie Hund-/t)."
               ]
             },
             {
-              "ist": "Hat eine Diskriminierungsschwaeche bei aehnlich klingenden Lauten (z.B. Nagel - Nadel, Kamm - kam).",
-              "soll": "Kann aehnlich klingende Laute unterscheiden.",
+              "ist": "Hat eine Diskriminierungsschwäche bei ähnlich klingenden Lauten (z.B. Nagel - Nadel, Kamm - kam).",
+              "soll": "Kann ähnlich klingende Laute unterscheiden.",
               "lernweg": [
-                "Aehnlich klingende Laute (B/P, D/T, G/K) isoliert ueben und erst nach Festigung kontrastieren.",
+                "Ähnlich klingende Laute (B/P, D/T, G/K) isoliert Üben und erst nach Festigung kontrastieren.",
                 "Minimalpaare suchen: Bildkarten zu Kanne-Tanne-Wanne vergleichen.",
                 "Visualisierung der betreffenden Laute mit phonembasierten Handzeichen.",
-                "Hoeruebungen zur Unterscheidung von Vokallaengen (kurz vs. lang)."
+                "Hörübungen zur Unterscheidung von Vokallängen (kurz vs. lang)."
               ]
             }
           ],
           "tipps_sekundarstufe": [
-            "Fortfuehrung von Uebungen zur phonologischen Bewusstheit bei Jugendlichen mit langanhaltenden Stoerungen.",
-            "Vertiefende Uebungen zu Rechtschreibstrategien.",
-            "Segmentierung komplexer Woerter zur Sicherung der Wortform.",
+            "Fortführung von Übungen zur phonologischen Bewusstheit bei Jugendlichen mit langanhaltenden Störungen.",
+            "Vertiefende Übungen zu Rechtschreibstrategien.",
+            "Segmentierung komplexer Wörter zur Sicherung der Wortform.",
             "Gezielte Vergleiche zwischen Schriftbild und Wortklang."
           ]
         },
         {
-          "kategorie": "Auditive Merkfaehigkeit",
-          "beschreibung": "Faehigkeit, nacheinander eintreffende akustische Informationen im Arbeitsgedaechtnis zu speichern und wieder abzurufen.",
+          "kategorie": "Auditive Merkfähigkeit",
+          "beschreibung": "Fähigkeit, nacheinander eintreffende akustische Informationen im Arbeitsgedächtnis zu speichern und wieder abzurufen.",
           "eintraege": [
             {
               "ist": "Kann sich mehrere Begriffe nur schwer merken.",
               "soll": "Merkt sich mehrere Begriffe.",
               "lernweg": [
-                "Merkspiele: Geraeusche-Memory, Kofferpacken.",
-                "Einkaufsspiel mit doppeltem Bilderkartensatz: Schueler merkt sich die Einkaufsliste (Apfel, Birne...) und holt die passenden Karten."
+                "Merkspiele: Geräusche-Memory, Kofferpacken.",
+                "Einkaufsspiel mit doppeltem Bilderkartensatz: Schüler merkt sich die Einkaufsliste (Apfel, Birne...) und holt die passenden Karten."
               ]
             },
             {
-              "ist": "Vergisst neu gelernte Woerter schnell wieder.",
-              "soll": "Kann sich unbekannte Woerter (Fantasiewoerter, Fachbegriffe) merken.",
+              "ist": "Vergisst neu gelernte Wörter schnell wieder.",
+              "soll": "Kann sich unbekannte Wörter (Fantasiewörter, Fachbegriffe) merken.",
               "lernweg": [
-                "Rhythmische Durchgliederung neuer Woerter.",
+                "Rhythmische Durchgliederung neuer Wörter.",
                 "Begleitende Bewegungen, Gestik und Mimik als Merkhilfe.",
-                "Bildkarten und schriftliche Fixierung an Tafel/Heft (visuelle Unterstuetzung)."
+                "Bildkarten und schriftliche Fixierung an Tafel/Heft (visuelle Unterstützung)."
               ]
             },
             {
-              "ist": "Vergisst immer wieder einen Teil der Arbeitsauftraege; zeigt beim Zuhoeren Ermuedung.",
-              "soll": "Merkt sich mehrteilige Arbeitsauftraege.",
+              "ist": "Vergisst immer wieder einen Teil der Arbeitsaufträge; zeigt beim Zuhören Ermuedung.",
+              "soll": "Merkt sich mehrteilige Arbeitsaufträge.",
               "lernweg": [
-                "Zunaechst einfache Auftraege erteilen und schrittweise steigern.",
-                "Mehrgliedrige Anweisungen chronologisch praesentieren (nicht 'bevor', sondern 'erst... dann').",
+                "Zunächst einfache Aufträge erteilen und schrittweise steigern.",
+                "Mehrgliedrige Anweisungen chronologisch präsentieren (nicht 'bevor', sondern 'erst... dann').",
                 "Einsatz von Ablauf-Visualisierungen und Ritualen."
               ]
             },
@@ -667,52 +667,52 @@
           ]
         },
         {
-          "kategorie": "Sprachverstaendnis",
-          "beschreibung": "Verstehen von Wortbedeutung, Grammatikstrukturen und komplexen Aeusserungen im Unterricht.",
+          "kategorie": "Sprachverständnis",
+          "beschreibung": "Verstehen von Wortbedeutung, Grammatikstrukturen und komplexen Äußerungen im Unterricht.",
           "eintraege": [
             {
-              "ist": "Versteht Woerter ungenau (z.B. keine Unterscheidung Busch/Baum) oder falsch (entledige/erledige).",
-              "soll": "Erfasst die Bedeutung aehnlich klingender Woerter und speichert Woerter richtig ab.",
+              "ist": "Versteht Wörter ungenau (z.B. keine Unterscheidung Busch/Baum) oder falsch (entledige/erledige).",
+              "soll": "Erfasst die Bedeutung ähnlich klingender Wörter und speichert Wörter richtig ab.",
               "lernweg": [
                 "Einsatz von Bild-Wortkarten und Handzeichen bei schwierigen Lauten.",
-                "Reduzierung von Stoerschall im Klassenraum und Halten von Blickkontakt.",
-                "Sicherung des Verstaendnisses durch konkretes Nachfragen ('Wer hat gehoert, was die Frau von Beruf ist?').",
+                "Reduzierung von Störschall im Klassenraum und Halten von Blickkontakt.",
+                "Sicherung des Verstaendnisses durch konkretes Nachfragen ('Wer hat gehört, was die Frau von Beruf ist?').",
                 "Erarbeitung schwieriger Begriffe im Vorfeld."
               ]
             },
             {
-              "ist": "Zeigt unpassende/unvollstaendige Reaktionen auf Auftraege; erledigt Anweisungen nicht selbststaendig.",
-              "soll": "Versteht einfache Mitteilungen, Auftraege und Erklaerungen.",
+              "ist": "Zeigt unpassende/unvollständige Reaktionen auf Aufträge; erledigt Anweisungen nicht selbstständig.",
+              "soll": "Versteht einfache Mitteilungen, Aufträge und Erklärungen.",
               "lernweg": [
-                "Anweisungen in kurzen, einfachen Saetzen, langsam und deutlich sprechen.",
+                "Anweisungen in kurzen, einfachen Sätzen, langsam und deutlich sprechen.",
                 "Reduzierung der Handlungsschritte (maximal 2-3 Schritte hintereinander).",
-                "Visuell unterstuetzte Ablaufplaene an Tafel/Arbeitsblatt ('Roter Faden', Erzaehlleine).",
-                "Schueler Arbeitsauftrag mit eigenen Worten wiederholen lassen.",
-                "Einsatz von Rezepten und Handlungsanleitungen fuer chronologische Ablaeufe."
+                "Visuell unterstützte Ablaufpläne an Tafel/Arbeitsblatt ('Roter Faden', Erzählleine).",
+                "Schüler Arbeitsauftrag mit eigenen Worten wiederholen lassen.",
+                "Einsatz von Rezepten und Handlungsanleitungen für chronologische Abläufe."
               ]
             },
             {
-              "ist": "Haelt sich nicht an die Reihenfolge komplexerer Anweisungen (bevor, nachdem, waehrend).",
-              "soll": "Versteht komplexere Saetze und Nebensatzkonstruktionen.",
+              "ist": "Hält sich nicht an die Reihenfolge komplexerer Anweisungen (bevor, nachdem, während).",
+              "soll": "Versteht komplexere Sätze und Nebensatzkonstruktionen.",
               "lernweg": [
-                "Visuelle Ablaufplaene mit Hervorhebung der Reihenfolge.",
-                "Offene W-Fragen stellen, um Sprachverstaendnis zu ueberpruefen.",
+                "Visuelle Ablaufpläne mit Hervorhebung der Reihenfolge.",
+                "Offene W-Fragen stellen, um Sprachverständnis zu ueberpruefen.",
                 "Texte in einfacher Sprache zusammenfassen lassen.",
-                "Nebensatzkonstruktionen spielerisch ueben ('Ich nehme den Stift, weil...')."
+                "Nebensatzkonstruktionen spielerisch Üben ('Ich nehme den Stift, weil...')."
               ]
             },
             {
               "ist": "Redet oft am Thema vorbei; kann Gesagtes schwer einordnen.",
-              "soll": "Kann das Gesagte in einen Kontext setzen und erfragt unbekannte Woerter.",
+              "soll": "Kann das Gesagte in einen Kontext setzen und erfragt unbekannte Wörter.",
               "lernweg": [
                 "Gezielte W-Fragen zur Sicherung des Situationsverstaendnisses.",
-                "Unterstuetzende Medien wie Bilder und Wortkarten nutzen.",
+                "Unterstützende Medien wie Bilder und Wortkarten nutzen.",
                 "Fragehaltung anbahnen: aktives Ermuntern zum Nachfragen bei Unklarheiten."
               ]
             }
           ],
           "tipps_sekundarstufe": [
-            "Schriftbild als Unterstuetzung nutzen; Fachwortlisten zu Beginn von Einheiten aushaendigen.",
+            "Schriftbild als Unterstützung nutzen; Fachwortlisten zu Beginn von Einheiten aushändigen.",
             "Handlungsbegleitendes Sprechen bei Experimenten und praktischen Arbeiten einsetzen."
           ]
         },
@@ -722,65 +722,65 @@
           "eintraege": [
             {
               "ist": "Versteht Inhalte gesprochener oder geschriebener Sprache nicht richtig (passiver Wortschatz).",
-              "soll": "Kennt eine altersangemessene Anzahl an Woertern (passiv).",
+              "soll": "Kennt eine altersangemessene Anzahl an Wörtern (passiv).",
               "lernweg": [
-                "Schueler zum Nachfragen ermutigen; Fragehaltung kultivieren.",
+                "Schüler zum Nachfragen ermutigen; Fragehaltung kultivieren.",
                 "Einsatz von Wimmelbildern, Lupenbuechern und Fehlerbildern mit Umschreibungen.",
                 "Vor dem Lesen neuer Texte schwierige Begriffe vorklaeren.",
-                "Wortschatzkiste anlegen fuer neue Begriffe mit Bildern oder Gegenstaenden.",
+                "Wortschatzkiste anlegen für neue Begriffe mit Bildern oder Gegenständen.",
                 "Handlungsbegleitendes Sprechen im Unterricht."
               ]
             },
             {
-              "ist": "Benutzt Umschreibungen ('Zumachding'), verwechselt aehnliche Begriffe oder nutzt Universalverben ('machen, tun').",
-              "soll": "Nutzt eine altersangemessene Anzahl an Woertern (aktiv); verwendet treffende, differenzierte Begriffe.",
+              "ist": "Benutzt Umschreibungen ('Zumachding'), verwechselt Ähnliche Begriffe oder nutzt Universalverben ('machen, tun').",
+              "soll": "Nutzt eine altersangemessene Anzahl an Wörtern (aktiv); verwendet treffende, differenzierte Begriffe.",
               "lernweg": [
-                "Neue Begriffe mit Alltagsbezug regelmaessig einfuehren, langsam und betont vorsprechen.",
-                "Pantomimespiele fuer Taetigkeiten und Berufe; 'Montagsmaler' und Rollenspiele.",
+                "Neue Begriffe mit Alltagsbezug regelmäßig Einführen, langsam und betont vorsprechen.",
+                "Pantomimespiele für Tätigkeiten und Berufe; 'Montagsmaler' und Rollenspiele.",
                 "Alternativen anbieten bei Fehlgriffen ('Meinst du essen oder fressen?').",
                 "Wortfelder erarbeiten (z.B. gehen, schleichen, stapfen, schlendern)."
               ]
             },
             {
               "ist": "Verwendet nur allgemeine Begriffe (Vogel statt Amsel).",
-              "soll": "Kann Woertern Kategorien zuordnen und umgekehrt (Oberbegriffe bilden).",
+              "soll": "Kann Wörtern Kategorien zuordnen und umgekehrt (Oberbegriffe bilden).",
               "lernweg": [
                 "Zuordnungsspiele: Oberbegriffe finden ('Wer findet alle Spielzeuge?').",
-                "Memory-Paare mit Kategoriebegruendung (Jacke und Hose gehoeren zur Kleidung)."
+                "Memory-Paare mit Kategoriebegruendung (Jacke und Hose gehören zur Kleidung)."
               ]
             },
             {
-              "ist": "Hat keinen schnellen Zugriff auf Woerter, stockt haeufig und macht lange Pausen.",
-              "soll": "Kann Woerter zuegig abrufen.",
+              "ist": "Hat keinen schnellen Zugriff auf Wörter, stockt häufig und macht lange Pausen.",
+              "soll": "Kann Wörter zügig abrufen.",
               "lernweg": [
-                "Einueben von Wortabrufstrategien: 'Womit faengt das Wort an? Es reimt sich auf...'.",
+                "Einüben von Wortabrufstrategien: 'Womit fängt das Wort an? Es reimt sich auf...'.",
                 "Blickkontakt halten, ausreichende Antwortzeit geben und Erinnerungshilfen anbieten."
               ]
             },
             {
               "ist": "Braucht viele Wiederholungen, um sich neue Fachbegriffe zu merken.",
-              "soll": "Kann sich neue Woerter aneignen und fachgerecht anwenden.",
+              "soll": "Kann sich neue Wörter aneignen und fachgerecht anwenden.",
               "lernweg": [
                 "Neue Begriffe mehrfach in Silben gliedern, Anlaute benennen, aufschreiben.",
-                "Woerterlisten mit Bildkarten vor der Unterrichtseinheit bereitstellen.",
-                "Begriffe nach Funktion, Eigenschaft und Vorkommen erklaeren."
+                "Wörterlisten mit Bildkarten vor der Unterrichtseinheit bereitstellen.",
+                "Begriffe nach Funktion, Eigenschaft und Vorkommen Erklären."
               ]
             }
           ],
           "tipps_sekundarstufe": [
-            "Zielwortschatz vorab festlegen, Mindmaps und Karteien fuer Fachwoerter erstellen.",
-            "Fuenf-Schritt-Lesemethode und Glossare fuer Fachtexte einsetzen."
+            "Zielwortschatz vorab festlegen, Mindmaps und Karteien für Fachwörter erstellen.",
+            "Fünf-Schritt-Lesemethode und Glossare für Fachtexte einsetzen."
           ]
         },
         {
           "kategorie": "Grammatik",
-          "beschreibung": "Foerderung syntaktischer und morphologischer Strukturen (Verbzweitstellung, Subjekt-Verb-Kongruenz, Kasus, Plural, Praepositionen).",
+          "beschreibung": "Förderung syntaktischer und morphologischer Strukturen (Verbzweitstellung, Subjekt-Verb-Kongruenz, Kasus, Plural, Präpositionen).",
           "eintraege": [
             {
-              "ist": "Subjekt und Verbform stimmen nicht ueberein (Lisa gehen; du hat).",
+              "ist": "Subjekt und Verbform stimmen nicht überein (Lisa gehen; du hat).",
               "soll": "Beachtet die Subjekt-Verb-Kongruenz.",
               "lernweg": [
-                "Bewegungsspiele zu Verben mit Versprachlichung ('Ich huepfe / Marie, du huepfst / wir huepfen').",
+                "Bewegungsspiele zu Verben mit Versprachlichung ('Ich hüpfe / Marie, du hüpfst / wir Hüpfen').",
                 "Pantomimespiele mit Bildkarten zu Handlungen und korrektivem Feedback der Lehrkraft."
               ]
             },
@@ -794,12 +794,12 @@
               ]
             },
             {
-              "ist": "Bildet Nebensaetze oder Fragen fehlerhaft; bricht Saetze ab.",
-              "soll": "Bildet Nebensaetze mit Verbendstellung; verwendet angemessene Konjunktionen.",
+              "ist": "Bildet Nebensätze oder Fragen fehlerhaft; bricht Sätze ab.",
+              "soll": "Bildet Nebensätze mit Verbendstellung; verwendet angemessene Konjunktionen.",
               "lernweg": [
-                "Satzanfaenge-Plakat und laminierte Satzstreifen als Formulierungshilfen.",
+                "Satzanfänge-Plakat und laminierte Satzstreifen als Formulierungshilfen.",
                 "Kartenspiele zu 'Wenn-dann' und 'Warum-weil'.",
-                "Wiederkehrende Satzmuster im Morgenkreis und Unterrichtsgespraech."
+                "Wiederkehrende Satzmuster im Morgenkreis und Unterrichtsgespräch."
               ]
             },
             {
@@ -808,16 +808,16 @@
               "lernweg": [
                 "Phonembasierte Handzeichen zur Unterscheidung von 'dem' und 'den'.",
                 "Farbige Markierung der Kasusendungen.",
-                "Uebungen ohne Ablenker: Akkusativ isoliert ueben ('Ich packe meinen Koffer und nehme DEN...').",
-                "Dativ-Uebungen mit Leitfragen: 'Wo ist...?', 'Wem gibst du...?'; Tiere-Fuettern-Spiel ('Ich gebe DEM Hund DEN Knochen')."
+                "Übungen ohne Ablenker: Akkusativ isoliert Üben ('Ich packe meinen Koffer und nehme DEN...').",
+                "Dativ-Übungen mit Leitfragen: 'Wo ist...?', 'Wem gibst du...?'; Tiere-Füttern-Spiel ('Ich gebe DEM Hund DEN Knochen')."
               ]
             },
             {
               "ist": "Unsicherheiten bei Artikeln; nutzt Universalartikel (dis Tisch, dis Auto).",
               "soll": "Kann Artikel korrekt verwenden.",
               "lernweg": [
-                "Einfuehrung neuer Substantive immer gemeinsam mit bestimmtem Artikel (der/die/das).",
-                "Farbkodierung der Artikel (z.B. der = rot, die = gruen, das = blau).",
+                "Einführung neuer Substantive immer gemeinsam mit bestimmtem Artikel (der/die/das).",
+                "Farbkodierung der Artikel (z.B. der = rot, die = grün, das = blau).",
                 "Arche-Noah-Spiel: Tiere den Artikeln-Stockwerken zuordnen; kein Ratenlassen bei Unkenntnis."
               ]
             },
@@ -825,8 +825,8 @@
               "ist": "Verwendet keine oder falsche Mehrzahl (zwei Auto; zwei Gabels).",
               "soll": "Bildet Einzahl und Mehrzahl richtig.",
               "lernweg": [
-                "Lernspiele mit Bildkarten (Einzahl - Mehrzahl) wie Memory oder Miniluek.",
-                "Einkaufsspiel mit Versprachlichung: 'Ich habe einen Apfel und noch einen... das sind zwei Aepfel!'."
+                "Lernspiele mit Bildkarten (Einzahl - Mehrzahl) wie Memory oder Minilük.",
+                "Einkaufsspiel mit Versprachlichung: 'Ich habe einen Apfel und noch einen... das sind zwei Äpfel!'."
               ]
             },
             {
@@ -838,79 +838,79 @@
               ]
             },
             {
-              "ist": "Verwechselt oder laesst Praepositionen aus (vor, hinter, neben; 'bei').",
-              "soll": "Verwendet Praepositionen korrekt.",
+              "ist": "Verwechselt oder lässt Präpositionen aus (vor, hinter, neben; 'bei').",
+              "soll": "Verwendet Präpositionen korrekt.",
               "lernweg": [
-                "Such- und Versteckspiele im Raum ('Das Gummibaerchen sitzt unter dem Stuhl').",
+                "Such- und Versteckspiele im Raum ('Das Gummibärchen sitzt unter dem Stuhl').",
                 "Bewegungsspiele in Turnhalle/Klassenraum ('Alle stellen sich neben die Bank').",
-                "Praenumerische Uebungen zur Raum-Lage-Orientierung."
+                "Praenumerische Übungen zur Raum-Lage-Orientierung."
               ]
             }
           ]
         },
         {
           "kategorie": "Kommunikation",
-          "beschreibung": "Teilnahme am Unterrichtsgespraech, Lautstaerke, Sprechtempo, Rederegeln und Stoerungen (Mutismus, Poltern, Stottern).",
+          "beschreibung": "Teilnahme am Unterrichtsgespräch, Lautstärke, Sprechtempo, Rederegeln und Störungen (Mutismus, Poltern, Stottern).",
           "eintraege": [
             {
-              "ist": "Spricht nicht im Unterricht oder mit Lehrkraeften; fluestert nur mit Vertrauten; antwortet nur mit einem Wort.",
-              "soll": "Spricht mit Lehrkraeften und Schuelern; zeigt und antwortet nonverbal; erbringt Nachteilsausgleich-Leistungen.",
+              "ist": "Spricht nicht im Unterricht oder mit Lehrkräften; flüstert nur mit Vertrauten; antwortet nur mit einem Wort.",
+              "soll": "Spricht mit Lehrkräften und Schülern; zeigt und antwortet nonverbal; erbringt Nachteilsausgleich-Leistungen.",
               "lernweg": [
-                "Herstellen einer ruhigen, druckfreien Atmosphaere ohne Sprechzwang.",
+                "Herstellen einer ruhigen, druckfreien Atmosphäre ohne Sprechzwang.",
                 "Akzeptanz alternativer Kommunikationswege (Sprachrohr-Sitznachbar, Schrift, Bildkarten, nonverbale Aufgaben).",
-                "Geschlossene Ja/Nein-Fragen anbieten; geheime Vereinbarungen fuer Hilferufe treffen.",
-                "Halten von Vortraegen vorerst in Kleingruppen oder als Audioaufnahme auf dem Smartphone."
+                "Geschlossene Ja/Nein-Fragen anbieten; geheime Vereinbarungen für Hilferufe treffen.",
+                "Halten von Vorträgen vorerst in Kleingruppen oder als Audioaufnahme auf dem Smartphone."
               ]
             },
             {
-              "ist": "Ist kaum zu verstehen, fluestert staendig oder spricht extrem laut/schreit.",
-              "soll": "Haelt Blickkontakt; spricht in angemessener Lautstaerke im Unterricht und vor der Klasse.",
+              "ist": "Ist kaum zu verstehen, flüstert ständig oder spricht extrem laut/schreit.",
+              "soll": "Hält Blickkontakt; spricht in angemessener Lautstärke im Unterricht und vor der Klasse.",
               "lernweg": [
                 "Rituale wie Vortragsstuhl und Redehut einsetzen.",
-                "Lautstaerke-Differenzierung spielerisch ueben: Fluesterstimme, 1-Meter-Sprache, Vortragsstimme ('Laut wie ein Baer, zart wie ein Schmetterling').",
-                "Regeln zur Koerperhaltung beim Sprechen explizit vereinbaren."
+                "Lautstärke-Differenzierung spielerisch Üben: Flüsterstimme, 1-Meter-Sprache, Vortragsstimme ('Laut wie ein Bär, zart wie ein Schmetterling').",
+                "Regeln zur Körperhaltung beim Sprechen explizit vereinbaren."
               ]
             },
             {
-              "ist": "Spricht ueberhastet und undeutlich (Poltern).",
+              "ist": "Spricht überhastet und undeutlich (Poltern).",
               "soll": "Hat ein angemessenes Sprechtempo.",
               "lernweg": [
                 "Hilfe durch Hinweise, langsamer und deutlicher zu sprechen.",
-                "Erzaehlstein im Morgenkreis als Merkhilfe fuer Pausen.",
-                "Verlaengerte Antwortzeiten einraeumen."
+                "Erzählstein im Morgenkreis als Merkhilfe für Pausen.",
+                "Verlaengerte Antwortzeiten Einräumen."
               ]
             },
             {
               "ist": "Stottert (Laut-/Silbenwiederholungen, Dehnungen, Blockierungen).",
-              "soll": "Meldet sich, wenn er sich sicher fuehlt; wendet erarbeitete Therapietechniken an.",
+              "soll": "Meldet sich, wenn er sich sicher fühlt; wendet erarbeitete Therapietechniken an.",
               "lernweg": [
                 "Wichtig: KEINE Aufforderung langsamer zu sprechen oder zu atmen (verstaerkt Stottern).",
-                "Saetze niemals fuer den Schueler beenden; geduldig ausreden lassen.",
-                "Blickkontakt halten, aktives Zuhoeren signalisieren, alternative schriftliche Formate zulassen."
+                "Sätze niemals für den Schüler beenden; geduldig ausreden lassen.",
+                "Blickkontakt halten, aktives Zuhören signalisieren, alternative schriftliche Formate zulassen."
               ]
             },
             {
-              "ist": "Bricht Saetze haeufig ab; erzaehlt sprunghaft und schwer nachvollziehbar.",
+              "ist": "Bricht Sätze häufig ab; erzählt sprunghaft und schwer nachvollziehbar.",
               "soll": "Kann einfache Sachverhalte chronologisch wiedergeben.",
               "lernweg": [
                 "Strukturierte Satzmuster bereitstellen ('Zuerst haben wir... danach...').",
-                "Gliederungskarten und Piktogramme im Erzaehlkreis (Wann? Wer? Wo? Was?)."
+                "Gliederungskarten und Piktogramme im Erzählkreis (Wann? Wer? Wo? Was?)."
               ]
             },
             {
-              "ist": "Reagiert auf Aeusserungen unpassend; fuehlt sich schnell angegriffen.",
+              "ist": "Reagiert auf Äußerungen unpassend; fühlt sich schnell angegriffen.",
               "soll": "Deutet nonverbale Signale richtig; erkennt Intention des Kommunikationspartners.",
               "lernweg": [
-                "Explizite Verhaltensformel: 'zuhoeren - ueberlegen - sprechen'.",
-                "Koerperhaltung und Mimik im Rollenspiel verbalisieren.",
-                "Unterschiedliche Sprachregister reflektieren (unter Freunden vs. mit Lehrkraeften)."
+                "Explizite Verhaltensformel: 'zuhören - überlegen - sprechen'.",
+                "Körperhaltung und Mimik im Rollenspiel verbalisieren.",
+                "Unterschiedliche Sprachregister reflektieren (unter Freunden vs. mit Lehrkräften)."
               ]
             },
             {
-              "ist": "Ist unruhig bei Gespraechen; antwortet vorschnell oder unpassend.",
-              "soll": "Hoert aufmerksam zu; nimmt Bezug auf Gesagtes.",
+              "ist": "Ist unruhig bei Gesprächen; antwortet vorschnell oder unpassend.",
+              "soll": "Hört aufmerksam zu; nimmt Bezug auf Gesagtes.",
               "lernweg": [
-                "Gespraechsregeln visualisieren; Redestein oder Sprechball einsetzen.",
+                "Gesprächsregeln visualisieren; Redestein oder Sprechball einsetzen.",
                 "Sitzordnung im Stuhlkreis so anpassen, dass Blickkontakt zum Sprecher gewaehrleistet ist."
               ]
             }
@@ -920,27 +920,27 @@
     },
     "Emotionale-soziale Entwicklung": {
       "kuerzel": "ES",
-      "definition": "Beeintraechtigungen im emotionalen Erleben und im sozialen Verhalten im Schulalltag. Kern ist die verlaessliche paedagogische Beziehung, wertschaetzende Haltung und gezieltes Kompetenztraining im emotional-sozialen Bereich.",
+      "definition": "Beeinträchtigungen im emotionalen Erleben und im sozialen Verhalten im Schulalltag. Kern ist die verlässliche pädagogische Beziehung, wertschaetzende Haltung und gezieltes Kompetenztraining im emotional-sozialen Bereich.",
       "bewertungskriterien": [
-        "Schwierigkeiten im Selbstwertgefuehl und Selbstvertrauen bei Anforderungen",
-        "Eingeschraenkte Selbstwahrnehmung und Benennung eigener Gefuehle",
+        "Schwierigkeiten im Selbstwertgefühl und Selbstvertrauen bei Anforderungen",
+        "Eingeschraenkte Selbstwahrnehmung und Benennung eigener Gefühle",
         "Mangelnde Impulskontrolle, geringe Frustrationstoleranz und motorische Unruhe",
         "Schwierigkeiten in Empathie und Perspektivuebernahme",
-        "Konflikte in der Peergroup, Kooperationsschwierigkeiten und Regelverstoesse"
+        "Konflikte in der Peergroup, Kooperationsschwierigkeiten und Regelverstöße"
       ],
       "foerderschwerpunkte_innerhalb": [
         "Emotionale Kompetenzen - Selbstvertrauen",
         "Emotionale Kompetenzen - Selbstwahrnehmung",
         "Emotionale Kompetenzen - Emotionskontrolle/Impulskontrolle",
         "Emotionale Kompetenzen - Empathie",
-        "Soziale Kompetenzen - Kooperationsfaehigkeit",
-        "Soziale Kompetenzen - Konfliktfaehigkeit",
+        "Soziale Kompetenzen - Kooperationsfähigkeit",
+        "Soziale Kompetenzen - Konfliktfähigkeit",
         "Soziale Kompetenzen - Umgang mit Regeln",
         "Soziale Kompetenzen - Freundschaften/soziale Beziehungen",
         "Soziale Kompetenzen - Fairness"
       ],
       "empfohlene_foerdermassnahmen": [
-        "Aufbau einer stabilen paedagogischen Beziehung ('Jeder Tag ist ein neuer Tag')",
+        "Aufbau einer stabilen pädagogischen Beziehung ('Jeder Tag ist ein neuer Tag')",
         "Etablierung von Morgenkreis, Klassenrat und festen Reflexionsritualen",
         "Verstaerkersysteme und Tokensysteme zur positiven Verhaltensbestaerkung",
         "Selbstinstruktion und Stopp-Signale zur Impulskontrolle",
@@ -950,32 +950,32 @@
       "kategorien": [
         {
           "kategorie": "Selbstvertrauen",
-          "beschreibung": "Faehigkeit, sich Leistungen zuzutrauen, realistische Ziele zu setzen und konstruktiv mit Feedback umzugehen.",
+          "beschreibung": "Fähigkeit, sich Leistungen zuzutrauen, realistische Ziele zu setzen und konstruktiv mit Feedback umzugehen.",
           "eintraege": [
             {
-              "ist": "Verweigert sich bei neuen/unbekannten Aufgaben; ist schnell entmutigt und aeussert sich abwertend.",
-              "soll": "Wagt sich an neue Aufgaben heran; setzt sich angemessene Ziele und schaetzt Erfolge realistisch ein.",
+              "ist": "Verweigert sich bei neuen/unbekannten Aufgaben; ist schnell entmutigt und äußert sich abwertend.",
+              "soll": "Wagt sich an neue Aufgaben heran; setzt sich angemessene Ziele und schätzt Erfolge realistisch ein.",
               "lernweg": [
                 "Erreichbare, kleine Teilziele nach SMART-Prinzip setzen (Erfolgsgarantie).",
-                "Indirekte Hilfen ueber 'Spickzettel', Hilfekarten und Musterloesungen anbieten.",
-                "Wahlmoeglichkeiten ueber Lerntheken und Wochenplaene schaffen.",
-                "Lob fuer das unmittelbare Beginnen und fuer das Einholen von Hilfe vergeben."
+                "Indirekte Hilfen über 'Spickzettel', Hilfekarten und Musterloesungen anbieten.",
+                "Wahlmöglichkeiten über Lerntheken und Wochenplaene schaffen.",
+                "Lob für das unmittelbare Beginnen und für das Einholen von Hilfe vergeben."
               ]
             },
             {
               "ist": "Kann Lob nicht aushalten und reagiert ausagierend oder unreflektiert.",
-              "soll": "Kann Lob fuer sich annehmen.",
+              "soll": "Kann Lob für sich annehmen.",
               "lernweg": [
-                "Verhalten wertungsfrei spiegeln und nonverbale Rueckmeldungen nutzen (Signalkarten, Geheimzeichen).",
+                "Verhalten wertungsfrei spiegeln und nonverbale Rückmeldungen nutzen (Signalkarten, Geheimzeichen).",
                 "Lob sehr zeitnah, konkret und anstrengungsbezogen formulieren (kein vergleichendes Lob).",
-                "Warmdusche im Klassenverband: Schueler schreiben sich gegenseitig anonyme Positivkaertchen."
+                "Warmdusche im Klassenverband: Schüler schreiben sich gegenseitig anonyme Positivkaertchen."
               ]
             },
             {
               "ist": "Reagiert auf Kritik abwehrend und aggressiv.",
-              "soll": "Prueft Kritik sachlich und setzt sie konstruktiv um.",
+              "soll": "Prüft Kritik sachlich und setzt sie konstruktiv um.",
               "lernweg": [
-                "Feedbackregeln einueben: erst Positivrueckmeldung, dann sachliche Beobachtung als Ich-Botschaft.",
+                "Feedbackregeln Einüben: erst Positivrueckmeldung, dann sachliche Beobachtung als Ich-Botschaft.",
                 "Ritualisierte Lob- und Kritikkarten verwenden ('Das fand ich gut' / 'Hier kannst du dich verbessern')."
               ]
             }
@@ -983,40 +983,40 @@
         },
         {
           "kategorie": "Selbstwahrnehmung",
-          "beschreibung": "Wahrnehmung der eigenen Gefuehle, Staerken und Ausstrahlung als Fundament fuer Selbststeuerung.",
+          "beschreibung": "Wahrnehmung der eigenen Gefühle, Stärken und Ausstrahlung als Fundament für Selbststeuerung.",
           "eintraege": [
             {
-              "ist": "Ist nicht in der Lage, eigene Gefuehle zu benennen.",
-              "soll": "Kann eigene Gefuehle zunehmend differenziert benennen.",
+              "ist": "Ist nicht in der Lage, eigene Gefühle zu benennen.",
+              "soll": "Kann eigene Gefühle zunehmend differenziert benennen.",
               "lernweg": [
-                "Gefuehlstraining mit der Gefuehlsuhr oder Gefuehlssmileys im Morgen- und Abschlusskreis.",
-                "Gefuehlsspiegeln als Partneruebung und Rollenspiele mit Gefuehlskaertchen.",
+                "Gefühlstraining mit der Gefühlsuhr oder Gefühlssmileys im Morgen- und Abschlusskreis.",
+                "Gefuehlsspiegeln als Partnerübung und Rollenspiele mit Gefuehlskaertchen.",
                 "Einsatz des 'ICH-Hefts der bewussten Selbststeuerung'."
               ]
             },
             {
-              "ist": "Kann wesentliche persoenliche Eigenschaften und Staerken nicht beschreiben.",
-              "soll": "Kann wesentliche Staerken und Eigenschaften von sich benennen.",
+              "ist": "Kann wesentliche persönliche Eigenschaften und Stärken nicht beschreiben.",
+              "soll": "Kann wesentliche Stärken und Eigenschaften von sich benennen.",
               "lernweg": [
-                "Koerperumriss auf Tapetenrolle zeichnen und Mitschueler positive Eigenschaften eintragen lassen.",
-                "Uebungen: 'Mein Name - meine Staerken' und Interessenprofile zum Ankreuzen.",
-                "Achtsamkeitsuebungen und Fantasiereisen zur Koerperwahrnehmung."
+                "Koerperumriss auf Tapetenrolle zeichnen und Mitschüler positive Eigenschaften eintragen lassen.",
+                "Übungen: 'Mein Name - meine Stärken' und Interessenprofile zum Ankreuzen.",
+                "Achtsamkeitsuebungen und Fantasiereisen zur Körperwahrnehmung."
               ]
             },
             {
               "ist": "Erlebt sich im Wechselspiel mit anderen nicht altersgerecht; reflektiert Handlungsfolgen nicht.",
               "soll": "Erlebt sich altersgerecht im Miteinander und reflektiert Auswirkungen des eigenen Verhaltens.",
               "lernweg": [
-                "Rollenspiele mit Rollentausch: 'Wie fuehlt es sich an der anderen Stelle an?'.",
-                "Konfliktloesungsritual mit sachlicher Aufarbeitung der Handlungsfolgen.",
-                "Ausbildung und Einsatz von Schueler-Konfliktlotsen."
+                "Rollenspiele mit Rollentausch: 'Wie fühlt es sich an der anderen Stelle an?'.",
+                "Konfliktlösungsritual mit sachlicher Aufarbeitung der Handlungsfolgen.",
+                "Ausbildung und Einsatz von Schüler-Konfliktlotsen."
               ]
             },
             {
               "ist": "Kann nicht angemessen artikulieren, was er/sie braucht.",
-              "soll": "Kann eigene Beduerfnisse hoeflich und klar formulieren.",
+              "soll": "Kann eigene Bedürfnisse höflich und klar formulieren.",
               "lernweg": [
-                "Training: Beduerfnisse in Ich-Form aeussern ('Ich wuensche mir...').",
+                "Training: Bedürfnisse in Ich-Form äußern ('Ich wünsche mir...').",
                 "Vierecken-Spiel zum Ausprobieren verschiedener Sprechhaltungen (bittend, fordernd, angemessen)."
               ]
             }
@@ -1024,65 +1024,65 @@
         },
         {
           "kategorie": "Emotionskontrolle und Impulskontrolle",
-          "beschreibung": "Faehigkeit, Handlungsantriebe innezuhalten, Frustration auszuhalten und Verhalten planvoll zu steuern.",
+          "beschreibung": "Fähigkeit, Handlungsantriebe innezuhalten, Frustration auszuhalten und Verhalten planvoll zu steuern.",
           "eintraege": [
             {
               "ist": "Ist ungeduldig, kann kaum abwarten, ruft dazwischen und handelt unueberlegt.",
               "soll": "Kann abwarten, Handlungen vorausschauend planen und Frustration tolerieren.",
               "lernweg": [
-                "Geduldsuebungen mit Zeiterweiterung (Time-Timer oder Sanduhr).",
-                "Etablierung eines Stopp-Signals und Einsatz eines 'Krickel-Blocks' fuer Wartezeiten.",
+                "Geduldsübungen mit Zeiterweiterung (Time-Timer oder Sanduhr).",
+                "Etablierung eines Stopp-Signals und Einsatz eines 'Krickel-Blocks' für Wartezeiten.",
                 "Verbale Mediation (Selbstinstruktion: laut denken, leise denken).",
-                "Schriftliche Vertraege ueber Absprachen und Wiedergutmachungen.",
+                "Schriftliche Verträge über Absprachen und Wiedergutmachungen.",
                 "Progressive Muskelentspannung und Bewegungspausen im Unterricht."
               ]
             },
             {
-              "ist": "Kann eigenes Handeln nicht nachvollziehbar begruenden; schiebt Schuld von sich.",
-              "soll": "Begruendet eigenes Handeln nachvollziehbar und uebernimmt Verantwortung.",
+              "ist": "Kann eigenes Handeln nicht nachvollziehbar begründen; schiebt Schuld von sich.",
+              "soll": "Begründet eigenes Handeln nachvollziehbar und übernimmt Verantwortung.",
               "lernweg": [
                 "Geschichten und Filmsequenzen zu Handlungsgruenden und Konsequenzen besprechen.",
                 "Zielbewusstheit trainieren: 'Wenn ich so handle, passiert..., wenn ich es anders mache...'.",
-                "Eigenverantwortung im Einzelgespraech staerken ('Ich bin Gestalter meines Handelns')."
+                "Eigenverantwortung im Einzelgespräch Stärken ('Ich bin Gestalter meines Handelns')."
               ]
             }
           ]
         },
         {
           "kategorie": "Empathie",
-          "beschreibung": "Faehigkeit, Gedanken, Motive und Gefuehle anderer wahrzunehmen, nachzuempfinden und mitfuehlend zu handeln.",
+          "beschreibung": "Fähigkeit, Gedanken, Motive und Gefühle anderer wahrzunehmen, nachzuempfinden und mitfuehlend zu handeln.",
           "eintraege": [
             {
-              "ist": "Kann Gefuehle anderer nicht erkennen und nimmt keine Ruecksicht.",
-              "soll": "Erkennt Gefuehle anderer und zeigt mitfuehlendes, ruecksichtsvolles Verhalten.",
+              "ist": "Kann Gefühle anderer nicht erkennen und nimmt keine Rücksicht.",
+              "soll": "Erkennt Gefühle anderer und zeigt mitfühlendes, ruecksichtsvolles Verhalten.",
               "lernweg": [
-                "Einfuehlungsuebungen mit Puppen, Gefuehlskarten und Rollenspielen.",
-                "Aktives Zuhoeren ueben: Dem Partner zuhoeren und das Gefuehl spiegeln.",
+                "Einfuehlungsuebungen mit Puppen, Gefühlskarten und Rollenspielen.",
+                "Aktives Zuhören Üben: Dem Partner zuhören und das Gefühl spiegeln.",
                 "Freie Rollenspiele zu Notsituationen ('Jemand verletzt sich - was tun wir?').",
                 "Sorgenfresser und Kummerkasten im Klassenraum nutzen."
               ]
             },
             {
-              "ist": "Kann eigene Interessen den Beduerfnissen der Gemeinschaft nicht unterordnen.",
-              "soll": "Zeigt mitfuehlenderes Handeln und stellt eigene Interessen situationsbezogen zurueck.",
+              "ist": "Kann eigene Interessen den Bedürfnissen der Gemeinschaft nicht unterordnen.",
+              "soll": "Zeigt mitfühlenderes Handeln und stellt eigene Interessen situationsbezogen zurück.",
               "lernweg": [
                 "Gemeinsame Spielvereinbarungen treffen (wie geht das Team mit Niederlagen um?).",
-                "Diskussionen mit Redeball, Redeliste und 'Amt des Listenfuehrers'."
+                "Diskussionen mit Redeball, Redeliste und 'Amt des Listenführers'."
               ]
             }
           ]
         },
         {
-          "kategorie": "Kooperationsfaehigkeit",
-          "beschreibung": "Zusammenarbeit in der Gruppe, gegenseitige Unterstuetzung, Absprachen und Kompromissbereitschaft.",
+          "kategorie": "Kooperationsfähigkeit",
+          "beschreibung": "Zusammenarbeit in der Gruppe, gegenseitige Unterstützung, Absprachen und Kompromissbereitschaft.",
           "eintraege": [
             {
-              "ist": "Stoert die Gruppenarbeit durch Zwischenrufe und redet anderen dazwischen.",
-              "soll": "Wartet ab, bis er/sie an der Reihe ist, und hoert aktiv zu.",
+              "ist": "Stört die Gruppenarbeit durch Zwischenrufe und redet anderen dazwischen.",
+              "soll": "Wartet ab, bis er/sie an der Reihe ist, und hört aktiv zu.",
               "lernweg": [
-                "Training des Abwartens mit visualisierten Zielkaertchen.",
-                "Beratungsliste an der Tafel: Schueler tragen sich ein und warten ihre Reihenfolge ab.",
-                "Partnertraining 'Zuhoeren' mit Nacherzaehlen des Gehoerten."
+                "Training des Abwartens mit visualisierten Zielkärtchen.",
+                "Beratungsliste an der Tafel: Schüler tragen sich ein und warten ihre Reihenfolge ab.",
+                "Partnertraining 'Zuhören' mit Nacherzählen des Gehörten."
               ]
             },
             {
@@ -1091,12 +1091,12 @@
               "lernweg": [
                 "Gruppenarbeit mit Rollenkarten (Vorleser, Zeitwaechter, Materialchef, Schreiber).",
                 "Kooperationsspiele wie 'Rettende Insel' (nur gemeinsam ans Ziel gelangen) und Luftballon-Retten.",
-                "Gemeinsame Kunstprojekte wie der 'Haendebaum' (jeder traegt einen Teil bei)."
+                "Gemeinsame Kunstprojekte wie der 'Händebaum' (jeder traegt einen Teil bei)."
               ]
             },
             {
-              "ist": "Vermeidet Fuehrungsaufgaben in der Gruppe.",
-              "soll": "Uebernimmt bei Bedarf verantwortungsvolle Aufgaben in der Gruppe.",
+              "ist": "Vermeidet Führungsaufgaben in der Gruppe.",
+              "soll": "Übernimmt bei Bedarf verantwortungsvolle Aufgaben in der Gruppe.",
               "lernweg": [
                 "Kooperative Teamspiele mit klarer Rollenverteilung (z.B. Kapitaensspiel).",
                 "Moderation des Morgenkreises mit Moderationskarten.",
@@ -1106,24 +1106,24 @@
           ]
         },
         {
-          "kategorie": "Konfliktfaehigkeit",
+          "kategorie": "Konfliktfähigkeit",
           "beschreibung": "Konstruktiver Umgang mit Interessenkollisionen, Provokationen, Wiedergutmachung und Versoehnung.",
           "eintraege": [
             {
-              "ist": "Provoziert Konflikte oder reagiert mit Aggression auf Mitschueler.",
-              "soll": "Behaelt Selbstkontrolle bei Provokationen; nutzt konstruktive Konfliktstrategien.",
+              "ist": "Provoziert Konflikte oder reagiert mit Aggression auf Mitschüler.",
+              "soll": "Behält Selbstkontrolle bei Provokationen; nutzt konstruktive Konfliktstrategien.",
               "lernweg": [
-                "Handlungsalternativen einueben: Weggehen, Hilfe holen, bis 10 zaehlen, tief durchatmen.",
-                "Konfliktloesungsritual in 4 Schritten: 1. Wertfreies Zuhoeren, 2. Nacherzaehlen, 3. Wiedergutmachung vereinbaren, 4. Versoehnung.",
-                "Konsequente Grenzziehung durch Lehrkraefte bei Grenzueberschreitungen."
+                "Handlungsalternativen Einüben: Weggehen, Hilfe holen, bis 10 zählen, tief durchatmen.",
+                "Konfliktlösungsritual in 4 Schritten: 1. Wertfreies Zuhören, 2. Nacherzählen, 3. Wiedergutmachung vereinbaren, 4. Versoehnung.",
+                "Konsequente Grenzziehung durch Lehrkräfte bei Grenzüberschreitungen."
               ]
             },
             {
-              "ist": "Ist nach Konflikten lange aufgeregt und nicht arbeitsfaehig.",
-              "soll": "Beruhigt sich nach Konflikten zuegig und kehrt zum Lernen zurueck.",
+              "ist": "Ist nach Konflikten lange aufgeregt und nicht arbeitsfähig.",
+              "soll": "Beruhigt sich nach Konflikten zügig und kehrt zum Lernen zurück.",
               "lernweg": [
-                "Einfuehren eines verlaesslichen Rueckkehrrituals (10 Minuten Auszeit, Gespraech mit Schulsozialarbeit).",
-                "Anerkennung und Lob fuer das Gelingen des Wiederberuhigens."
+                "Einführen eines verlässlichen Rückkehrrituals (10 Minuten Auszeit, Gespräch mit Schulsozialarbeit).",
+                "Anerkennung und Lob für das Gelingen des Wiederberuhigens."
               ]
             },
             {
@@ -1136,10 +1136,10 @@
               ]
             },
             {
-              "ist": "Kann nach einem Streit nicht loslassen und waermt Konflikte staendig auf.",
-              "soll": "Verzeiht und schliesst Konflikte ab.",
+              "ist": "Kann nach einem Streit nicht loslassen und waermt Konflikte ständig auf.",
+              "soll": "Verzeiht und schließt Konflikte ab.",
               "lernweg": [
-                "Moderierter Loesungsabgleich und ehrliches Haendeschuetteln.",
+                "Moderierter Lösungsabgleich und ehrliches Haendeschuetteln.",
                 "Visualisierter Abschluss des Konfliktprotokolls."
               ]
             }
@@ -1150,55 +1150,55 @@
           "beschreibung": "Akzeptanz und Einhaltung schulischer Regeln, Konsequenzen und Selbststeuerung.",
           "eintraege": [
             {
-              "ist": "Haelt sich an keine Regeln; kennt Regeln nicht oder ignoriert sie trotz Kenntnis.",
-              "soll": "Kennt Regeln, hinterfragt sie konstruktiv und haelt sich zunehmend daran.",
+              "ist": "Hält sich an keine Regeln; kennt Regeln nicht oder ignoriert sie trotz Kenntnis.",
+              "soll": "Kennt Regeln, hinterfragt sie konstruktiv und hält sich zunehmend daran.",
               "lernweg": [
-                "Regeln kurz, schuelergerecht und in Ich-Form formulieren ('Ich melde mich', 'Handy bleibt in der Tasche').",
+                "Regeln kurz, schülergerecht und in Ich-Form formulieren ('Ich melde mich', 'Handy bleibt in der Tasche').",
                 "Visualisierung der Kernregeln als Plakate mit Bildern im Raum.",
                 "Reduktion auf maximal vier Kernregeln.",
-                "Konsequenzen zeitnah, nachvollziehbar und tatbezogen durchfuehren.",
-                "Positives Verhaeltnis: Eine Negativrueckmeldung durch 3-4 positive Rueckmeldungen ausgleichen.",
+                "Konsequenzen zeitnah, nachvollziehbar und tatbezogen durchführen.",
+                "Positives Verhaeltnis: Eine Negativrückmeldung durch 3-4 positive Rückmeldungen ausgleichen.",
                 "Individuelle Verhaltensvertraege und Selbststeuerungskaertchen auf dem Schuelertisch."
               ]
             },
             {
-              "ist": "Verweigert trotz Erkennens eines Regelverstosses Entschuldigung und Wiedergutmachung.",
+              "ist": "Verweigert trotz Erkennens eines Regelverstoßes Entschuldigung und Wiedergutmachung.",
               "soll": "Entschuldigt sich angemessen und leistet Wiedergutmachung.",
               "lernweg": [
-                "Reflexionsgespraech und Fuehrung eines Pendelheftes fuer Lehrkraft und Eltern.",
-                "Arbeit im Sinne der 'Neuen Autoritaet' (Praesenz statt Macht, Wiedergutmachungsangebote)."
+                "Reflexionsgespraech und Fuehrung eines Pendelheftes für Lehrkraft und Eltern.",
+                "Arbeit im Sinne der 'Neuen Autorität' (Präsenz statt Macht, Wiedergutmachungsangebote)."
               ]
             }
           ]
         },
         {
           "kategorie": "Freundschaften und soziale Beziehungen",
-          "beschreibung": "Aufbau und Pflege stabiler Beziehungen zu Peers, gegenseitige Wertschaetzung und Kontaktanbahnung.",
+          "beschreibung": "Aufbau und Pflege stabiler Beziehungen zu Peers, gegenseitige Wertschätzung und Kontaktanbahnung.",
           "eintraege": [
             {
-              "ist": "Spricht Mitschueler distanzlos, verbal oder koerperlich ueberschiessend an.",
-              "soll": "Spricht Mitschueler altersgerecht und zugewandt an.",
+              "ist": "Spricht Mitschüler distanzlos, verbal oder körperlich überschießend an.",
+              "soll": "Spricht Mitschüler altersgerecht und zugewandt an.",
               "lernweg": [
                 "Training zum achtsamen Umgang ('Ich achte dich - du achtest mich').",
                 "Rollenspiele zu unterschiedlichen Anspracheformen (laut, leise, fordernd, freundlich)."
               ]
             },
             {
-              "ist": "Reagiert aengstlich, zurueckhaltend und schuechtern bei der Kontaktaufnahme.",
+              "ist": "Reagiert ängstlich, zurückhaltend und schüchtern bei der Kontaktaufnahme.",
               "soll": "Geht von sich aus auf andere zu.",
               "lernweg": [
                 "Partnerauswahl durch Losverfahren oder gezielte Zuteilung sozialer Lernpaten.",
-                "Vorbereitendes Gespraech vor freier Partnerwahl.",
+                "Vorbereitendes Gespräch vor freier Partnerwahl.",
                 "Gemeinsame Projekte im praktischen Bereich (Kunst, Werken)."
               ]
             },
             {
-              "ist": "Kann sich in Gruppen nicht einordnen oder wechselt staendig freundschaftliche Beziehungen.",
-              "soll": "Stellt eigene Beduerfnisse zugunsten der Freundschaft zurueck; knuepft stabile Beziehungen.",
+              "ist": "Kann sich in Gruppen nicht einordnen oder wechselt ständig freundschaftliche Beziehungen.",
+              "soll": "Stellt eigene Bedürfnisse zugunsten der Freundschaft zurück; knüpft stabile Beziehungen.",
               "lernweg": [
-                "Projekte ueber Freundschaft ('Beste-Freunde-Woche').",
+                "Projekte über Freundschaft ('Beste-Freunde-Woche').",
                 "Kooperationsspiele ohne Verlierer ('Die Schlange').",
-                "Angebote im Ganztag (EFoeB, AGs, Pausenspiele) gezielt vermitteln."
+                "Angebote im Ganztag (EFöB, AGs, Pausenspiele) gezielt vermitteln."
               ]
             }
           ]
@@ -1209,10 +1209,10 @@
           "eintraege": [
             {
               "ist": "Kann sich nicht an Spielregeln halten.",
-              "soll": "Haelt sich zuverlaessig an Spielregeln.",
+              "soll": "Hält sich zuverlässig an Spielregeln.",
               "lernweg": [
-                "Regeln an einfachen Gesellschaftsspielen (Mensch-aergere-dich-nicht, UNO) einueben.",
-                "Stufenweises Vorgehen: erst Einzelspiel mit Erwachsenem, dann Kleingruppe, spaeter Spielleiterrolle.",
+                "Regeln an einfachen Gesellschaftsspielen (Mensch-ärgere-dich-nicht, UNO) Einüben.",
+                "Stufenweises Vorgehen: erst Einzelspiel mit Erwachsenem, dann Kleingruppe, später Spielleiterrolle.",
                 "Anfangs Spiele ohne Gewinner anbieten (Sandburg bauen, Legoprojekte)."
               ]
             },
@@ -1220,10 +1220,10 @@
               "ist": "Reagiert auf Verlieren oder Gewinnen unangemessen (Wutausbrueche, Zerstoeren des Spiels).",
               "soll": "Zeigt altersgemaesse Reaktionen beim Verlieren und Gewinnen.",
               "lernweg": [
-                "Reflexion nach Spielen: Gefuehle der Gewinner und Verlierer ansprechen.",
-                "Stopp- und Beruhigungsstrategie einueben ('Tief einatmen, bis zehn zaehlen').",
-                "Loeffelspiel und Froebelkran fuer gemeinsame Teamerfolge.",
-                "Besonderes Lob fuer das Aushalten einer Niederlage."
+                "Reflexion nach Spielen: Gefühle der Gewinner und Verlierer ansprechen.",
+                "Stopp- und Beruhigungsstrategie Einüben ('Tief einatmen, bis zehn zählen').",
+                "Löffelspiel und Fröbelkran für gemeinsame Teamerfolge.",
+                "Besonderes Lob für das Aushalten einer Niederlage."
               ]
             },
             {
@@ -1235,10 +1235,10 @@
               ]
             },
             {
-              "ist": "Aeussert Kritik in stark verletzender oder abwertender Form.",
-              "soll": "Aeussert Kritik sachlich und respektvoll.",
+              "ist": "Äußert Kritik in stark verletzender oder abwertender Form.",
+              "soll": "Äußert Kritik sachlich und respektvoll.",
               "lernweg": [
-                "Training von Ich-Botschaften ('Ich wuensche mir...', 'Mir hat nicht gefallen, dass...').",
+                "Training von Ich-Botschaften ('Ich wünsche mir...', 'Mir hat nicht gefallen, dass...').",
                 "Konsequente Grenzziehung bei verbalen Verletzungen."
               ]
             }
@@ -1248,29 +1248,29 @@
     },
     "Geistige Entwicklung": {
       "kuerzel": "GE",
-      "definition": "Einschraenkungen der kognitiven Faehigkeiten und der adaptiven Kompetenzen, die eine umfassende, lebenspraktische Unterstuetzung im Lernprozess erfordern.",
+      "definition": "Einschränkungen der kognitiven Fähigkeiten und der adaptiven Kompetenzen, die eine umfassende, lebenspraktische Unterstützung im Lernprozess erfordern.",
       "bewertungskriterien": [
         "Kognitiver Entwicklungsstand deutlich unterhalb der Altersnorm",
         "Eingeschraenkte Lernfaehigkeit in mehreren Entwicklungsbereichen",
-        "Notwendigkeit umfassender und anhaltender Unterstuetzung im Schulalltag",
-        "Verlangsamte Entwicklung in Selbststaendigkeit und Sozialverhalten"
+        "Notwendigkeit umfassender und anhaltender Unterstützung im Schulalltag",
+        "Verlangsamte Entwicklung in Selbstständigkeit und Sozialverhalten"
       ],
       "foerderschwerpunkte_innerhalb": [
         "Kognitive Entwicklung & Wahrnehmung",
-        "Selbststaendigkeit & Lebenspraxis im Alltag",
-        "Unterstuetzte Kommunikation (UK)",
+        "Selbstständigkeit & Lebenspraxis im Alltag",
+        "Unterstützte Kommunikation (UK)",
         "Sozial-emotionale Entwicklung & Teilhabe"
       ],
       "empfohlene_foerdermassnahmen": [
         "Individueller Lehrplan mit basalen, lebenspraktischen Lernzielen",
         "Handlungsorientiertes und lebensnahes Lernen mit Realgegenstaenden",
-        "Unterstuetzte Kommunikation (Gebaerden, Bildsymbole, elektronische Talker)",
-        "Foerderung der Selbststaendigkeit bei alltaeglichen Routinen im Schulalltag"
+        "Unterstützte Kommunikation (Gebaerden, Bildsymbole, elektronische Talker)",
+        "Förderung der Selbstständigkeit bei alltäglichen Routinen im Schulalltag"
       ],
       "kategorien": [
         {
           "kategorie": "Kognitive Entwicklung & Wahrnehmung",
-          "beschreibung": "Gezielte Foerderung basaler kognitiver Prozesse, der Wahrnehmungsverarbeitung und des handelnden Lernens.",
+          "beschreibung": "Gezielte Förderung basaler kognitiver Prozesse, der Wahrnehmungsverarbeitung und des handelnden Lernens.",
           "eintraege": [
             {
               "ist": "Zeigt erhebliche Schwierigkeiten beim Erfassen abstrakter Lerninhalte; benoetigt konkrete Anschauung und Realgegenstaende.",
@@ -1284,12 +1284,12 @@
           ]
         },
         {
-          "kategorie": "Selbststaendigkeit & Lebenspraxis",
-          "beschreibung": "Bewaeltigung taeglicher Routinen, Orientierung und alltagspraktische Handlungsfaehigkeit.",
+          "kategorie": "Selbstständigkeit & Lebenspraxis",
+          "beschreibung": "Bewältigung taeglicher Routinen, Orientierung und alltagspraktische Handlungsfaehigkeit.",
           "eintraege": [
             {
-              "ist": "Benoetigt bei alltaeglichen Routinen (Garderobe, Orientierung, Materialorganisation) durchgehend Begleitung.",
-              "soll": "Bewaeltigt ausgewaehlte alltagspraktische Routinen im Klassenraum mit visuellen Bildkarten zunehmend selbststaendig.",
+              "ist": "Benoetigt bei alltäglichen Routinen (Garderobe, Orientierung, Materialorganisation) durchgehend Begleitung.",
+              "soll": "Bewaeltigt ausgewaehlte alltagspraktische Routinen im Klassenraum mit visuellen Bildkarten zunehmend selbstständig.",
               "lernweg": [
                 "Visuelle Handlungsplaene mit Piktogrammen an Garderobe und Arbeitsplatz.",
                 "Feste Bezugspersonen und ritualisierte Tages- und Pausenablaeufe.",
@@ -1299,14 +1299,14 @@
           ]
         },
         {
-          "kategorie": "Unterstuetzte Kommunikation (UK)",
-          "beschreibung": "Foerderung alternativer und ergaenzender Kommunikationsformen fuer Schueler mit eingeschraenkter Lautsprache.",
+          "kategorie": "Unterstützte Kommunikation (UK)",
+          "beschreibung": "Förderung alternativer und ergaenzender Kommunikationsformen für Schüler mit eingeschraenkter Lautsprache.",
           "eintraege": [
             {
-              "ist": "Kann eigene Beduerfnisse, Wuensche oder Befindlichkeiten verbal nur sehr eingeschraenkt mitteilen.",
-              "soll": "Teilt elementare Beduerfnisse und Wahlentscheidungen verlaesslich ueber Bildkarten, Gebaerden oder Kommunikationshilfen mit.",
+              "ist": "Kann eigene Bedürfnisse, Wünsche oder Befindlichkeiten verbal nur sehr eingeschraenkt mitteilen.",
+              "soll": "Teilt elementare Bedürfnisse und Wahlentscheidungen verlaesslich über Bildkarten, Gebaerden oder Kommunikationshilfen mit.",
               "lernweg": [
-                "Einfuehrung von Bild- und Symbolkarten fuer elementare Beduerfnisse (Essen, Trinken, Pause, Hilfe).",
+                "Einführung von Bild- und Symbolkarten für elementare Bedürfnisse (Essen, Trinken, Pause, Hilfe).",
                 "Begleitender Einsatz von lautsprachunterstuetzenden Gebaerden (LBG).",
                 "Bereitstellung und Einbindung eines sprechenden Tasters / Talkers im Morgenkreis."
               ]
@@ -1318,26 +1318,26 @@
           "beschreibung": "Integration in Gruppenaktivitaeten und Entwicklung von Regulationsstrategien im Klassenverband.",
           "eintraege": [
             {
-              "ist": "Zeigt Unsicherheit bei Gruppenaktivitaeten und zieht sich bei Ueberreizung zurueck oder reagiert impulsiv.",
-              "soll": "Nimmt mit paedagogischer Begleitung an gemeinsamen Ritualen teil und nutzt vereinbarte Rueckzugszeiten bei Bedarf.",
+              "ist": "Zeigt Unsicherheit bei Gruppenaktivitaeten und zieht sich bei Ueberreizung zurück oder reagiert impulsiv.",
+              "soll": "Nimmt mit pädagogischer Begleitung an gemeinsamen Ritualen teil und nutzt vereinbarte Rueckzugszeiten bei Bedarf.",
               "lernweg": [
                 "Etablierung einer geschuetzten Ruheecke im Klassenraum.",
                 "Vorhersehbare Zeitspannen mit Time-Timer visualisieren.",
-                "Gezielte Partnerarbeit mit verlaesslichen Mitschuelern."
+                "Gezielte Partnerarbeit mit verlässlichen Mitschülern."
               ]
             }
           ]
         }
       ]
     },
-    "Koerperliche-motorische Entwicklung": {
+    "Körperliche und motorische Entwicklung": {
       "kuerzel": "KME",
-      "definition": "Beeintraechtigungen der Bewegungsfaehigkeit und koerperlichen Entwicklung, die die schulische Teilhabe und motorische Handlungsfaehigkeit erschweren.",
+      "definition": "Beeinträchtigungen der Bewegungsfaehigkeit und koerperlichen Entwicklung, die die schulische Teilhabe und motorische Handlungsfaehigkeit erschweren.",
       "bewertungskriterien": [
         "Eingeschraenkte Grob- oder Feinmotorik sowie Koordination",
         "Notwendigkeit orthopaedischer und technischer Hilfsmittel (Rollstuhl, Orthesen, Schreibhilfen)",
-        "Erschwerte Teilnahme an Sportunterricht und handwerklichen Aktivitaeten",
-        "Erhoehte Ermuedbarkeit und eingeschraenkte koerperliche Belastbarkeit"
+        "Erschwerte Teilnahme an Sportunterricht und handwerklichen Aktivitäten",
+        "Erhoehte Ermuedbarkeit und eingeschraenkte körperliche Belastbarkeit"
       ],
       "foerderschwerpunkte_innerhalb": [
         "Grobmotorik, Mobilitaet & Raumorientierung",
@@ -1348,8 +1348,8 @@
       "empfohlene_foerdermassnahmen": [
         "Barrierefreie Gestaltung des Klassenraums und Schulgebaeudes",
         "Angepasste Arbeitsmittel, Spezialstifte, Stehpulte und Sitzmoebel",
-        "Motopaedische, physiotherapeutische oder ergotherapeutische Foerderung",
-        "Ruecksichtnahme auf Ermuedung und individuelle Belastungsgrenzen"
+        "Motopaedische, physiotherapeutische oder ergotherapeutische Förderung",
+        "Rücksichtnahme auf Ermuedung und individuelle Belastungsgrenzen"
       ],
       "kategorien": [
         {
@@ -1362,7 +1362,7 @@
               "lernweg": [
                 "Barrierefreie Wegeplanung im Klassenraum und Schulgelaende.",
                 "Fester, ebenerdiger Arbeitsplatz mit ausreichend Bewegungsspielraum.",
-                "Gezielte motopaedische Uebungen und Kooperation mit Therapeuten."
+                "Gezielte motopaedische Übungen und Kooperation mit Therapeuten."
               ]
             }
           ]
@@ -1373,7 +1373,7 @@
           "eintraege": [
             {
               "ist": "Verkrampft bei Schreib- und Schneidearbeiten rasch; Schriftbild ist unleserlich oder das Schreiben bricht schnell ab.",
-              "soll": "Haelt Schreib- und Arbeitsgeraete mit ergonomischen Hilfsmitteln entspannt und bewaeltigt angepasste Schreibportionen.",
+              "soll": "Hält Schreib- und Arbeitsgeraete mit ergonomischen Hilfsmitteln entspannt und bewaeltigt angepasste Schreibportionen.",
               "lernweg": [
                 "Einsatz ergonomischer Schreibhilfen (Griffverdickungen, Dreikantstifte, rutschfeste Unterlagen).",
                 "Schraegstellbares Stehpult oder geneigte Schreibplatte zur Entlastung des Schulterguertels.",
@@ -1384,14 +1384,14 @@
         },
         {
           "kategorie": "Ergonomie & Belastbarkeit",
-          "beschreibung": "Anpassung der Sitzhaltung, Pausenregime und Vorbeugung vorzeitiger koerperlicher Erschoepfung.",
+          "beschreibung": "Anpassung der Sitzhaltung, Pausenregime und Vorbeugung vorzeitiger körperlicher Erschoepfung.",
           "eintraege": [
             {
               "ist": "Ermuedet im Unterricht rasch durch hohen Haltungsaufwand und verliert nach 15-20 Minuten die Konzentrationsfaehigkeit.",
-              "soll": "Haelt eine stabile, ergonomisch gestuetzte Sitzhaltung ueber Arbeitsphasen von 20-25 Minuten aufrecht und nutzt Entlastungsphasen.",
+              "soll": "Hält eine stabile, ergonomisch gestuetzte Sitzhaltung über Arbeitsphasen von 20-25 Minuten aufrecht und nutzt Entlastungsphasen.",
               "lernweg": [
                 "Individuell angepasster Therapiestuhl mit Pelotten, Fussstuetze und Beckengurt.",
-                "Regelmaessige Haltungswechsel (Arbeiten im Stehen, Sitzen oder am Boden).",
+                "Regelmäßige Haltungswechsel (Arbeiten im Stehen, Sitzen oder am Boden).",
                 "Gezielte Bewegungspausen und Dehnuebungen im Tagesablauf."
               ]
             }
@@ -1399,15 +1399,15 @@
         },
         {
           "kategorie": "Arbeitsplatzorganisation & Hilfsmittel",
-          "beschreibung": "Nutzung angepasster Arbeitsmaterialien und Unterstuetzung bei feinmotorischer Handhabung.",
+          "beschreibung": "Nutzung angepasster Arbeitsmaterialien und Unterstützung bei feinmotorischer Handhabung.",
           "eintraege": [
             {
-              "ist": "Kann Arbeitsmaterialien auf dem Tisch motorisch nur schwer ordnen; Hefte und Stifte fallen haeufig herunter.",
+              "ist": "Kann Arbeitsmaterialien auf dem Tisch motorisch nur schwer ordnen; Hefte und Stifte fallen häufig herunter.",
               "soll": "Organisiert den Arbeitsplatz selbstaendig mithilfe rutschfester Halterungen und angepasster Arbeitsmappen.",
               "lernweg": [
                 "Rutschfeste Dycem-Unterlagen und Buchstaender.",
-                "Klettband- und Magnetbefestigungen fuer Stifte und Lineale.",
-                "Gezielte Unterstuetzung durch Integrationshelfer bei komplexen Handlungen."
+                "Klettband- und Magnetbefestigungen für Stifte und Lineale.",
+                "Gezielte Unterstützung durch Integrationshelfer bei komplexen Handlungen."
               ]
             }
           ]
@@ -1417,421 +1417,421 @@
   },
   "checklisten": {
     "kognitiv": {
-      "bereich": "Kognitive Beeintraechtigungen / Kognitiver Entwicklungsstand",
+      "bereich": "Kognitive Entwicklung und Lernverhalten",
       "beschreibung": "Einschaetzungsbogen zum kognitiven Entwicklungsstand (Gemaess Anhang Foerdermassnahmen konkret, S. 89-90)",
       "kriterien": [
         {
           "id": "kog_faeh_1",
-          "unterbereich": "Merkfaehigkeit",
-          "label": "Kann Inhalte im Gedaechtnis behalten und zu einem spaeteren Zeitpunkt abrufen.",
+          "unterbereich": "Merkfähigkeit\b",
+          "label": "Kann Inhalte im Gedächtnis behalten und zu einem späteren Zeitpunkt abrufen.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_faeh_2",
-          "unterbereich": "Merkfaehigkeit",
-          "label": "Kann Informationen in groesseren Sinnzusammenhaengen verstehen und zusammenfassen.",
+          "unterbereich": "Merkfähigkeit\b",
+          "label": "Kann Informationen in größeren Sinnzusammenhängen verstehen und zusammenfassen.",
           "gewichtung": "schwer"
         },
         {
           "id": "kog_faeh_3",
-          "unterbereich": "Merkfaehigkeit",
-          "label": "Verwendet Strategien zur Steigerung der Merkfaehigkeit.",
+          "unterbereich": "Merkfähigkeit\b",
+          "label": "Verwendet Strategien zur Steigerung der Merkfähigkeit.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_faeh_4",
-          "unterbereich": "Reproduktionsfaehigkeit",
-          "label": "Ist in der Lage, erworbenes Wissen verstaendlich wiederzugeben, auch mit zeitlichem Abstand.",
+          "unterbereich": "Reproduktionsfähigkeit\b",
+          "label": "Ist in der Lage, erworbenes Wissen verständlich wiederzugeben, auch mit zeitlichem Abstand.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_faeh_5",
-          "unterbereich": "Transferfaehigkeit",
+          "unterbereich": "Transferfähigkeit\b",
           "label": "Setzt erworbenes Wissen in vergleichbaren (und neuen) Situationen sinnvoll ein.",
           "gewichtung": "schwer"
         },
         {
           "id": "kog_faeh_6",
-          "unterbereich": "Transferfaehigkeit",
+          "unterbereich": "Transferfähigkeit\b",
           "label": "Wendet erworbene Lernstrategien auf andere Aufgabenstellungen und Lernsituationen an.",
           "gewichtung": "schwer"
         },
         {
           "id": "kog_lern_1",
-          "unterbereich": "Lernbereitschaft/Motivation",
+          "unterbereich": "Lernbereitschaft und Motivation",
           "label": "Ist bereit, dem Unterricht aufgeschlossen, konzentriert und aufmerksam zu folgen.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_lern_2",
-          "unterbereich": "Lernbereitschaft/Motivation",
-          "label": "Laesst sich fuer neue Lerninhalte begeistern und beteiligt sich aktiv am Unterricht.",
+          "unterbereich": "Lernbereitschaft und Motivation",
+          "label": "Lässt sich für neue Lerninhalte begeistern und beteiligt sich aktiv am Unterricht.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_lern_3",
-          "unterbereich": "Lernbereitschaft/Motivation",
+          "unterbereich": "Lernbereitschaft und Motivation",
           "label": "Zeigt Einsatzbereitschaft auch bei herausfordernden oder weniger beliebten Lerninhalten.",
           "gewichtung": "schwer"
         },
         {
           "id": "kog_ausd_1",
-          "unterbereich": "Ausdauer/Konzentration",
+          "unterbereich": "Ausdauer und Konzentration",
           "label": "Arbeitet planvoll und konzentriert.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_ausd_2",
-          "unterbereich": "Ausdauer/Konzentration",
+          "unterbereich": "Ausdauer und Konzentration",
           "label": "Beteiligt sich ausdauernd am Unterricht.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_ausd_3",
-          "unterbereich": "Ausdauer/Konzentration",
-          "label": "Bringt Arbeiten zu Ende und geht sorgfaeltig mit Materialien um.",
+          "unterbereich": "Ausdauer und Konzentration",
+          "label": "Bringt Arbeiten zu Ende und geht sorgfältig mit Materialien um.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_ausd_4",
-          "unterbereich": "Ausdauer/Konzentration",
+          "unterbereich": "Ausdauer und Konzentration",
           "label": "Arbeitet ohne sich ablenken zu lassen und ohne andere abzulenken.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_aufg_1",
-          "unterbereich": "Aufgabenverstaendnis",
-          "label": "Kann muendliche und schriftliche Handlungsanweisungen verstehen und umsetzen.",
+          "unterbereich": "Aufgabenverständnis\b",
+          "label": "Kann mündliche und schriftliche Handlungsanweisungen verstehen und umsetzen.",
           "gewichtung": "schwer"
         },
         {
           "id": "kog_aufg_2",
-          "unterbereich": "Aufgabenverstaendnis",
-          "label": "Kann gestellte Aufgaben selbststaendig und eigenverantwortlich bearbeiten.",
+          "unterbereich": "Aufgabenverständnis\b",
+          "label": "Kann gestellte Aufgaben selbstständig und eigenverantwortlich bearbeiten.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_aufg_3",
-          "unterbereich": "Aufgabenverstaendnis",
-          "label": "Setzt die benoetigten Arbeitsmaterialien angemessen und sinnvoll ein.",
+          "unterbereich": "Aufgabenverständnis\b",
+          "label": "Setzt die benötigten Arbeitsmaterialien angemessen und sinnvoll ein.",
           "gewichtung": "leicht"
         },
         {
           "id": "kog_aufg_4",
-          "unterbereich": "Aufgabenverstaendnis",
+          "unterbereich": "Aufgabenverständnis\b",
           "label": "Nutzt geeignete Informationsquellen sinnvoll und holt sich bei Bedarf Hilfe.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_selbst_1",
-          "unterbereich": "Selbststaendigkeit",
+          "unterbereich": "Selbstständigkeit\b",
           "label": "Beginnt die Arbeit ohne mehrmaliges Nachfragen.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_selbst_2",
-          "unterbereich": "Selbststaendigkeit",
-          "label": "Organisiert und strukturiert Arbeitsablaeufe selbststaendig.",
+          "unterbereich": "Selbstständigkeit\b",
+          "label": "Organisiert und strukturiert Arbeitsabläufe selbstständig.",
           "gewichtung": "schwer"
         },
         {
           "id": "kog_org_1",
-          "unterbereich": "Arbeitsorganisation",
-          "label": "Bringt benoetigte Materialien mit und haelt sie in Ordnung.",
+          "unterbereich": "Arbeitsorganisation\b",
+          "label": "Bringt benötigte Materialien mit und hält sie in Ordnung.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_org_2",
-          "unterbereich": "Arbeitsorganisation",
-          "label": "Teilt die Arbeitszeit gut ein und arbeitet sorgfaeltig.",
+          "unterbereich": "Arbeitsorganisation\b",
+          "label": "Teilt die Arbeitszeit gut ein und arbeitet sorgfältig.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_org_3",
-          "unterbereich": "Arbeitsorganisation",
-          "label": "Arbeitet in angemessenem Tempo und vermeidet Fluechtigkeitsfehler.",
+          "unterbereich": "Arbeitsorganisation\b",
+          "label": "Arbeitet in angemessenem Tempo und vermeidet Flüchtigkeitsfehler.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_org_4",
-          "unterbereich": "Arbeitsorganisation",
+          "unterbereich": "Arbeitsorganisation\b",
           "label": "Beendet die Aufgaben in der vorgegebenen Zeit.",
           "gewichtung": "mittel"
         },
         {
           "id": "kog_org_5",
-          "unterbereich": "Arbeitsorganisation",
-          "label": "Erledigt Hausaufgaben zuverlaessig.",
+          "unterbereich": "Arbeitsorganisation\b",
+          "label": "Erledigt Hausaufgaben zuverlässig.",
           "gewichtung": "mittel"
         }
       ]
     },
     "verhalten": {
-      "bereich": "Verhaltensbeeintraechtigungen / Emotionale und soziale Entwicklung",
+      "bereich": "Emotional-soziales Verhalten und Interaktion",
       "beschreibung": "Einschaetzungsbogen zum Verhalten (Gemaess Anhang Foerdermassnahmen konkret, S. 91-93)",
       "kriterien": [
         {
           "id": "verh_vert_1",
-          "unterbereich": "Selbstvertrauen",
-          "label": "Wagt sich zunehmend haeufiger an neue Aufgaben heran, holt sich Hilfe.",
+          "unterbereich": "Selbstvertrauen\b",
+          "label": "Wagt sich zunehmend häufiger an neue Aufgaben heran, holt sich Hilfe.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_vert_2",
-          "unterbereich": "Selbstvertrauen",
+          "unterbereich": "Selbstvertrauen\b",
           "label": "Setzt sich altersgerecht angemessen Ziele.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_vert_3",
-          "unterbereich": "Selbstvertrauen",
-          "label": "Kann moegliche Lern- und Handlungserfolge abschaetzen.",
+          "unterbereich": "Selbstvertrauen\b",
+          "label": "Kann mögliche Lern- und Handlungserfolge abschätzen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_vert_4",
-          "unterbereich": "Selbstvertrauen",
-          "label": "Kann Lob fuer sich annehmen.",
+          "unterbereich": "Selbstvertrauen\b",
+          "label": "Kann Lob für sich annehmen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_vert_5",
-          "unterbereich": "Selbstvertrauen",
-          "label": "Prueft Kritiken an seiner Person und bezieht sie auf den Kritikgegenstand.",
+          "unterbereich": "Selbstvertrauen\b",
+          "label": "Prüft Kritiken an seiner Person und bezieht sie auf den Kritikgegenstand.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_vert_6",
-          "unterbereich": "Selbstvertrauen",
+          "unterbereich": "Selbstvertrauen\b",
           "label": "Setzt sachliche Kritik konstruktiv um.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_wahr_1",
-          "unterbereich": "Selbstwahrnehmung",
-          "label": "Kann seine Gefuehle benennen.",
+          "unterbereich": "Selbstwahrnehmung\b",
+          "label": "Kann seine Gefühle benennen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_wahr_2",
-          "unterbereich": "Selbstwahrnehmung",
+          "unterbereich": "Selbstwahrnehmung\b",
           "label": "Kann wesentliche Eigenschaften von sich selbst benennen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_wahr_3",
-          "unterbereich": "Selbstwahrnehmung",
+          "unterbereich": "Selbstwahrnehmung\b",
           "label": "Erlebt sich altersgerecht im Wechselspiel mit anderen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_wahr_4",
-          "unterbereich": "Selbstwahrnehmung",
+          "unterbereich": "Selbstwahrnehmung\b",
           "label": "Reflektiert die Auswirkungen seines Verhaltens auf andere.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_wahr_5",
-          "unterbereich": "Selbstwahrnehmung",
-          "label": "Kann sein Verhalten analysieren und es daraufhin nach seinen Vorgaben veraendern.",
+          "unterbereich": "Selbstwahrnehmung\b",
+          "label": "Kann sein Verhalten analysieren und es daraufhin nach seinen Vorgaben verändern.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_wahr_6",
-          "unterbereich": "Selbstwahrnehmung",
+          "unterbereich": "Selbstwahrnehmung\b",
           "label": "Ist in der Lage, angemessen zu sagen, was er/sie braucht.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_imp_1",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
           "label": "Kann abwarten.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_imp_2",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
           "label": "Kann seine/ihre Handlungen vorausschauend planen und sich selbst steuern.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_imp_3",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
           "label": "Besitzt Frustrationstoleranz.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_imp_4",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
           "label": "Ist sich der Folgen ihrer/seiner Handlungen bewusst.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_imp_5",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
-          "label": "Konzentriert sich auf die zu loesende Aufgabe.",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
+          "label": "Konzentriert sich auf die zu lösende Aufgabe.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_imp_6",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
-          "label": "Begruendet eigenes Handeln nachvollziehbar.",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
+          "label": "Begründet eigenes Handeln nachvollziehbar.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_imp_7",
-          "unterbereich": "Emotionskontrolle/Impulskontrolle",
-          "label": "Uebernimmt Verantwortung fuer das eigene Handeln/Lernen.",
+          "unterbereich": "Emotionskontrolle und Impulskontrolle",
+          "label": "Übernimmt Verantwortung für das eigene Handeln/Lernen.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_emp_1",
-          "unterbereich": "Empathie",
-          "label": "Erkennt und benennt Gefuehle anderer altersgerecht angemessen.",
+          "unterbereich": "Empathie\b",
+          "label": "Erkennt und benennt Gefühle anderer altersgerecht angemessen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_emp_2",
-          "unterbereich": "Empathie",
+          "unterbereich": "Empathie\b",
           "label": "Versetzt sich in andere hinein.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_emp_3",
-          "unterbereich": "Empathie",
-          "label": "Hoert anderen achtungsvoll/wertschaetzend zu (z.B. haelt Blickkontakt, laesst ausreden).",
+          "unterbereich": "Empathie\b",
+          "label": "Hört anderen achtungsvoll/wertschätzend zu (z. B. hält Blickkontakt, lässt Gesprächs­",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_emp_4",
-          "unterbereich": "Empathie",
-          "label": "Geht achtsam mit fremden Gefuehlen um.",
+          "unterbereich": "Empathie\b",
+          "label": "Geht achtsam mit fremden Gefühlen um.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_emp_5",
-          "unterbereich": "Empathie",
-          "label": "Zeigt mitfuehlendes Handeln.",
+          "unterbereich": "Empathie\b",
+          "label": "Zeigt mitfühlendes Handeln.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_koop_1",
-          "unterbereich": "Kooperationsfaehigkeit",
+          "unterbereich": "Kooperationsfähigkeit\b",
           "label": "Wartet ab, bis er/sie an der Reihe ist.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_koop_2",
-          "unterbereich": "Kooperationsfaehigkeit",
-          "label": "Hoert zu.",
+          "unterbereich": "Kooperationsfähigkeit\b",
+          "label": "Hört zu.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_koop_3",
-          "unterbereich": "Kooperationsfaehigkeit",
-          "label": "Nimmt Ruecksicht auf andere.",
+          "unterbereich": "Kooperationsfähigkeit\b",
+          "label": "Nimmt Rücksicht auf andere.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_koop_4",
-          "unterbereich": "Kooperationsfaehigkeit",
+          "unterbereich": "Kooperationsfähigkeit\b",
           "label": "Ist hilfsbereit.",
           "gewichtung": "leicht"
         },
         {
           "id": "verh_koop_5",
-          "unterbereich": "Kooperationsfaehigkeit",
+          "unterbereich": "Kooperationsfähigkeit\b",
           "label": "Stimmt eigenes Handeln mit den Gruppenmitgliedern ab.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_koop_6",
-          "unterbereich": "Kooperationsfaehigkeit",
+          "unterbereich": "Kooperationsfähigkeit\b",
           "label": "Passt eigene Ziele der Gruppe an.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_koop_7",
-          "unterbereich": "Kooperationsfaehigkeit",
-          "label": "Uebernimmt bei Bedarf Fuehrungsaufgaben.",
+          "unterbereich": "Kooperationsfähigkeit\b",
+          "label": "Übernimmt bei Bedarf Führungsaufgaben.",
           "gewichtung": "leicht"
         },
         {
           "id": "verh_konfl_1",
-          "unterbereich": "Konfliktfaehigkeit",
-          "label": "Verfuegt ueber angemessene Strategien bei Interessenkonflikten.",
+          "unterbereich": "Konfliktfähigkeit\b",
+          "label": "Verfügt über angemessene Strategien bei Interessenkonflikten.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_konfl_2",
-          "unterbereich": "Konfliktfaehigkeit",
-          "label": "Erhaelt die Selbstkontrolle bei Provokationen von Mitschuelerinnen und Mitschuelern.",
+          "unterbereich": "Konfliktfähigkeit\b",
+          "label": "Erhält die Selbstkontrolle bei Provokationen von Mitschülerinnen und Mitschülern.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_konfl_3",
-          "unterbereich": "Konfliktfaehigkeit",
+          "unterbereich": "Konfliktfähigkeit\b",
           "label": "Beruhigt sich angemessen nach Konflikten.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_konfl_4",
-          "unterbereich": "Konfliktfaehigkeit",
-          "label": "Loest Konflikte konstruktiv.",
+          "unterbereich": "Konfliktfähigkeit\b",
+          "label": "Löst Konflikte konstruktiv.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_konfl_5",
-          "unterbereich": "Konfliktfaehigkeit",
+          "unterbereich": "Konfliktfähigkeit\b",
           "label": "Ist bereit, Fehler wieder gut zu machen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_konfl_6",
-          "unterbereich": "Konfliktfaehigkeit",
+          "unterbereich": "Konfliktfähigkeit\b",
           "label": "Verzeiht.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_konfl_7",
-          "unterbereich": "Konfliktfaehigkeit",
-          "label": "Vermittelt bei Konflikten von anderen Schuelerinnen und Schuelern.",
+          "unterbereich": "Konfliktfähigkeit\b",
+          "label": "Vermittelt bei Konflikten von anderen Schülerinnen und Schülern.",
           "gewichtung": "leicht"
         },
         {
           "id": "verh_reg_1",
-          "unterbereich": "Umgang mit Regeln",
+          "unterbereich": "Umgang mit Regeln\b",
           "label": "Kennt Regeln und kann sie benennen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_reg_2",
-          "unterbereich": "Umgang mit Regeln",
+          "unterbereich": "Umgang mit Regeln\b",
           "label": "Hinterfragt Regeln.",
           "gewichtung": "leicht"
         },
         {
           "id": "verh_reg_3",
-          "unterbereich": "Umgang mit Regeln",
-          "label": "Erkennt und benennt eigene Regelverstoesse.",
+          "unterbereich": "Umgang mit Regeln\b",
+          "label": "Erkennt und benennt eigene Regelverstöße.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_reg_4",
-          "unterbereich": "Umgang mit Regeln",
-          "label": "Haelt sich zunehmend an Regeln und Vereinbarungen.",
+          "unterbereich": "Umgang mit Regeln\b",
+          "label": "Hält sich zunehmend an Regeln und Vereinbarungen.",
           "gewichtung": "schwer"
         },
         {
           "id": "verh_reg_5",
-          "unterbereich": "Umgang mit Regeln",
+          "unterbereich": "Umgang mit Regeln\b",
           "label": "Entschuldigt sich angemessen und leistet Wiedergutmachung.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_freund_1",
           "unterbereich": "Freundschaften und soziale Beziehungen",
-          "label": "Spricht Mitschuelerinnen/Mitschueler altersgerecht angemessen an.",
+          "label": "Spricht Mitschülerinnen/Mitschüler altersgerecht angemessen an.",
           "gewichtung": "mittel"
         },
         {
@@ -1843,276 +1843,276 @@
         {
           "id": "verh_freund_3",
           "unterbereich": "Freundschaften und soziale Beziehungen",
-          "label": "Ist bereit, eigene Beduerfnisse einer gelingenden Freundschaft zuliebe zurueckzustellen.",
+          "label": "Ist bereit, eigene Bedürfnisse einer gelingenden Freundschaft zuliebe zurückzustellen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_freund_4",
           "unterbereich": "Freundschaften und soziale Beziehungen",
-          "label": "Knuepft und pflegt stabile freundschaftliche Beziehungen ueber einen laengeren Zeitraum.",
+          "label": "Knüpft und pflegt stabile freundschaftliche Beziehungen über einen längeren Zeitraum.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_fair_1",
-          "unterbereich": "Fairness",
-          "label": "Haelt sich an Spielregeln.",
+          "unterbereich": "Fairness\b",
+          "label": "Hält sich an Spielregeln.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_fair_2",
-          "unterbereich": "Fairness",
+          "unterbereich": "Fairness\b",
           "label": "Zeigt angemessene Reaktion beim Verlieren/Gewinnen.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_fair_3",
-          "unterbereich": "Fairness",
+          "unterbereich": "Fairness\b",
           "label": "Erkennt und benennt eigenes Fehlverhalten.",
           "gewichtung": "mittel"
         },
         {
           "id": "verh_fair_4",
-          "unterbereich": "Fairness",
-          "label": "Aeussert Kritik angemessen.",
+          "unterbereich": "Fairness\b",
+          "label": "Äußert Kritik angemessen.",
           "gewichtung": "mittel"
         }
       ]
     },
     "sprache": {
-      "bereich": "Sprachliche Beeintraechtigungen / Sprachlicher Entwicklungsstand",
+      "bereich": "Sprachliche Entwicklung und Kommunikation",
       "beschreibung": "Einschaetzungsbogen zum sprachlichen Entwicklungsstand (Gemaess Anhang Foerdermassnahmen konkret, S. 87-88)",
       "kriterien": [
         {
           "id": "sp_art_1",
-          "unterbereich": "Artikulation",
-          "label": "Spricht deutlich und gut verstaendlich.",
+          "unterbereich": "Artikulation\b",
+          "label": "Spricht deutlich und gut verständlich.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_art_2",
-          "unterbereich": "Artikulation",
+          "unterbereich": "Artikulation\b",
           "label": "Spricht Laute richtig aus.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_art_3",
-          "unterbereich": "Artikulation",
-          "label": "Laesst Laute nicht aus.",
+          "unterbereich": "Artikulation\b",
+          "label": "Lässt Laute nicht aus.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_art_4",
-          "unterbereich": "Artikulation",
-          "label": "Bewegt Mund-, Zungen und Gesichtsmuskeln beim Sprechen unauffaellig.",
+          "unterbereich": "Artikulation\b",
+          "label": "Bewegt Mund-, Zungen und Gesichtsmuskeln beim Sprechen unauffällig.",
           "gewichtung": "leicht"
         },
         {
           "id": "sp_art_5",
-          "unterbereich": "Artikulation",
+          "unterbereich": "Artikulation\b",
           "label": "Hat einen angemessenen Muskeltonus (Mund steht nicht offen).",
           "gewichtung": "leicht"
         },
         {
           "id": "sp_phon_1",
-          "unterbereich": "Phonologische Bewusstheit",
-          "label": "Kann Woerter in Silben zerlegen und diese klatschend begleiten.",
+          "unterbereich": "Phonologische Bewusstheit\b",
+          "label": "Kann Wörter in Silben zerlegen und diese klatschend begleiten.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_phon_2",
-          "unterbereich": "Phonologische Bewusstheit",
-          "label": "Fuegt Laute zu Silben oder Woertern zusammen.",
+          "unterbereich": "Phonologische Bewusstheit\b",
+          "label": "Fügt Laute zu Silben oder Wörtern zusammen.",
           "gewichtung": "schwer"
         },
         {
           "id": "sp_phon_3",
-          "unterbereich": "Phonologische Bewusstheit",
-          "label": "Kann Silben zu Woertern zusammenfuegen.",
+          "unterbereich": "Phonologische Bewusstheit\b",
+          "label": "Kann Silben zu Wörtern zusammenfügen.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_phon_4",
-          "unterbereich": "Phonologische Bewusstheit",
+          "unterbereich": "Phonologische Bewusstheit\b",
           "label": "Erkennt Anlaute bzw. Endlaute.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_phon_5",
-          "unterbereich": "Phonologische Bewusstheit",
-          "label": "Kann Reimwoerter erkennen bzw. bilden.",
+          "unterbereich": "Phonologische Bewusstheit\b",
+          "label": "Kann Reimwörter erkennen bzw. bilden.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_phon_6",
-          "unterbereich": "Phonologische Bewusstheit",
-          "label": "Unterscheidet aehnlich klingende Laute.",
+          "unterbereich": "Phonologische Bewusstheit\b",
+          "label": "Unterscheidet ähnlich klingende Laute.",
           "gewichtung": "schwer"
         },
         {
           "id": "sp_merk_1",
-          "unterbereich": "Auditive Merkfaehigkeit",
-          "label": "Merkt sich mehrteilige Arbeitsauftraege/Anweisungen.",
+          "unterbereich": "Auditive Merkfähigkeit\b",
+          "label": "Merkt sich mehrteilige Arbeitsaufträge/Anweisungen.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_merk_2",
-          "unterbereich": "Auditive Merkfaehigkeit",
-          "label": "Merkt sich mehrere Woerter.",
+          "unterbereich": "Auditive Merkfähigkeit\b",
+          "label": "Merkt sich mehrere Wörter.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_merk_3",
-          "unterbereich": "Auditive Merkfaehigkeit",
-          "label": "Kann sich unbekannte Woerter (Fantasiewoerter, Fachbegriffe) merken.",
+          "unterbereich": "Auditive Merkfähigkeit\b",
+          "label": "Kann sich unbekannte Wörter (Fantasiewörter, Fachbegriffe) merken.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_merk_4",
-          "unterbereich": "Auditive Merkfaehigkeit",
+          "unterbereich": "Auditive Merkfähigkeit\b",
           "label": "Merkt sich Gedichte und Liedtexte, Textinhalte.",
           "gewichtung": "leicht"
         },
         {
           "id": "sp_verst_1",
-          "unterbereich": "Sprachverstaendnis",
-          "label": "Erfasst die Bedeutung aehnlich klingender Woerter.",
+          "unterbereich": "Sprachverständnis\b",
+          "label": "Erfasst die Bedeutung ähnlich klingender Wörter.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_verst_2",
-          "unterbereich": "Sprachverstaendnis",
-          "label": "Versteht einfache Mitteilungen/Auftraege/Erklaerungen.",
+          "unterbereich": "Sprachverständnis\b",
+          "label": "Versteht einfache Mitteilungen/Aufträge/Erklärungen.",
           "gewichtung": "schwer"
         },
         {
           "id": "sp_verst_3",
-          "unterbereich": "Sprachverstaendnis",
-          "label": "Versteht komplexere Saetze/Nebensatzkonstruktionen.",
+          "unterbereich": "Sprachverständnis\b",
+          "label": "Versteht komplexere Sätze/Nebensatzkonstruktionen.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_verst_4",
-          "unterbereich": "Sprachverstaendnis",
+          "unterbereich": "Sprachverständnis\b",
           "label": "Kann das Gesagte in einen Kontext setzen.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_wort_1",
-          "unterbereich": "Wortschatz",
-          "label": "Kennt eine altersangemessene Anzahl an Woertern (passiver Wortschatz).",
+          "unterbereich": "Wortschatz\b",
+          "label": "Kennt eine altersangemessene Anzahl an Wörtern (passiver Wortschatz).",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_wort_2",
-          "unterbereich": "Wortschatz",
-          "label": "Nutzt eine altersangemessene Anzahl an Woertern (aktiver Wortschatz).",
+          "unterbereich": "Wortschatz\b",
+          "label": "Nutzt eine altersangemessene Anzahl an Wörtern (aktiver Wortschatz).",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_wort_3",
-          "unterbereich": "Wortschatz",
-          "label": "Kann Woerter Kategorien zuordnen, z.B. Oberbegriffe bilden.",
+          "unterbereich": "Wortschatz\b",
+          "label": "Kann Wörter Kategorien zuordnen, z. B. Oberbegriffe bilden.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_wort_4",
-          "unterbereich": "Wortschatz",
-          "label": "Kann sich neue Woerter/Fachwoerter aneignen und diese richtig anwenden.",
+          "unterbereich": "Wortschatz\b",
+          "label": "Kann sich neue Wörter/Fachwörter aneignen und diese richtig anwenden.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_gram_1",
-          "unterbereich": "Grammatik",
+          "unterbereich": "Grammatik\b",
           "label": "Beachtet die richtige Verbstellung im Satz.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_gram_2",
-          "unterbereich": "Grammatik",
+          "unterbereich": "Grammatik\b",
           "label": "Verwendet verschiedene Satzarten richtig.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_gram_3",
-          "unterbereich": "Grammatik",
+          "unterbereich": "Grammatik\b",
           "label": "Kann Artikel korrekt verwenden.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_gram_4",
-          "unterbereich": "Grammatik",
+          "unterbereich": "Grammatik\b",
           "label": "Bildet Einzahl und Mehrzahl richtig.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_gram_5",
-          "unterbereich": "Grammatik",
+          "unterbereich": "Grammatik\b",
           "label": "Nimmt Flexion/Beugung von Verben korrekt vor.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_gram_6",
-          "unterbereich": "Grammatik",
+          "unterbereich": "Grammatik\b",
           "label": "Kann Akkusativ-Dativ-Markierungen korrekt bilden.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_1",
-          "unterbereich": "Kommunikation",
-          "label": "Spricht mit anderen Schuelerinnen und Schuelern.",
+          "unterbereich": "Kommunikation\b",
+          "label": "Spricht mit anderen Schülerinnen und Schülern.",
           "gewichtung": "schwer"
         },
         {
           "id": "sp_kom_2",
-          "unterbereich": "Kommunikation",
-          "label": "Spricht mit Lehrkraeften.",
+          "unterbereich": "Kommunikation\b",
+          "label": "Spricht mit Lehrkräften.",
           "gewichtung": "schwer"
         },
         {
           "id": "sp_kom_3",
-          "unterbereich": "Kommunikation",
-          "label": "Haelt Blickkontakt beim Sprechen.",
+          "unterbereich": "Kommunikation\b",
+          "label": "Hält Blickkontakt beim Sprechen.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_4",
-          "unterbereich": "Kommunikation",
-          "label": "Spricht in angemessener Lautstaerke.",
+          "unterbereich": "Kommunikation\b",
+          "label": "Spricht in angemessener Lautstärke.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_5",
-          "unterbereich": "Kommunikation",
+          "unterbereich": "Kommunikation\b",
           "label": "Hat ein angemessenes Sprechtempo.",
           "gewichtung": "leicht"
         },
         {
           "id": "sp_kom_6",
-          "unterbereich": "Kommunikation",
-          "label": "Spricht fluessig ohne Wiederholung von Lauten, Silben und Woertern.",
+          "unterbereich": "Kommunikation\b",
+          "label": "Spricht flüssig ohne Wiederholung von Lauten, Silben und Wörtern.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_7",
-          "unterbereich": "Kommunikation",
+          "unterbereich": "Kommunikation\b",
           "label": "Kann einfache Sachverhalte chronologisch wiedergeben.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_8",
-          "unterbereich": "Kommunikation",
+          "unterbereich": "Kommunikation\b",
           "label": "Deutet non-verbale Signale richtig.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_9",
-          "unterbereich": "Kommunikation",
-          "label": "Hoert anderen aufmerksam zu.",
+          "unterbereich": "Kommunikation\b",
+          "label": "Hört anderen aufmerksam zu.",
           "gewichtung": "mittel"
         },
         {
           "id": "sp_kom_10",
-          "unterbereich": "Kommunikation",
+          "unterbereich": "Kommunikation\b",
           "label": "Kann Bezug auf Gesagtes nehmen.",
           "gewichtung": "mittel"
         }
@@ -2122,13 +2122,13 @@
   "dokumentstruktur": {
     "abschnitte": [
       "Deckblatt mit Schuelerdaten und Rahmenbedingungen",
-      "Foerderschwerpunkt und Begruendung",
-      "Diagnostische Einschaetzung - Kognitive Beeintraechtigungen",
-      "Diagnostische Einschaetzung - Verhaltensbeeintraechtigungen",
-      "Diagnostische Einschaetzung - Sprachliche Beeintraechtigungen",
-      "Foerderziele (SOLL)",
-      "Foerdermassnahmen und Methoden (LERNWEG)",
-      "Empfohlene Massnahmen aus den Bewertungsrichtlinien",
+      "Förderschwerpunkt und Begründung",
+      "Diagnostische Einschätzung - Kognitive Beeinträchtigungen",
+      "Diagnostische Einschätzung - Verhaltensbeeintraechtigungen",
+      "Diagnostische Einschätzung - Sprachliche Beeinträchtigungen",
+      "Förderziele (SOLL)",
+      "Fördermaßnahmen und Methoden (LERNWEG)",
+      "Empfohlene Maßnahmen aus den Bewertungsrichtlinien",
       "Absprachen und Zustaendigkeiten (Wer?, Wie?, Mit wem?, Bis wann?)",
       "Reflexion, Evaluation und Modifikation",
       "Weitere Vereinbarungen und Einbindung der Erziehungsberechtigten",
@@ -2137,7 +2137,7 @@
     "foerderplan_raster_spalten": [
       "IST - Beobachtung / Bedarf (= Stellungnahme)",
       "SOLL - Ziele",
-      "LERNWEG - Paedagogische Angebote / Massnahmen / Lernarrangements",
+      "LERNWEG - Pädagogische Angebote / Maßnahmen / Lernarrangements",
       "Absprachen (Wer?, Wie?, Mit wem?, Bis wann?)",
       "Reflexion / Evaluation / Modifikation"
     ]

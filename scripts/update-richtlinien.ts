@@ -77,7 +77,7 @@ async function main() {
     const result = validateGuidelinesSchema(parsed);
 
     if (result.valid) {
-      console.log('✅ VALIDATION PASSED: 100% schema compliant, zero un-normalized umlauts.');
+      console.log('✅ VALIDATION PASSED: 100% schema compliant with authentic German orthography.');
       console.log('Stats:', JSON.stringify(result.stats, null, 2));
     } else {
       console.error('❌ VALIDATION FAILED:');

@@ -106,14 +106,21 @@ LERNWEG - Pädagogische Angebote/Maßnahmen/Lernarrangements
     if (!spObj.kategorien) continue;
 
     for (const cat of spObj.kategorien) {
+      const qRaw = searchTerm.trim().toLowerCase();
+      const qNorm = normalizeGermanText(searchTerm).toLowerCase();
+      const matchesField = (text?: string) => {
+        if (!text) return false;
+        const lower = text.toLowerCase();
+        return lower.includes(qRaw) || normalizeGermanText(lower).includes(qNorm);
+      };
+
       const matchingEntries = cat.eintraege.filter((e: any) => {
         if (!searchTerm) return true;
-        const q = normalizeGermanText(searchTerm).toLowerCase();
         return (
-          e.ist.toLowerCase().includes(q) ||
-          e.soll.toLowerCase().includes(q) ||
-          cat.kategorie.toLowerCase().includes(q) ||
-          e.lernweg.some((l: string) => l.toLowerCase().includes(q))
+          matchesField(e.ist) ||
+          matchesField(e.soll) ||
+          matchesField(cat.kategorie) ||
+          e.lernweg.some((l: string) => matchesField(l))
         );
       });
 

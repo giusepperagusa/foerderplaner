@@ -72,35 +72,45 @@ export function getRecommendationsFromChecklist(
 
         // Check against relevant criteria
         for (const crit of relevantCriteria) {
-          const critNorm = crit.label.toLowerCase();
-          const entryIstNorm = entry.ist.toLowerCase();
-          const entrySollNorm = entry.soll.toLowerCase();
+          const critNorm = normalizeGermanText(crit.label).toLowerCase();
+          const critRaw = crit.label.toLowerCase();
+          const entryIstNorm = normalizeGermanText(entry.ist).toLowerCase();
+          const entrySollNorm = normalizeGermanText(entry.soll).toLowerCase();
+          const entryIstRaw = entry.ist.toLowerCase();
+          const entrySollRaw = entry.soll.toLowerCase();
 
           // Category match boost
-          if (crit.unterbereich && cat.kategorie.toLowerCase().includes(crit.unterbereich.toLowerCase())) {
+          if (crit.unterbereich && (
+            cat.kategorie.toLowerCase().includes(crit.unterbereich.toLowerCase()) ||
+            normalizeGermanText(cat.kategorie).toLowerCase().includes(normalizeGermanText(crit.unterbereich).toLowerCase())
+          )) {
             score += 4;
             matchedCrit = crit;
           }
 
-          // Keyword matches
-          const critWords = critNorm.split(/[^a-z0-9aeoeuess]+/).filter((w: string) => w.length > 3);
+          // Keyword matches (Unicode word boundary matching for authentic German ä, ö, ü, ß)
+          const critWords = critRaw.split(/[^\p{L}\p{N}]+/gu).filter((w: string) => w.length > 3);
           for (const w of critWords) {
-            if (entryIstNorm.includes(w)) score += 3;
-            if (entrySollNorm.includes(w)) score += 2;
+            const wNorm = normalizeGermanText(w).toLowerCase();
+            if (entryIstRaw.includes(w) || entryIstNorm.includes(wNorm)) score += 3;
+            if (entrySollRaw.includes(w) || entrySollNorm.includes(wNorm)) score += 2;
           }
         }
 
         // Boost if matches student profile notes
-        if (normalizedNotes) {
-          const noteWords = normalizedNotes.split(/[^a-z0-9aeoeuess]+/).filter((w: string) => w.length > 4);
+        if (profile.ausgangslageNotiz) {
+          const rawNotes = profile.ausgangslageNotiz.toLowerCase();
+          const noteWords = rawNotes.split(/[^\p{L}\p{N}]+/gu).filter((w: string) => w.length > 4);
           for (const w of noteWords) {
-            if (entry.ist.toLowerCase().includes(w)) score += 2;
-            if (cat.kategorie.toLowerCase().includes(w)) score += 3;
+            const wNorm = normalizeGermanText(w).toLowerCase();
+            if (entry.ist.toLowerCase().includes(w) || normalizeGermanText(entry.ist).toLowerCase().includes(wNorm)) score += 2;
+            if (cat.kategorie.toLowerCase().includes(w) || normalizeGermanText(cat.kategorie).toLowerCase().includes(wNorm)) score += 3;
           }
         }
 
         // Boost matching student's primary Förderschwerpunkt
-        if (spName.toLowerCase().includes(profile.hauptschwerpunkt.toLowerCase())) {
+        if (spName.toLowerCase().includes(profile.hauptschwerpunkt.toLowerCase()) ||
+            normalizeGermanText(spName).toLowerCase().includes(normalizeGermanText(profile.hauptschwerpunkt).toLowerCase())) {
           score += 2;
         }
 
@@ -127,47 +137,51 @@ export function getRecommendationsFromChecklist(
 }
 
 /**
- * Creates an optimized prompt in normalized German (base letters)
- * suited for resource-constrained offline LLMs on mobile or low-spec hardware.
+ * Creates an authentic German prompt (with standard German orthography ä, ö, ü, ß)
+ * tailored for modern local models (Qwen2.5 1.5B/3B, Llama 3.2 1B/3B).
+ * Supports optional legacy normalization if requested.
  */
 export function buildLocalModelPrompt(
   profile: StudentProfile,
   selectedCriteria: Array<{ label: string; unterbereich?: string }>,
-  proposals: RecommendationProposal[]
+  proposals: RecommendationProposal[],
+  normalizeForLegacyLLM = false
 ): string {
-  const normName = normalizeGermanText(profile.name || 'Das Kind');
-  const normKlasse = normalizeGermanText(profile.klasse || 'Grundschule');
-  const normSchwerpunkt = normalizeGermanText(profile.hauptschwerpunkt || 'Lern- und Arbeitsverhalten');
-  const normNotes = normalizeGermanText(profile.ausgangslageNotiz || 'Unterstuetzungsbedarf im Unterricht').trim();
+  const name = profile.name || 'Das Kind';
+  const klasse = profile.klasse || 'Grundschule';
+  const schwerpunkt = profile.hauptschwerpunkt || 'Lern- und Arbeitsverhalten';
+  const notes = (profile.ausgangslageNotiz || 'Unterstützungsbedarf im Unterricht').trim();
 
-  const criteriaList = selectedCriteria.slice(0, 3).map((c) => normalizeGermanText(c.label));
-  const criteriaStr = criteriaList.length > 0 ? criteriaList.join(', ') : 'Arbeitsorganisation und Ausdauer staerken';
+  const criteriaList = selectedCriteria.slice(0, 3).map((c) => c.label);
+  const criteriaStr = criteriaList.length > 0 ? criteriaList.join(', ') : 'Arbeitsorganisation und Ausdauer stärken';
 
   // Extract concrete recommendation proposals from the official guidelines if available
   const ref = proposals[0];
-  const refMethod1 = ref?.lernweg?.[0] ? normalizeGermanText(ref.lernweg[0]) : 'Strukturierte Checkliste fuer Teilschritte einsetzen';
-  const refMethod2 = ref?.lernweg?.[1] ? normalizeGermanText(ref.lernweg[1]) : 'Feste visualisierte Zeitfenster und Arbeitsrituale nutzen';
+  const refMethod1 = ref?.lernweg?.[0] || 'Strukturierte Checkliste für Teilschritte einsetzen';
+  const refMethod2 = ref?.lernweg?.[1] || 'Feste visualisierte Zeitfenster und Arbeitsrituale nutzen';
 
-  return `Erstelle genau EINEN konkreten Foerderplan-Baustein fuer ${normName} (${normKlasse}, Foerderschwerpunkt: ${normSchwerpunkt}).
+  const prompt = `Erstelle genau EINEN konkreten Förderplan-Baustein für ${name} (${klasse}, Förderschwerpunkt: ${schwerpunkt}).
 
 Ausgangslage:
-- Beobachtete Schwierigkeit: ${normNotes}
+- Beobachtete Schwierigkeit: ${notes}
 - Angestrebtes Zielgebiet: ${criteriaStr}
 
 Formatiere die Antwort EXAKT nach diesem Schema mit 5 unterschiedlichen Abschnitten:
 
-IST: [1 praeziser Satz zur aktuellen Beobachtung des Kindes im Unterricht]
-SOLL: [1 praeziser Satz zum erreichbaren, konkreten Ziel]
+IST: [1 präziser Satz zur aktuellen Beobachtung des Kindes im Unterricht]
+SOLL: [1 präziser Satz zum erreichbaren, konkreten Ziel]
 LERNWEG:
 * ${refMethod1}
 * ${refMethod2}
 ABSPRACHEN: Klassenlehrkraft, 2-3x pro Woche im Fachunterricht
-REFLEXION: Ueberpruefung der Zielerreichung nach 6 Wochen
+REFLEXION: Überprüfung der Zielerreichung nach 6 Wochen
 
 REGELN:
-- Jeder Abschnitt muss einen eigenstaendigen Inhalt haben. Kopiere niemals den gleichen Text zwischen IST, SOLL und LERNWEG!
+- Jeder Abschnitt muss einen eigenständigen Inhalt haben. Kopiere niemals den gleichen Text zwischen IST, SOLL und LERNWEG!
 - Beende die Antwort direkt nach REFLEXION mit einem Punkt.
-- Schreibe keine Erklaerungen, keine Gruesse und keine Zusatzueberschriften.`;
+- Schreibe keine Erklärungen, keine Grüße und keine Zusatzüberschriften.`;
+
+  return normalizeForLegacyLLM ? normalizeGermanText(prompt) : prompt;
 }
 
 /**

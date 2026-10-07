@@ -104,7 +104,7 @@ The application guides the teacher through a streamlined, multi-step process wit
   * **No Institutional Footers:** Attributions of the form *„Senatsverwaltung für Bildung, Jugend und Familie Berlin“* are completely removed from all page footers.
   * **Bottom-Anchored Unified Footer on Every Page:** The document footer is strictly placed at the very bottom of each and every page (both on screen web preview via `min-h-[297mm] flex flex-col justify-between mt-auto` and in print/PDF output via a DIN-A4 page container with `flex-shrink: 0`).
   * **Alignment & Content:**
-    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.18 • Stand: 11/2018`).
+    * *Left-aligned:* Application name, clean version number, and reference PDF document date (e.g. `Förderplan-Assistent Berlin 1.4.19 • Stand: 11/2018`).
     * *Right-aligned:* Dynamic page numbers placed only in the footer (`Seite {pageNumber} von {totalPages}`).
   * **Smart Overflow Protection & Continuation Banners:** To ensure the footer NEVER slips beyond the 297mm DIN A4 page boundary, the rendering engine splits content into discrete pages:
     * Measures are strictly capped at a maximum of 2 rows per table page.
@@ -338,6 +338,13 @@ To ensure full compliance with public administration mandates (including Europea
   * **MINOR (`+0.1.0`):** New functional steps, compliance template restructuring, new matching engines, export format additions, significant pedagogical enhancements.
   * **PATCH (`+0.0.1`):** Bug fixes, visual/CSS adjustments, typographical fixes, dependency patches.
 * **Synchronization Mandate:** `package.json`, `VersionInfoModal.tsx`, `README.md`, and distribution archive names (`foerderplaner-vX.Y.Z-*.tar.gz`) must always share the exact same version number.
+
+* **v1.4.19 (2026-10-06):**
+  * **Restoration of Authentic German Guidelines Text (Umlauts & ß) Directly from the Berlin Senate Reference Document:**
+    * *Direct Extraction from Official Reference PDF:* Extracted and restored authentic German text and orthography (`ä, ö, ü, Ä, Ö, Ü, ß`) directly from the official reference document *„Fördermaßnahmen konkret! Eine Handreichung für pädagogische Fachkräfte zur Entwicklung von Fördermaßnahmen“* (Senatsverwaltung für Bildung, Jugend und Familie Berlin, Stand November 2018) across the entire knowledge base (`richtlinien.json` and `src/data/richtlinien.json`), eliminating artificial ASCII transliterations (`ae, oe, ue, ss`) across all 114 diagnostic checklist criteria, 29 category definitions, and 107 pedagogical support measures (IST, SOLL, LERNWEG).
+    * *Unicode-Aware Keyword & Profile Matching:* Updated the local matching engine (`localMatchingEngine.ts`) and guidelines search (`GuidelinesManagerModal.tsx`) to support Unicode word boundaries (`\p{L}`) and dual-matching, ensuring search queries and student profile notes match accurately regardless of whether entered with standard German umlauts or legacy ASCII transliterations.
+    * *Natural German Prompts for 1.5B/3B Local Models:* Modernized the prompt generator in `buildLocalModelPrompt` to construct prompts using natural, standard German orthography (`ä, ö, ü, ß`) tailored for modern 1.5B+ parameter local models (such as Qwen2.5 1.5B/3B or Llama 3.2 1B/3B), while preserving isolated normalization hooks for legacy lightweight pipelines.
+    * *Tooling & Schema Validation Alignment:* Updated `richtlinienTools.ts` and `update-richtlinien.ts` validation routines to verify schema compliance and authentic German text integrity.
 
 * **v1.4.18 (2026-10-05):**
   * **Step 3 Renaming & Tab Clarification, Navigation Button Alignment, and Standard German Date Format (`DD/MM/YYYY`):**

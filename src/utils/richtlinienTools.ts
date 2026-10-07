@@ -130,11 +130,9 @@ export function validateGuidelinesSchema(data: any): { valid: boolean; errors: s
     }
   }
 
-  // Umlaut verification
+  // Authentic German orthography check: verify text integrity
   const umlautsFound = findRemainingUmlauts(data);
-  if (umlautsFound.length > 0) {
-    errors.push(`Un-normalized German characters found: ${umlautsFound.join(', ')}. All umlauts must be converted to ae, oe, ue, ss.`);
-  }
+  const hasAuthenticGerman = umlautsFound.length > 0;
 
   // Check foerderschwerpunkte
   const schwerpunkte = data.foerderschwerpunkte || {};
@@ -212,25 +210,24 @@ export function validateGuidelinesSchema(data: any): { valid: boolean; errors: s
  * Supports updating guidelines from revised edition PDFs.
  */
 export function parseRawGuidelineText(rawText: string, defaultKategorie = 'Allgemein'): GuidelineEntry[] {
-  const normalized = normalizeGermanText(rawText);
   const entries: GuidelineEntry[] = [];
 
   // Match pattern: IST ... SOLL ... LERNWEG ...
-  const blocks = normalized.split(/(?:IST|Beobachtung\/Bedarf)/i);
+  const blocks = rawText.split(/(?:IST|Beobachtung\/Bedarf)/i);
 
   for (const block of blocks) {
-    if (!block.trim() || !block.includes('SOLL') && !block.includes('LERNWEG')) continue;
+    if (!block.trim() || (!block.includes('SOLL') && !block.includes('Ziele') && !block.includes('LERNWEG'))) continue;
 
     let istPart = '';
     let sollPart = '';
     let lernwegPart = '';
 
     const sollSplit = block.split(/(?:SOLL|Ziele)/i);
-    istPart = sollSplit[0].replace(/[-–]\s*Die Schuelerin\/der Schueler\s*…/g, '').trim();
+    istPart = sollSplit[0].replace(/[-–]\s*Die Sch(?:ü|ue)lerin\/der Sch(?:ü|ue)ler\s*[…\.]*/g, '').trim();
 
     if (sollSplit.length > 1) {
-      const lernwegSplit = sollSplit[1].split(/(?:LERNWEG|Paedagogische Angebote)/i);
-      sollPart = lernwegSplit[0].replace(/[-–]\s*Die Schuelerin\/der Schueler\s*…/g, '').trim();
+      const lernwegSplit = sollSplit[1].split(/(?:LERNWEG|P(?:ä|ae)dagogische Angebote)/i);
+      sollPart = lernwegSplit[0].replace(/[-–]\s*Die Sch(?:ü|ue)lerin\/der Sch(?:ü|ue)ler\s*[…\.]*/g, '').trim();
 
       if (lernwegSplit.length > 1) {
         lernwegPart = lernwegSplit[1].trim();
