@@ -260,17 +260,18 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
                     }`}
                   >
                     <div>
-                      <div className="flex items-center justify-between gap-1 mb-1">
-                        <span className="font-bold text-xs text-slate-900">
-                          {model.shortName}
-                        </span>
-                        {isHwRecommended ? (
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded" title="Empfohlen für Ihre Hardware-Ausstattung">
-                            Empfohlen für Ihr Gerät
+                      <div className="flex items-start justify-between gap-1.5 mb-1.5">
+                        <div>
+                          <span className="font-bold text-xs text-slate-900 block">
+                            {model.shortName}
                           </span>
-                        ) : (
-                          <span className="text-[9px] font-mono px-1 py-0.5 bg-slate-100 text-slate-600 rounded">
+                          <span className="text-[9px] font-mono font-semibold px-1.5 py-0.5 bg-slate-100 text-slate-700 rounded border border-slate-200 inline-block mt-0.5">
                             {model.quantization}
+                          </span>
+                        </div>
+                        {isHwRecommended && (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded shrink-0 shadow-2xs" title="Empfohlen für Ihre Hardware-Ausstattung">
+                            Empfohlen für Ihr Gerät
                           </span>
                         )}
                       </div>

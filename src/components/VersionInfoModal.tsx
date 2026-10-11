@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.20-offline';
+export const APP_VERSION = 'v1.4.21-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -141,10 +141,23 @@ export const VersionInfoModal: React.FC<Props> = ({
               <span className="text-[10px] text-emerald-800 font-semibold">Aktuelle PWA-Build</span>
             </div>
 
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-              <span className="text-[11px] text-slate-600 block font-medium">Offizielle Richtlinien</span>
-              <span className="text-sm font-bold text-slate-950 font-mono mt-0.5 block">Version {GUIDELINE_VERSION}</span>
-              <span className="text-[10px] text-indigo-800 font-semibold">{richtlinienData.herausgeber}</span>
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between">
+              <div>
+                <span className="text-[11px] text-slate-600 block font-medium">Offizielle Richtlinien</span>
+                <span className="text-sm font-bold text-slate-950 font-mono mt-0.5 block">Version {GUIDELINE_VERSION}</span>
+                <span className="text-[10px] text-indigo-800 font-semibold block">{richtlinienData.herausgeber}</span>
+              </div>
+              <a
+                href="https://www.berlin.de/sen/bildung/schule/foerderung/sonderpaedagogische-foerderung/fachinfo/foerdermassnahmen_konkret.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-700 hover:text-indigo-900 hover:underline pt-1 border-t border-slate-200/80"
+                title="Offizielle Handreichung der Senatsverwaltung (PDF) in neuem Tab öffnen"
+              >
+                <FileText className="w-3.5 h-3.5 shrink-0 text-indigo-600" />
+                <span>Senats-PDF „Fördermaßnahmen konkret!“</span>
+                <ExternalLink className="w-3 h-3 shrink-0 text-indigo-400" />
+              </a>
             </div>
           </div>
 
@@ -330,6 +343,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.21:</span>
+                <span>Bereinigung ungenutzter Bibliotheken (<code>@google/genai</code>, <code>express</code>, <code>dotenv</code>, <code>motion</code>, <code>@types/express</code>, <code>autoprefixer</code>) aus <i>package.json</i> und den Lizenztabellen; direkter Link zur amtlichen Handreichung der Senatsverwaltung (<i>foerdermassnahmen_konkret.pdf</i>) im Versionsdialog integriert; vollständiger GPLv3-Lizenztext (Volltext) im Lizenzdialog eingebettet; Auslagerung der Release-Historie in eine eigene Datei <i>CHANGELOG.md</i>; visuelle Entkopplung der Modell-Karten: Quantisierungs-Labels (z. B. <i>Q4_K_S</i>, <i>Q8_0</i>) bleiben stets sichtbar und werden niemals durch das Hardware-Empfehlungslabel (<i>„Empfohlen für Ihr Gerät“</i>) verdeckt oder überschrieben.</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.20:</span>
                 <span>Umstellung auf 3 wählbare Spitzenmodelle (<i>Llama-3.2-3B-Instruct-Q4_K_S</i>, <i>Qwen2.5-1.5b-Instruct-Q8_0</i>, <i>Llama-3.2-1B-Instruct-Q8_0</i>), automatische Hardware-Erkennung &amp; Empfehlungs-Label, On-Demand Lifecycle (Start nur bei Generierung, sofortige Entladung aus dem RAM nach Abschluss) sowie optimierte Wllama-Parameter (Embeddings deaktiviert, adaptive CPU-Threadanzahl nach physischen Kernen, dynamisches Minimal-Kontextfenster nach Prompt-Tokens, <code>temperature: 0.3</code>, <code>top_p: 0.85</code>, <code>top_k: 40</code>, <code>repeat_penalty: 1.15</code>, <code>repeat_last_n: 64</code>).</span>

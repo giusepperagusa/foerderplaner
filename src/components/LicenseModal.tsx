@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Scale, FileText, Cpu, BookOpen, Layers, CheckCircle2, Copy, Check, ExternalLink } from 'lucide-react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
+import { GPL_V3_FULL_TEXT } from '../data/gplv3Text';
 
 interface Props {
   isOpen: boolean;
@@ -15,13 +16,7 @@ export const LicenseModal: React.FC<Props> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleCopyGPL = () => {
-    navigator.clipboard.writeText(`GNU GENERAL PUBLIC LICENSE
-Version 3, 29 June 2007
-
-Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
-Everyone is permitted to copy and distribute verbatim copies
-of this license document, but changing it is not allowed.
-... (See LICENSE file in repository for full text)`);
+    navigator.clipboard.writeText(GPL_V3_FULL_TEXT);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -236,27 +231,9 @@ of this license document, but changing it is not allowed.
                       <td className="py-2 px-3 font-sans text-emerald-600 font-semibold">Kompatibel</td>
                     </tr>
                     <tr className="hover:bg-slate-50">
-                      <td className="py-2 px-3 font-semibold text-slate-800">motion</td>
-                      <td className="py-2 px-3 font-sans text-slate-600">Animationen</td>
-                      <td className="py-2 px-3 text-slate-700">MIT</td>
-                      <td className="py-2 px-3 font-sans text-emerald-600 font-semibold">Kompatibel</td>
-                    </tr>
-                    <tr className="hover:bg-slate-50">
                       <td className="py-2 px-3 font-semibold text-slate-800">vite / vite-plugin-pwa</td>
-                      <td className="py-2 px-3 font-sans text-slate-600">Bundler & PWA-Worker</td>
+                      <td className="py-2 px-3 font-sans text-slate-600">Bundler &amp; PWA-Worker</td>
                       <td className="py-2 px-3 text-slate-700">MIT</td>
-                      <td className="py-2 px-3 font-sans text-emerald-600 font-semibold">Kompatibel</td>
-                    </tr>
-                    <tr className="hover:bg-slate-50">
-                      <td className="py-2 px-3 font-semibold text-slate-800">@google/genai</td>
-                      <td className="py-2 px-3 font-sans text-slate-600">SDK-Schnittstelle</td>
-                      <td className="py-2 px-3 text-slate-700">Apache-2.0</td>
-                      <td className="py-2 px-3 font-sans text-emerald-600 font-semibold">Kompatibel (FSF)</td>
-                    </tr>
-                    <tr className="hover:bg-slate-50">
-                      <td className="py-2 px-3 font-semibold text-slate-800">dotenv</td>
-                      <td className="py-2 px-3 font-sans text-slate-600">Umgebungsvariablen</td>
-                      <td className="py-2 px-3 text-slate-700">BSD-2-Clause</td>
                       <td className="py-2 px-3 font-sans text-emerald-600 font-semibold">Kompatibel</td>
                     </tr>
                   </tbody>
@@ -275,21 +252,16 @@ of this license document, but changing it is not allowed.
                 <button
                   type="button"
                   onClick={handleCopyGPL}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer"
+                  title="Vollständigen GPLv3-Lizenztext in die Zwischenablage kopieren"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copied ? 'Kopiert!' : 'Kopieren'}</span>
+                  <span>{copied ? 'Kopiert!' : 'Lizenztext kopieren'}</span>
                 </button>
               </div>
 
-              <div className="p-3 bg-slate-900 text-slate-200 rounded-xl font-mono text-[10px] leading-relaxed max-h-72 overflow-y-auto border border-slate-800 select-all">
-                <p className="font-bold text-white mb-2">GNU GENERAL PUBLIC LICENSE</p>
-                <p className="mb-2">Version 3, 29 June 2007</p>
-                <p className="mb-2">Copyright (C) 2007 Free Software Foundation, Inc. &lt;https://fsf.org/&gt;</p>
-                <p className="mb-3">Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.</p>
-                <p className="mb-2 text-slate-400">Preamble</p>
-                <p className="mb-2">The GNU General Public License is a free, copyleft license for software and other kinds of works...</p>
-                <p className="mb-2">The full LICENSE file is included at the root of the source code repository (/LICENSE).</p>
+              <div className="p-3 bg-slate-900 text-slate-200 rounded-xl font-mono text-[10.5px] leading-relaxed max-h-80 overflow-y-auto border border-slate-800 select-all shadow-inner">
+                <pre className="whitespace-pre-wrap font-mono">{GPL_V3_FULL_TEXT}</pre>
               </div>
             </div>
           )}
