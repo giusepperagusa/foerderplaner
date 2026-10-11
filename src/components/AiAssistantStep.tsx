@@ -27,7 +27,15 @@ import {
   convertProposalToPlanRow,
   RecommendationProposal,
 } from '../utils/localMatchingEngine';
-import { webLlmManager, CURRENT_MODEL_CONFIG, ModelCacheStatus, GenerationStats, ModelOption } from '../utils/webLlmManager';
+import {
+  webLlmManager,
+  CURRENT_MODEL_CONFIG,
+  AVAILABLE_MODELS,
+  ModelCacheStatus,
+  GenerationStats,
+  ModelOption,
+} from '../utils/webLlmManager';
+import { detectDeviceHardware } from '../utils/hardwareDetection';
 import { ModelConsentModal } from './ModelConsentModal';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import richtlinienRaw from '../data/richtlinien.json';
@@ -84,11 +92,8 @@ export const AiAssistantStep: React.FC<Props> = ({
 
   // Active model state & display tag
   const [activeModel, setActiveModel] = useState<ModelOption>(() => webLlmManager.getModelConfig());
-  const modelDisplayTag = activeModel.id.toLowerCase().includes('1.5b')
-    ? 'Qwen2.5-1.5B'
-    : activeModel.id.toLowerCase().includes('0.5b')
-    ? 'Qwen2.5-0.5B'
-    : activeModel.shortName.split(' ')[0];
+  const modelDisplayTag = activeModel.shortName.split(' ')[0];
+  const hardwareProfile = useMemo(() => detectDeviceHardware(), []);
 
   // Wllama State with immediate localStorage verification to avoid momentary false un-cached state on reload
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>(() => {
@@ -104,6 +109,14 @@ export const AiAssistantStep: React.FC<Props> = ({
       cacheKeys: [],
     };
   });
+
+  const handleSelectModel = async (key: string) => {
+    if (isGenerating) return;
+    webLlmManager.setSelectedModelKey(key);
+    setActiveModel(webLlmManager.getModelConfig());
+    const status = await webLlmManager.checkCacheStatus();
+    setCacheStatus(status);
+  };
   const [isGenerating, setIsGenerating] = useState(false);
   const [isInitializingEngine, setIsInitializingEngine] = useState(false);
   const [tokenStats, setTokenStats] = useState<GenerationStats>({
@@ -220,26 +233,9 @@ export const AiAssistantStep: React.FC<Props> = ({
     setGenerationError(null);
 
     // If model is not yet cached in OPFS/IndexedDB, open consent & download dialog
-    if (!cacheStatus.isCached && !webLlmManager.isEngineReady()) {
+    if (!cacheStatus.isCached) {
       setShowConsentModal(true);
       return;
-    }
-
-    // If already stored offline in OPFS/IndexedDB but not yet loaded into RAM, initialize smoothly
-    if (!webLlmManager.isEngineReady()) {
-      setIsInitializingEngine(true);
-      setGenerationStage('initializing');
-      try {
-        await webLlmManager.initModel();
-        setCacheStatus((prev) => ({ ...prev, isLoaded: true }));
-      } catch (err: any) {
-        setIsInitializingEngine(false);
-        setGenerationStage('idle');
-        setGenerationError('Initialisierung aus lokalem Speicher fehlgeschlagen: ' + (err.message || ''));
-        return;
-      } finally {
-        setIsInitializingEngine(false);
-      }
     }
 
     setIsGenerating(true);
@@ -249,7 +245,7 @@ export const AiAssistantStep: React.FC<Props> = ({
     setInsertSuccess(false);
 
     try {
-      const systemPrompt = `Du bist ein erfahrener Berliner Sonderpaedagoge fuer Grundschul-Foerderplaene ("Foerdermassnahmen konkret!"). Formuliere praezise, alltagstaugliche Foerderplan-Bausteine mit getrennten Abschnitten (IST, SOLL, LERNWEG, ABSPRACHEN, REFLEXION). Schreibe keine Vorbemerkungen, keine Wiederholungen und keine Schlusskommentare.`;
+      const systemPrompt = `Du bist ein erfahrener Berliner Sonderpädagoge für Grundschul-Förderpläne („Fördermaßnahmen konkret!“). Formuliere präzise, alltagstaugliche Förderplan-Bausteine mit getrennten Abschnitten (IST, SOLL, LERNWEG, ABSPRACHEN, REFLEXION). Schreibe keine Vorbemerkungen, keine Wiederholungen und keine Schlusskommentare.`;
 
       const userPrompt = localModelPrompt;
 
@@ -262,6 +258,11 @@ export const AiAssistantStep: React.FC<Props> = ({
           setGenerationStage('generating');
           setTokenStats(stats);
           setGeneratedText(fullText);
+        },
+        (progress) => {
+          if (progress.progress < 1) {
+            setGenerationStage('initializing');
+          }
         }
       );
       if (finalFullText) {
@@ -273,6 +274,7 @@ export const AiAssistantStep: React.FC<Props> = ({
     } finally {
       setIsGenerating(false);
       setGenerationStage('idle');
+      checkModelStatus();
     }
   };
 
@@ -599,31 +601,92 @@ export const AiAssistantStep: React.FC<Props> = ({
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-purple-50/70 border border-purple-200 rounded-xl">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-purple-950 text-sm">
-                  {activeModel.name}
-                </span>
-                <span className="text-[10px] font-mono bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full font-bold">
-                  {activeModel.quantization}
-                </span>
-              </div>
-              <p className="text-xs text-purple-800 leading-relaxed">
-                Führt Inferenz direkt über WebAssembly auf der CPU aus. Speicherung erfolgt geschützt im OPFS/IndexedDB (ohne Cache API).
-              </p>
+          {/* Model Selection & Management Card */}
+          <div className="p-4 bg-purple-50/70 border border-purple-200 rounded-xl space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span className="text-xs font-bold text-purple-950 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                Auswahl des lokalen Sprachmodells (CPU WebAssembly • 100% On-Device):
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowConsentModal(true)}
+                className="flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto cursor-pointer shadow-2xs"
+                title="Modell-Speicher & Hardware-Profile verwalten"
+                aria-label="Lokale KI verwalten"
+              >
+                <Cpu className="w-3.5 h-3.5 text-purple-700" />
+                <span>Modell verwalten / Speicher leeren</span>
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setShowConsentModal(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg border border-purple-300 bg-white text-purple-800 hover:bg-purple-100 transition whitespace-nowrap self-start sm:self-auto cursor-pointer"
-              title="Lokale KI (Wllama, optional & experimentell) verwalten & Modell-Status prüfen"
-              aria-label="Lokale KI (Wllama)"
-            >
-              <Cpu className="w-3.5 h-3.5 text-purple-700" />
-              <span>Lokale KI (Wllama)</span>
-            </button>
+            {/* 3 Model Selection Cards in order of preference */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {Object.entries(AVAILABLE_MODELS).map(([key, model]) => {
+                const isSelected = activeModel.id === model.id;
+                const isHwRecommended = key === hardwareProfile.recommendedModelKey;
+                const isCachedLocally =
+                  typeof window !== 'undefined' &&
+                  localStorage.getItem(`foerderplaner_model_cached_${model.id}`) === 'true';
+
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => handleSelectModel(key)}
+                    disabled={isGenerating}
+                    className={`p-3 rounded-xl border text-left transition relative cursor-pointer flex flex-col justify-between ${
+                      isSelected
+                        ? 'border-purple-600 bg-white shadow-xs ring-2 ring-purple-500/20'
+                        : 'border-purple-200/80 bg-white/70 hover:bg-white hover:border-purple-300'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className="font-bold text-xs text-purple-950">
+                          {model.shortName}
+                        </span>
+                        {isHwRecommended ? (
+                          <span
+                            className="text-[9px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded"
+                            title="Empfohlen für Ihre Hardware-Ausstattung"
+                          >
+                            Empfohlen für Ihr Gerät
+                          </span>
+                        ) : (
+                          <span className="text-[9px] font-mono px-1 py-0.5 bg-slate-100 text-slate-600 rounded">
+                            {model.quantization}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-slate-600 space-y-0.5">
+                        <div className="text-[10px] text-slate-500 font-medium">{model.parameters}</div>
+                        {isCachedLocally ? (
+                          <div className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                            Offline bereit
+                          </div>
+                        ) : (
+                          <div className="text-[10px] text-slate-500">
+                            Download: <strong className="text-slate-800">~{model.downloadSizeMB} MB</strong>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {isSelected && (
+                      <div className="mt-2 pt-1 border-t border-purple-200 text-[10px] font-semibold text-purple-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-purple-600" />
+                        Aktiv ausgewählt
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="text-[11px] text-purple-800/90 leading-relaxed pt-0.5">
+              Führt Inferenz direkt über WebAssembly auf der CPU aus ({hardwareProfile.hardwareSummary}). Speicherung erfolgt geschützt im OPFS/IndexedDB.
+            </p>
           </div>
 
           {/* Trigger Button & Status */}

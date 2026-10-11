@@ -35,7 +35,7 @@ interface Props {
   onOpenLicense?: () => void;
 }
 
-export const APP_VERSION = 'v1.4.19-offline';
+export const APP_VERSION = 'v1.4.20-offline';
 export const GUIDELINE_VERSION = `${richtlinienData.version} (${richtlinienData.gueltigAb})`;
 export const GITHUB_REPO_URL = 'https://github.com/giusepperagusa/foerderplaner';
 
@@ -296,7 +296,7 @@ export const VersionInfoModal: React.FC<Props> = ({
               </span>
             </div>
             <p className="text-[11px] text-slate-600 leading-relaxed">
-              Die App verarbeitet Schülerdaten ausschließlich lokal im Browser (LocalStorage &amp; On-Device WebAssembly). Sämtliche KI-Funktionen sind <strong>rein experimentell und vollständig optional</strong>: Die Anwendung kann zu 100% ohne Aktivierung von KI über den amtlichen Berliner Richtlinien-Katalog (107 Bausteine) und manuelle Bearbeitung genutzt werden. Wird ein Modell (z. B. Qwen2.5-1.5B oder 0.5B) optional geladen, läuft es direkt auf der CPU ohne WebGPU-Zwang im geschützten OPFS oder IndexedDB – die instabile Cache API wird nicht genutzt.
+              Die App verarbeitet Schülerdaten ausschließlich lokal im Browser (LocalStorage &amp; On-Device WebAssembly). Sämtliche KI-Funktionen sind <strong>rein experimentell und vollständig optional</strong>: Die Anwendung kann zu 100% ohne Aktivierung von KI über den amtlichen Berliner Richtlinien-Katalog (107 Bausteine) und manuelle Bearbeitung genutzt werden. Wird ein Modell (z. B. Llama-3.2-3B, Qwen2.5-1.5B oder Llama-3.2-1B) optional geladen, läuft es direkt auf der CPU ohne WebGPU-Zwang im geschützten OPFS oder IndexedDB – die instabile Cache API wird nicht genutzt.
             </p>
           </div>
 
@@ -330,6 +330,10 @@ export const VersionInfoModal: React.FC<Props> = ({
               Änderungshistorie (Changelog)
             </span>
             <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-start gap-2">
+                <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.20:</span>
+                <span>Umstellung auf 3 wählbare Spitzenmodelle (<i>Llama-3.2-3B-Instruct-Q4_K_S</i>, <i>Qwen2.5-1.5b-Instruct-Q8_0</i>, <i>Llama-3.2-1B-Instruct-Q8_0</i>), automatische Hardware-Erkennung &amp; Empfehlungs-Label, On-Demand Lifecycle (Start nur bei Generierung, sofortige Entladung aus dem RAM nach Abschluss) sowie optimierte Wllama-Parameter (Embeddings deaktiviert, adaptive CPU-Threadanzahl nach physischen Kernen, dynamisches Minimal-Kontextfenster nach Prompt-Tokens, <code>temperature: 0.3</code>, <code>top_p: 0.85</code>, <code>top_k: 40</code>, <code>repeat_penalty: 1.15</code>, <code>repeat_last_n: 64</code>).</span>
+              </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono text-indigo-600 font-semibold shrink-0">v1.4.19:</span>
                 <span>Wiederherstellung authentischer deutscher Richtlinien-Texte (Umlaute &amp; ß) direkt aus dem Senats-Referenzdokument: Die gesamte Wissensbasis (<i>richtlinien.json</i>) und alle 107 offiziellen Fördermaßnahmen, 114 Diagnose-Kriterien und 29 Kategorien wurden von den künstlichen Transliterationen (<i>ae, oe, ue, ss</i>) befreit und vollständig auf die authentische deutsche Rechtschreibung (<i>ä, ö, ü, Ä, Ö, Ü, ß</i>) direkt aus dem Berliner Senatsdokument <i>„Fördermaßnahmen konkret!“</i> umgestellt; die lokale Matching- und Suchlogik wurde auf Unicode-Wortgrenzen umgestellt, sodass sowohl mit Umlauten als auch mit Umschrift gesucht werden kann; Prompts für moderne lokale Sprachmodelle (Qwen2.5 1.5B/3B) werden nun in natürlichem, orthografisch korrektem Deutsch formuliert, während Normalisierungsfunktionen bei Bedarf als isolierte Hooks verfügbar bleiben.</span>

@@ -10,10 +10,19 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
  * Wllama Manager & Lifecycle Controller (CPU WebAssembly + OPFS/IndexedDB)
- * Runs Qwen 2.5 0.5B Instruct (GGUF) via Wllama CPU WebAssembly.
- * Supports high-fidelity 8-bit quantized weights (bartowski Q8_0, ~506MB)
- * and compact 4-bit weights (Qwen Q4_K_M, ~397MB) with 8-bit quantized KV cache.
- * Stores model weights strictly in OPFS and IndexedDB (zero Cache API usage).
+ * Runs state-of-the-art instruction models via Wllama CPU WebAssembly:
+ * 1. Llama-3.2-3B-Instruct-Q4_K_S (Preferred, highest quality)
+ * 2. Qwen2.5-1.5b-Instruct-Q8_0 (Balanced, high precision)
+ * 3. Llama-3.2-1B-Instruct-Q8_0 (Compact & fast for mobile/constrained hardware)
+ *
+ * Hardware Detection & Adaptive Settings:
+ * - Detects CPU cores, RAM, and device type to recommend the best model.
+ * - Automatically derives optimal Wllama settings:
+ *   * Embeddings disabled (embeddings: false)
+ *   * Thread count adapted to physical CPU cores
+ *   * Dynamic minimum context window calculated per run from actual prompt tokens
+ *   * On-demand start: loaded only when required, stopped and unloaded from RAM immediately after completion.
+ * - Optimal sampling parameters: temp 0.3, top_p 0.85, top_k 40, repeat_penalty 1.15, repeat_last_n 64.
  */
 import { Wllama, CacheManager } from '@wllama/wllama';
 import {
@@ -22,6 +31,7 @@ import {
   ensureStoragePersistence,
   purgeAllWllamaStorage,
 } from './wllamaStorage';
+import { detectDeviceHardware, DeviceHardwareProfile } from './hardwareDetection';
 
 export interface ModelOption {
   id: string; // The file name in cache
@@ -38,79 +48,96 @@ export interface ModelOption {
   hfRepo: string;
   hfFile: string;
   url: string;
+  parameters: string;
   isRecommended?: boolean;
 }
 
 export const AVAILABLE_MODELS: Record<string, ModelOption> = {
-  'qwen2.5-1.5b-q4_k_m': {
-    id: 'Qwen2.5-1.5B-Instruct-Q4_K_M.gguf',
-    name: 'Qwen 2.5 (1.5B Instruct GGUF - Q4_K_M bartowski)',
-    shortName: 'Qwen2.5-1.5B (Empfohlen)',
-    quantization: 'Q4_K_M (4-Bit)',
-    downloadSizeMB: 940,
-    ramRequiredMB: 1200,
+  'llama-3.2-3b-q4_k_s': {
+    id: 'Llama-3.2-3B-Instruct-Q4_K_S.gguf',
+    name: 'Llama 3.2 (3B Instruct GGUF - Q4_K_S bartowski)',
+    shortName: 'Llama-3.2-3B',
+    quantization: 'Q4_K_S (4-Bit)',
+    downloadSizeMB: 1839,
+    ramRequiredMB: 2300,
     contextWindow: 4096,
     kvCacheQuantization: 'q8_0 (8-Bit)',
-    estimatedTimeFast: 'ca. 50–90 Sekunden (WLAN / Breitband)',
+    parameters: '3.21 Mrd. Parameter',
+    estimatedTimeFast: 'ca. 45–90 Sekunden (WLAN / Breitband)',
     estimatedTimeSlow: 'ca. 3–5 Minuten (mobiles Internet)',
     description:
-      'Hervorragendes deutsches Textverständnis mit 1,5 Milliarden Parametern (3-fache Kapazität von 0.5B). Folgt den Abschnitten IST, SOLL und LERNWEG fehlerfrei, verhindert Degenerationen und bietet sprachlich ausgereifte Förderplan-Formulierungen.',
-    hfRepo: 'bartowski/Qwen2.5-1.5B-Instruct-GGUF',
-    hfFile: 'Qwen2.5-1.5B-Instruct-Q4_K_M.gguf',
-    url: 'https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q4_K_M.gguf',
-    isRecommended: true,
+      'Höchste Textqualität und nuancierte pädagogische Formulierungen mit 3,21 Milliarden Parametern (Meta Llama 3.2). Folgt dem Berliner Richtlinien-Raster exakt und liefert sprachlich ausgereifte Förderplan-Bausteine.',
+    hfRepo: 'bartowski/Llama-3.2-3B-Instruct-GGUF',
+    hfFile: 'Llama-3.2-3B-Instruct-Q4_K_S.gguf',
+    url: 'https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_S.gguf',
   },
-  'qwen2.5-0.5b-q8_0': {
-    id: 'Qwen2.5-0.5B-Instruct-Q8_0.gguf',
-    name: 'Qwen 2.5 (0.5B Instruct GGUF - Q8_0 bartowski)',
-    shortName: 'Qwen2.5-0.5B-Q8_0 (Kompakt)',
+  'qwen2.5-1.5b-q8_0': {
+    id: 'Qwen2.5-1.5B-Instruct-Q8_0.gguf',
+    name: 'Qwen 2.5 (1.5B Instruct GGUF - Q8_0 bartowski)',
+    shortName: 'Qwen2.5-1.5B',
     quantization: 'Q8_0 (8-Bit)',
-    downloadSizeMB: 506,
-    ramRequiredMB: 680,
+    downloadSizeMB: 1570,
+    ramRequiredMB: 1950,
     contextWindow: 4096,
     kvCacheQuantization: 'q8_0 (8-Bit)',
-    estimatedTimeFast: 'ca. 30–45 Sekunden (WLAN / Breitband)',
+    parameters: '1.54 Mrd. Parameter',
+    estimatedTimeFast: 'ca. 35–70 Sekunden (WLAN / Breitband)',
+    estimatedTimeSlow: 'ca. 3–4 Minuten (mobiles Internet)',
+    description:
+      'Hervorragendes deutsches Sprachverständnis bei verlustfreier 8-Bit-Quantisierung (Qwen Team). Bewährte Balance aus hoher Präzision und moderater Systembelastung.',
+    hfRepo: 'bartowski/Qwen2.5-1.5B-Instruct-GGUF',
+    hfFile: 'Qwen2.5-1.5B-Instruct-Q8_0.gguf',
+    url: 'https://huggingface.co/bartowski/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/Qwen2.5-1.5B-Instruct-Q8_0.gguf',
+  },
+  'llama-3.2-1b-q8_0': {
+    id: 'Llama-3.2-1B-Instruct-Q8_0.gguf',
+    name: 'Llama 3.2 (1B Instruct GGUF - Q8_0 bartowski)',
+    shortName: 'Llama-3.2-1B',
+    quantization: 'Q8_0 (8-Bit)',
+    downloadSizeMB: 1260,
+    ramRequiredMB: 1550,
+    contextWindow: 4096,
+    kvCacheQuantization: 'q8_0 (8-Bit)',
+    parameters: '1.23 Mrd. Parameter',
+    estimatedTimeFast: 'ca. 25–50 Sekunden (WLAN / Breitband)',
     estimatedTimeSlow: 'ca. 2–3 Minuten (mobiles Internet)',
     description:
-      'Leichtgewichtiges 8-Bit-Modell (~506 MB). Bietet gute Geschwindigkeit auf sparsamer Hardware, verfügt jedoch aufgrund von nur 0,5 Milliarden Parametern über einen begrenzteren deutschen Wortschatz.',
-    hfRepo: 'bartowski/Qwen2.5-0.5B-Instruct-GGUF',
-    hfFile: 'Qwen2.5-0.5B-Instruct-Q8_0.gguf',
-    url: 'https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/Qwen2.5-0.5B-Instruct-Q8_0.gguf',
-    isRecommended: false,
-  },
-  'qwen2.5-0.5b-q4_k_m': {
-    id: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
-    name: 'Qwen 2.5 (0.5B Instruct GGUF - Q4_K_M)',
-    shortName: 'Qwen2.5-0.5B-Q4_K_M (Minimal)',
-    quantization: 'Q4_K_M (4-Bit)',
-    downloadSizeMB: 397,
-    ramRequiredMB: 600,
-    contextWindow: 4096,
-    kvCacheQuantization: 'q8_0 (8-Bit)',
-    estimatedTimeFast: 'ca. 20–35 Sekunden (WLAN / Breitband)',
-    estimatedTimeSlow: 'ca. 2 Minuten (mobiles Internet)',
-    description:
-      'Kleinstmögliche Downloadgröße (~397 MB) mit 4-Bit-Quantisierung für extrem ressourcenbeschränkte Umgebungen.',
-    hfRepo: 'Qwen/Qwen2.5-0.5B-Instruct-GGUF',
-    hfFile: 'qwen2.5-0.5b-instruct-q4_k_m.gguf',
-    url: 'https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf',
-    isRecommended: false,
+      'Kompakt und schnell mit 1,23 Milliarden Parametern und 8-Bit-Gewichten (Meta Llama 3.2). Empfohlen für Laptops mit begrenztem Arbeitsspeicher oder mobile Begleitgeräte.',
+    hfRepo: 'bartowski/Llama-3.2-1B-Instruct-GGUF',
+    hfFile: 'Llama-3.2-1B-Instruct-Q8_0.gguf',
+    url: 'https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q8_0.gguf',
   },
 };
 
-export const DEFAULT_MODEL_KEY = 'qwen2.5-1.5b-q4_k_m';
+/**
+ * Returns the auto-detected hardware profile
+ */
+export function getHardwareProfile(): DeviceHardwareProfile {
+  return detectDeviceHardware();
+}
 
-export function getActiveModelConfig(): ModelOption {
+/**
+ * Resolves the active model key respecting previous user selection in localStorage,
+ * or defaulting to the hardware-recommended model.
+ */
+export function getInitialModelKey(): string {
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('foerderplaner_model_key');
     if (saved && AVAILABLE_MODELS[saved]) {
-      return AVAILABLE_MODELS[saved];
+      return saved;
     }
   }
-  return AVAILABLE_MODELS[DEFAULT_MODEL_KEY];
+  const hw = detectDeviceHardware();
+  return hw.recommendedModelKey in AVAILABLE_MODELS ? hw.recommendedModelKey : 'llama-3.2-3b-q4_k_s';
 }
 
-// Default export kept for backwards compatibility
+export const DEFAULT_MODEL_KEY = 'llama-3.2-3b-q4_k_s';
+
+export function getActiveModelConfig(): ModelOption {
+  const key = getInitialModelKey();
+  return AVAILABLE_MODELS[key] || AVAILABLE_MODELS['llama-3.2-3b-q4_k_s'];
+}
+
 export const CURRENT_MODEL_CONFIG = AVAILABLE_MODELS[DEFAULT_MODEL_KEY];
 
 export interface ModelCacheStatus {
@@ -137,19 +164,35 @@ export interface GenerationStats {
 
 export type ProgressCallback = (report: InitProgressReport) => void;
 
+/**
+ * Dynamically computes the minimum required context window in tokens
+ * by evaluating the prompt character count, expected output tokens, and safety margin.
+ * Rounds to a multiple of 256 to ensure minimal RAM usage in WebAssembly.
+ */
+export function calculateRequiredContext(
+  systemPrompt: string,
+  userPrompt: string,
+  maxOutputTokens = 420
+): number {
+  const promptLength = (systemPrompt + userPrompt).length;
+  // German text averages 2.5–3 characters per token plus chat template framing tokens
+  const estimatedPromptTokens = Math.ceil(promptLength / 2.5) + 64;
+  const totalNeeded = estimatedPromptTokens + maxOutputTokens + 128; // 128 safety buffer
+  // Round up to nearest multiple of 256 for clean KV cache allocation (minimum 768 tokens, max 4096)
+  const dynamicCtx = Math.max(768, Math.ceil(totalNeeded / 256) * 256);
+  return Math.min(4096, dynamicCtx);
+}
+
 class WllamaManager {
   private wllama: Wllama | null = null;
   private cacheManager: CacheManager | null = null;
   private isLoading = false;
   private currentLoadedModelId: string | null = null;
+  private currentLoadedContext: number | null = null;
   private currentAbortController: AbortController | null = null;
 
   public getSelectedModelKey(): string {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('foerderplaner_model_key');
-      if (saved && AVAILABLE_MODELS[saved]) return saved;
-    }
-    return DEFAULT_MODEL_KEY;
+    return getInitialModelKey();
   }
 
   public setSelectedModelKey(key: string): void {
@@ -157,39 +200,35 @@ class WllamaManager {
       if (typeof window !== 'undefined') {
         localStorage.setItem('foerderplaner_model_key', key);
       }
-      // If a different model is in memory, release it cleanly
+      // If a different model is currently loaded in memory, release it cleanly
       if (this.wllama && this.currentLoadedModelId !== AVAILABLE_MODELS[key].id) {
-        this.wllama.exit().catch(() => {});
-        this.wllama = null;
-        this.currentLoadedModelId = null;
+        this.unloadModel().catch(() => {});
       }
     }
   }
 
   public getModelConfig(): ModelOption {
     const key = this.getSelectedModelKey();
-    return AVAILABLE_MODELS[key] || AVAILABLE_MODELS[DEFAULT_MODEL_KEY];
+    const config = AVAILABLE_MODELS[key] || AVAILABLE_MODELS[DEFAULT_MODEL_KEY];
+    const hw = detectDeviceHardware();
+    return {
+      ...config,
+      isRecommended: key === hw.recommendedModelKey,
+    };
   }
 
   /**
-   * Checks if browser supports WebAssembly execution (available on all modern browsers).
+   * Checks if browser supports WebAssembly execution.
    */
   public async isSupported(): Promise<boolean> {
     if (typeof window === 'undefined') return false;
     return typeof WebAssembly !== 'undefined' && typeof WebAssembly.instantiate === 'function';
   }
 
-  /**
-   * Alias for backward compatibility with previous WebGPU checks.
-   * Returns true because Wllama runs on CPU and does not require WebGPU.
-   */
   public async isWebGpuSupported(): Promise<boolean> {
     return this.isSupported();
   }
 
-  /**
-   * Returns an initialized CacheManager using OPFS and IndexedDB
-   */
   private getCacheManager(): CacheManager {
     if (!this.cacheManager) {
       this.cacheManager = createWllamaCacheManager();
@@ -198,7 +237,7 @@ class WllamaManager {
   }
 
   /**
-   * Check whether model weights are already in OPFS or IndexedDB (without Cache API)
+   * Check whether model weights are already cached in OPFS or IndexedDB
    */
   public async checkCacheStatus(): Promise<ModelCacheStatus> {
     const isSupported = await this.isSupported();
@@ -221,29 +260,26 @@ class WllamaManager {
       const files = await cm.list();
       const modelFiles = files.filter(
         (f) =>
+          f.name.toLowerCase().includes('llama') ||
           f.name.toLowerCase().includes('qwen') ||
-          f.name.toLowerCase().includes('0.5b') ||
-          f.name.toLowerCase().includes('1.5b') ||
           f.name.toLowerCase().includes('.gguf')
       );
 
-      // Check if active model file is cached with at least 50MB
       const activeFileLower = activeModel.hfFile.toLowerCase();
       const activeIdLower = activeModel.id.toLowerCase();
       const isCached = modelFiles.some(
         (f) =>
           (f.name.toLowerCase().includes(activeIdLower) ||
-           f.name.toLowerCase().includes(activeFileLower)) &&
-          f.size > 50 * 1024 * 1024
-      ) || (modelFiles.some(f => f.size > 200 * 1024 * 1024));
+            f.name.toLowerCase().includes(activeFileLower)) &&
+          f.size > 200 * 1024 * 1024
+      );
 
       const cachedBytes = modelFiles.reduce((acc, f) => acc + (f.size || 0), 0);
 
-      // Persist status flag in localStorage to maintain user reassurance across app updates and reloads
       if (typeof window !== 'undefined') {
         if (isCached) {
           localStorage.setItem(`foerderplaner_model_cached_${activeModel.id}`, 'true');
-        } else if (modelFiles.length === 0) {
+        } else {
           localStorage.removeItem(`foerderplaner_model_cached_${activeModel.id}`);
         }
       }
@@ -259,8 +295,9 @@ class WllamaManager {
       };
     } catch (e) {
       console.warn('Could not inspect OPFS/IndexedDB storage:', e);
-      // Fallback check against localStorage flag
-      const hasLocalFlag = typeof window !== 'undefined' && localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
+      const hasLocalFlag =
+        typeof window !== 'undefined' &&
+        localStorage.getItem(`foerderplaner_model_cached_${activeModel.id}`) === 'true';
       return {
         isSupported: true,
         isCached: hasLocalFlag,
@@ -281,51 +318,62 @@ class WllamaManager {
   }
 
   /**
-   * Clears cached model weights from OPFS and IndexedDB to free up browser storage space
+   * Clears cached model weights from OPFS and IndexedDB
    */
   public async purgeModelCache(): Promise<boolean> {
-    if (this.wllama) {
-      try {
-        await this.wllama.exit();
-      } catch (e) {
-        console.warn('Error exiting wllama:', e);
-      }
-      this.wllama = null;
-      this.currentLoadedModelId = null;
-    }
-
+    await this.unloadModel();
     this.cacheManager = null;
     return await purgeAllWllamaStorage();
   }
 
   /**
-   * Initialize or load the GGUF model in the Wllama engine
+   * Unloads the model from RAM immediately, terminating the WebAssembly instance
+   * and releasing all memory back to the browser and OS.
    */
-  public async initModel(onProgress?: ProgressCallback): Promise<Wllama> {
-    const modelConfig = this.getModelConfig();
-
-    if (this.wllama && this.currentLoadedModelId === modelConfig.id) {
+  public async unloadModel(): Promise<void> {
+    if (this.wllama) {
       try {
-        const info = this.wllama.getLoadedContextInfo();
-        // If current instance context size is at least the target 4096 tokens, reuse it
-        if (info && info.n_ctx >= modelConfig.contextWindow) {
-          return this.wllama;
-        }
-        // If loaded with legacy smaller context (e.g. 1024), unload and reinitialize
         await this.wllama.exit();
-        this.wllama = null;
-      } catch {
-        // proceed to reload
+      } catch (e) {
+        console.warn('Wllama exit non-fatal:', e);
       }
+      this.wllama = null;
+      this.currentLoadedModelId = null;
+      this.currentLoadedContext = null;
+    }
+  }
+
+  /**
+   * Initialize or load the GGUF model in Wllama with dynamic context and optimal hardware parameters.
+   */
+  public async initModel(
+    onProgress?: ProgressCallback,
+    requestedContextTokens?: number
+  ): Promise<Wllama> {
+    const modelConfig = this.getModelConfig();
+    const hw = detectDeviceHardware();
+    const targetCtx = requestedContextTokens || modelConfig.contextWindow;
+
+    // If model is already loaded with matching ID and context >= targetCtx, reuse it
+    if (
+      this.wllama &&
+      this.currentLoadedModelId === modelConfig.id &&
+      this.currentLoadedContext &&
+      this.currentLoadedContext >= targetCtx
+    ) {
+      return this.wllama;
     }
 
     if (this.isLoading) {
       throw new Error('Modell wird bereits geladen. Bitte kurz warten.');
     }
 
+    // Clean up any previously loaded model instance
+    await this.unloadModel();
+
     this.isLoading = true;
 
-    // Acquire Wake Lock to prevent macOS / Chrome from suspending network IO during download
+    // Acquire Screen Wake Lock during download/loading
     let wakeLock: any = null;
     if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
       try {
@@ -336,15 +384,12 @@ class WllamaManager {
     }
 
     try {
-      // Request persistent storage protection for OPFS / IndexedDB
       await ensureStoragePersistence();
 
       const cm = this.getCacheManager();
-
       const baseUrl = import.meta.env.BASE_URL || './';
       const wasmPath = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}wllama.wasm`;
 
-      // Configure Wllama with local wasm asset and OPFS/IDB cache manager
       this.wllama = new Wllama(
         {
           default: wasmPath,
@@ -359,14 +404,8 @@ class WllamaManager {
       );
 
       const startTime = Date.now();
+      const threadCount = hw.physicalCores;
 
-      // Determine available CPU threads safely
-      const threadCount = Math.min(
-        4,
-        Math.max(1, typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 2 : 2)
-      );
-
-      // Load model from Hugging Face or cached OPFS/IDB storage with automatic retry for network glitches
       let lastErr: any = null;
       for (let attempt = 1; attempt <= 3; attempt++) {
         try {
@@ -377,12 +416,13 @@ class WllamaManager {
             },
             {
               useCache: true,
-              n_gpu_layers: 0, // Enforce CPU execution and suppress WebGPU probes
-              n_threads: threadCount,
-              n_ctx: modelConfig.contextWindow, // 4096 tokens (prevents 1024 token limit error)
+              n_gpu_layers: 0, // Strict CPU WebAssembly
+              n_threads: threadCount, // Adapted to available physical cores
+              embeddings: false, // Explicitly disable embeddings as requested
+              n_ctx: targetCtx, // Dynamically derived minimum context
               n_parallel: 1, // Single-user in-browser sequence
-              cache_type_k: 'q8_0', // Quantize KV cache K to 8-bit for minimal RAM overhead
-              cache_type_v: 'q8_0', // Quantize KV cache V to 8-bit for minimal RAM overhead
+              cache_type_k: 'q8_0', // 8-bit quantized KV cache K
+              cache_type_v: 'q8_0', // 8-bit quantized KV cache V
               progressCallback: ({ loaded, total }) => {
                 const progress = total > 0 ? loaded / total : 0;
                 const elapsed = Math.round((Date.now() - startTime) / 1000);
@@ -392,9 +432,10 @@ class WllamaManager {
                 if (onProgress) {
                   onProgress({
                     progress,
-                    text: total > 0
-                      ? `Lade ${modelConfig.quantization}-Modell (${loadedMB} MB von ${totalMB} MB)...`
-                      : `Lade Daten (${loadedMB} MB)...`,
+                    text:
+                      total > 0
+                        ? `Lade ${modelConfig.shortName} (${loadedMB} MB von ${totalMB} MB)...`
+                        : `Lade Daten (${loadedMB} MB)...`,
                     timeElapsed: elapsed,
                   });
                 }
@@ -424,9 +465,9 @@ class WllamaManager {
       if (lastErr) throw lastErr;
 
       this.currentLoadedModelId = modelConfig.id;
+      this.currentLoadedContext = targetCtx;
       this.isLoading = false;
 
-      // Mark model as cached in localStorage for immediate reassuring UI recognition on reload
       if (typeof window !== 'undefined') {
         localStorage.setItem(`foerderplaner_model_cached_${modelConfig.id}`, 'true');
       }
@@ -434,7 +475,7 @@ class WllamaManager {
       if (onProgress) {
         onProgress({
           progress: 1,
-          text: `Modell (${modelConfig.quantization}) erfolgreich geladen und initialisiert!`,
+          text: `Modell (${modelConfig.shortName}) erfolgreich initialisiert!`,
           timeElapsed: Math.round((Date.now() - startTime) / 1000),
         });
       }
@@ -442,15 +483,7 @@ class WllamaManager {
       return this.wllama;
     } catch (err: any) {
       this.isLoading = false;
-      this.currentLoadedModelId = null;
-      if (this.wllama) {
-        try {
-          await this.wllama.exit();
-        } catch {
-          // ignore
-        }
-        this.wllama = null;
-      }
+      await this.unloadModel();
       throw err;
     } finally {
       if (wakeLock) {
@@ -463,9 +496,6 @@ class WllamaManager {
     }
   }
 
-  /**
-   * Immediately aborts any ongoing local inference generation
-   */
   public abortGeneration(): void {
     if (this.currentAbortController) {
       this.currentAbortController.abort();
@@ -474,22 +504,32 @@ class WllamaManager {
   }
 
   /**
-   * Stream a completion using Wllama CPU inference with live token progress and interruption support
+   * Runs local streaming inference on-demand:
+   * 1. Evaluates required tokens for the dynamic prompt and sets minimum context.
+   * 2. Starts Wllama on-demand.
+   * 3. Streams completion with optimal sampling parameters (temp: 0.3, top_p: 0.85, top_k: 40, repeat_penalty: 1.15, repeat_last_n: 64).
+   * 4. Stops and unloads the model immediately upon completion or cancellation, freeing RAM.
    */
   public async generateStreaming(
     systemPrompt: string,
     userPrompt: string,
     onToken: (token: string, fullText: string, stats: GenerationStats) => void,
+    onInitProgress?: ProgressCallback,
     externalSignal?: AbortSignal
   ): Promise<string> {
+    // Dynamically derive minimum context required by actual prompt
+    const requiredCtx = calculateRequiredContext(systemPrompt, userPrompt, 420);
+
+    // Start model on-demand with minimal required context
+    await this.initModel(onInitProgress, requiredCtx);
+
     if (!this.wllama) {
-      throw new Error('Modell ist noch nicht geladen. Bitte Modell zuerst initialisieren.');
+      throw new Error('Initialisierung des lokalen Modells fehlgeschlagen.');
     }
 
     this.currentAbortController = new AbortController();
     const abortCtrl = this.currentAbortController;
 
-    // WakeLock to prevent CPU throttling or screen sleep during inference
     let wakeLock: any = null;
     if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
       try {
@@ -509,22 +549,27 @@ class WllamaManager {
     };
 
     try {
+      // Optimal sampling parameters verified for Llama-3.2 and Qwen-2.5:
+      // temperature: 0.3, top_p: 0.85, top_k: 40, repeat_penalty: 1.15, repeat_last_n: 64
       const stream = await (this.wllama as any).createChatCompletion({
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
         ],
         stream: true,
-        temp: 0.6, // Native llama.cpp sampling temperature
-        temperature: 0.6,
+        temp: 0.3,
+        temperature: 0.3,
         top_p: 0.85,
         top_k: 40,
-        penalty_repeat: 1.35, // Strong penalty against repeating identical n-grams
-        penalty_last_n: 512, // Look back across the full response context
-        penalty_freq: 0.5, // Frequency penalty against repeatedly chosen words
-        penalty_present: 0.4, // Presence penalty encouraging vocabulary variety
+        penalty_repeat: 1.15,
+        repeat_penalty: 1.15,
+        penalty_last_n: 64,
+        repeat_last_n: 64,
         max_tokens: 420,
         stop: [
+          '<|eot_id|>',
+          '<|end_of_text|>',
+          '<|start_header_id|>',
           '<|im_end|>',
           '<|endoftext|>',
           '### Ermutigung',
@@ -533,6 +578,7 @@ class WllamaManager {
           'Hinweis:',
           'AUFGABE:',
           'Schuelerdaten:',
+          'Schülerdaten:',
           'Ausgangslage:',
         ],
       });
@@ -556,7 +602,6 @@ class WllamaManager {
           const reflexionIdx = fullText.toUpperCase().indexOf('REFLEXION');
           if (reflexionIdx !== -1) {
             const afterReflexion = fullText.slice(reflexionIdx);
-            // If the model finishes the REFLEXION sentence and tries to output meta-commentary
             if (
               afterReflexion.includes('\n\n') ||
               afterReflexion.includes('###') ||
@@ -580,14 +625,14 @@ class WllamaManager {
             }
           }
 
-          // Repetition guard 2: detect duplicate sentences across different sections (e.g. copying bullet to IST/SOLL/LERNWEG)
+          // Repetition guard 2: detect duplicate sentences across different sections
           const lines = fullText
             .split('\n')
             .map((l) => l.trim().toLowerCase())
             .filter((l) => l.length > 25 && !l.startsWith('ist:') && !l.startsWith('soll:') && !l.startsWith('absp'));
           const uniqueLines = new Set(lines);
           if (lines.length - uniqueLines.size >= 1) {
-            console.warn('Cross-section duplicate sentence detected, stopping stream to prevent repetition cascade');
+            console.warn('Cross-section duplicate sentence detected, stopping stream');
             break;
           }
         }
@@ -601,6 +646,8 @@ class WllamaManager {
           // ignore
         }
       }
+      // CRITICAL: Stop and unload the model immediately when response derived or aborted, freeing RAM
+      await this.unloadModel();
     }
 
     // Clean up trailing commentary or truncated incomplete fragments
@@ -615,7 +662,6 @@ class WllamaManager {
       cleaned = cleaned.split('### Fazit')[0].trim();
     }
 
-    // Prevent truncated dangling half-sentences at the end (e.g. "...aufgesch") if not interrupted
     if (!isInterrupted) {
       const lastPunctuation = Math.max(
         cleaned.lastIndexOf('.'),

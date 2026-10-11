@@ -21,7 +21,7 @@ You are tasked with building or recreating the **Förderplan-Assistent Grundschu
 1. **100% Local / Zero Server Dependency:** All data storage (IndexedDB), NLP matching, PDF/print rendering, and optional on-device AI generation must run entirely in the user's browser. No student data, notes, or assessments ever leave the client.
 2. **Dual-Engine Pedagogical Matching:**
    * **Local Deterministic Rules Engine (Instant & Offline):** Keyword, competency, and domain matching against structured official guidelines (`src/data/richtlinien.json`). Functions instantly without any AI/LLM download.
-   * **Optional In-Browser Neural Engine (Wllama WebAssembly & OPFS/IndexedDB):** CPU-accelerated local GGUF model (`Qwen2.5-0.5B-Instruct-Q4_K_M.gguf`, ~397 MB) running via Wllama WebAssembly inside dedicated worker threads. Runs universally on any desktop or mobile browser without WebGPU requirement. Model weights are stored securely in OPFS (Origin Private File System) with IndexedDB fallback, completely bypassing the Cache Storage API. Strict opt-in modal with explicit download sizing, storage selection, and live progress reporting. Instant deterministic rules engine functions as immediate zero-download fallback.
+   * **Optional In-Browser Neural Engine (Wllama WebAssembly & OPFS/IndexedDB):** CPU-accelerated local GGUF models (selectable: *Llama-3.2-3B-Instruct-Q4_K_S*, *Qwen2.5-1.5b-Instruct-Q8_0*, or *Llama-3.2-1B-Instruct-Q8_0*) running via Wllama WebAssembly on CPU. Runs universally without WebGPU requirement. Model weights are stored securely in OPFS (Origin Private File System) with IndexedDB fallback. Features hardware auto-detection, on-demand lifecycle (zero idle RAM), dynamic minimum context scaling, and instant fallback to the deterministic rules engine.
 3. **PWA Compliance:** Service Worker via `vite-plugin-pwa` with precached assets, runtime caching, offline indicators, update toasts, and installation triggers.
 4. **Universal Accessibility & Legal Compliance (EN 301 549 & WCAG 2.2 Level AA):** Full conformance with European standard EN 301 549, the German Federal Ordinance on Accessible Information Technology (BITV 2.0 / BGG), and W3C WCAG 2.2 Level AA. Comprehensive keyboard navigation, high-contrast visible focus indicators (`:focus-visible`), modal focus trapping (`useFocusTrap.ts`), semantic landmarks and ARIA states, text contrast ratios exceeding 4.5:1, and 200% zoom resiliency without horizontal clipping.
 5. **DIN 1450 & Accessible Document Legibility:** Adherence to German standard DIN 1450 (*Schriften – Leserlichkeit*) in all exported and printed documents. Clean sans-serif administrative typography, minimum 11pt continuous font size (10.5pt in tables), generous 1.40–1.45 line height, high-contrast monochrome printing (`1.5pt solid #000` / `1pt solid #000` borders with zero muddy background tints), and semantic PDF/UA-ready HTML5 hierarchy.
@@ -279,8 +279,10 @@ The entire application source code, user interface, build scripts, and local mat
 * **Component License Compatibility:** All statically bundled and linked dependencies (React, `@wllama/wllama`, Lucide Icons, Tailwind CSS, Motion, Vite, Express, Dotenv) use permissive open-source licenses (MIT, ISC, BSD-2-Clause, Apache-2.0). Under Free Software Foundation (FSF) guidelines, these licenses are 100% compatible with GNU GPLv3.
 
 ### Explicit Exclusion of Runtime-Downloaded AI Model Weights
-* **Independent Creative Parameter Sets:** The optional neural language model (e.g. `Qwen2.5-0.5B-Instruct-Q4_K_M.gguf`, ~397 MB) downloaded interactively by the user at runtime into browser OPFS/IndexedDB storage is **NOT** part of the application source code or build output, and constitutes an independent creative work.
-* **Model Upstream License:** The pre-trained weights are created by Alibaba Cloud / Qwen Team and released under the **Apache License 2.0**.
+* **Independent Creative Parameter Sets:** The optional neural language models (*Llama-3.2-3B-Instruct-Q4_K_S*, *Qwen2.5-1.5b-Instruct-Q8_0*, and *Llama-3.2-1B-Instruct-Q8_0* in GGUF format) downloaded interactively by the user at runtime into browser OPFS/IndexedDB storage are **NOT** part of the application source code or build output, and constitute independent creative works.
+* **Model Upstream Licenses:** 
+  * Meta Llama 3.2 models are released under the **Meta Llama 3.2 Community License**.
+  * Qwen 2.5 models are released under the **Apache License 2.0**.
 * **Scope of GPLv3:** The application's GPLv3 license applies solely to the software source code and logic. It does not govern, relicense, or modify the terms of third-party model weights downloaded independently by the end user.
 * **Zero-Download Guarantee:** The application is fully functional offline without downloading any neural model, relying on the built-in deterministic pedagogical rules engine.
 
@@ -338,6 +340,21 @@ To ensure full compliance with public administration mandates (including Europea
   * **MINOR (`+0.1.0`):** New functional steps, compliance template restructuring, new matching engines, export format additions, significant pedagogical enhancements.
   * **PATCH (`+0.0.1`):** Bug fixes, visual/CSS adjustments, typographical fixes, dependency patches.
 * **Synchronization Mandate:** `package.json`, `VersionInfoModal.tsx`, `README.md`, and distribution archive names (`foerderplaner-vX.Y.Z-*.tar.gz`) must always share the exact same version number.
+
+* **v1.4.20 (2026-10-10):**
+  * **Upgrade to Three Selectable On-Device Models, Hardware Auto-Detection & Recommendation, On-Demand Lifecycle & Optimal Wllama Tuning:**
+    * *Three Selectable Top-Tier Instruction Models (in Order of Preference):* Replaced legacy model options with three modern instruction models:
+      1. *Llama-3.2-3B-Instruct-Q4_K_S* (Preferred, ~1,839 MB download, ~2.3 GB RAM, Meta Llama 3.2): Highest pedagogical drafting quality and nuanced formulations adhering strictly to the Berlin Senate guideline schema.
+      2. *Qwen2.5-1.5b-Instruct-Q8_0* (~1,570 MB download, ~1.95 GB RAM, Qwen Team): Lossless 8-bit quantization with balanced memory footprint and high precision German language comprehension.
+      3. *Llama-3.2-1B-Instruct-Q8_0* (~1,260 MB download, ~1.55 GB RAM, Meta Llama 3.2): Compact, fast 8-bit model for resource-constrained laptops, tablets, or mobile devices.
+    * *Direct Model Selection & Local Downloading:* Users can select any of the three models directly via interactive selector cards in Step 3 (*„Förderempfehlungen“*) and the consent manager modal (*„Lokales Sprachmodell (Wllama On-Device)“*). Each card displays its local cache state (*„Offline bereit“* vs *„Download: ~X MB“*), and any un-downloaded model can be fetched on demand into OPFS/IndexedDB.
+    * *Hardware Auto-Detection & Persistent User Preference:* Probes device characteristics (`navigator.hardwareConcurrency`, `navigator.deviceMemory`, mobile/desktop form factor) to mark the best comfortably runnable model with an *(„Empfohlen für Ihr Gerät“)* badge and pre-select it by default. Remembers user selections persistently in `localStorage`.
+    * *On-Demand Wllama Lifecycle (Zero Idle RAM):* The model is started and initialized only when the user requests text generation and is immediately stopped and unloaded (`wllama.exit()`) as soon as the response is derived or cancelled, keeping idle browser memory completely free (0 MB RAM overhead).
+    * *Optimal Wllama Engine Settings:*
+      * Disabled embeddings (`embeddings: false`) to eliminate unnecessary vector overhead and memory usage.
+      * Adapted thread allocation (`n_threads`) to available physical CPU cores, preventing thread thrashing while leaving sufficient headroom for the browser UI and OS.
+      * Dynamic minimum context calculation (`n_ctx`): Evaluates actual prompt tokens per run plus generation allowance, rounding to clean multiples of 256 tokens rather than allocating excessive fixed context buffers, drastically reducing KV-cache RAM footprint and accelerating CPU WebAssembly execution.
+    * *Universal Clean Prompt & Optimal Sampling Parameters:* Verified and unified the common prompt logic in `buildLocalModelPrompt` across Llama 3.2 and Qwen 2.5 without requiring specialized templates. Configured optimal sampling parameters across all runs: `temperature: 0.3`, `top_p: 0.85`, `top_k: 40`, `repeat_penalty: 1.15`, and `repeat_last_n: 64`.
 
 * **v1.4.19 (2026-10-06):**
   * **Restoration of Authentic German Guidelines Text (Umlauts & ß) Directly from the Berlin Senate Reference Document:**

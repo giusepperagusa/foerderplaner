@@ -1,8 +1,23 @@
 /**
- * Interactive Consent & Download Manager for Local Wllama GGUF Model
- * Warns about data volume (~506MB Q8_0 / ~397MB Q4_K_M), estimated duration, mobile data costs,
- * provides model selection (bartowski Q8_0 recommended vs Q4_K_M compact),
- * manages local OPFS/IndexedDB storage (no Cache API), and displays live download progress.
+ * Förderplan-Assistent Berlin
+ * Copyright (C) 2024-2026 Giuseppe Ragusa
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Interactive Consent & Download Manager for Local Wllama GGUF Models
+ * Supports three instruction models (in order of preference):
+ * 1. Llama-3.2-3B-Instruct-Q4_K_S (Preferred, highest quality)
+ * 2. Qwen2.5-1.5b-Instruct-Q8_0 (Balanced, high precision)
+ * 3. Llama-3.2-1B-Instruct-Q8_0 (Compact & fast for mobile/constrained hardware)
+ *
+ * Automatically detects device hardware (CPU cores, RAM) to recommend the best model,
+ * makes it the pre-selected default until explicitly overridden by user,
+ * and manages on-demand WebAssembly lifecycle and persistent OPFS/IndexedDB storage.
  */
 import React, { useState, useEffect } from 'react';
 import { 
@@ -18,14 +33,16 @@ import {
   Clock, 
   RefreshCw,
   Database,
-  Sparkles
+  Sparkles,
+  Laptop
 } from 'lucide-react';
 import { 
   webLlmManager, 
   AVAILABLE_MODELS,
   ModelOption,
   ModelCacheStatus,
-  InitProgressReport 
+  InitProgressReport,
+  getHardwareProfile
 } from '../utils/webLlmManager';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
@@ -37,8 +54,9 @@ interface Props {
 
 export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelReady }) => {
   const modalRef = useFocusTrap<HTMLDivElement>({ isOpen, onClose });
+  const [hardwareProfile] = useState(() => getHardwareProfile());
   const [selectedKey, setSelectedKey] = useState<string>(() => webLlmManager.getSelectedModelKey());
-  const activeModel: ModelOption = AVAILABLE_MODELS[selectedKey] || AVAILABLE_MODELS['qwen2.5-0.5b-q8_0'];
+  const activeModel: ModelOption = AVAILABLE_MODELS[selectedKey] || AVAILABLE_MODELS['llama-3.2-3b-q4_k_s'];
 
   const [cacheStatus, setCacheStatus] = useState<ModelCacheStatus>(() => {
     const hasLocalFlag =
@@ -96,7 +114,9 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
       await webLlmManager.initModel((report) => {
         setProgressReport(report);
       });
-      setStatusMessage(`Modell (${activeModel.quantization}) erfolgreich geladen und im privaten Speicher (OPFS/IndexedDB) abgelegt!`);
+      // Immediately unload model from RAM so idle memory remains 0 MB while cached in OPFS
+      await webLlmManager.unloadModel();
+      setStatusMessage(`Modell (${activeModel.shortName}) erfolgreich heruntergeladen und im privaten Speicher (${cacheStatus.storageBackend}) gesichert! Es startet bei Generierung bedarfsgerecht.`);
       await checkStatus();
       if (onModelReady) {
         onModelReady();
@@ -110,7 +130,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
   };
 
   const handlePurgeCache = async () => {
-    if (!window.confirm('Möchten Sie das lokale Modell wirklich aus dem Browser-Speicher löschen? Beim nächsten Mal muss es erneut heruntergeladen werden.')) {
+    if (!window.confirm(`Möchten Sie den lokalen Speicher für ${activeModel.shortName} wirklich leeren? Das Modell muss bei erneuter Nutzung wieder heruntergeladen werden.`)) {
       return;
     }
     const success = await webLlmManager.purgeModelCache();
@@ -159,42 +179,47 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
               <Cpu className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-200" />
             </div>
             <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 id="model-consent-title" className="text-xl font-bold">Lokales Sprachmodell (Wllama Wasm)</h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 uppercase tracking-wider">
-                  Optional &amp; Experimentell
-                </span>
-              </div>
-              <p className="text-xs text-indigo-200">
-                On-Device KI via CPU WebAssembly &amp; OPFS/IndexedDB • Rein optionales Hilfsmittel • 100% DSGVO-konform
+              <h2 id="model-consent-title" className="text-base sm:text-lg font-bold">
+                Lokales Sprachmodell (Wllama On-Device)
+              </h2>
+              <p className="text-xs text-indigo-100 mt-0.5">
+                100% datenschutzkonforme On-Demand KI-Ausführung direkt im Browser (CPU WebAssembly)
               </p>
             </div>
           </div>
-          <button 
+          <button
             type="button"
             onClick={onClose}
             disabled={isDownloading}
+            className="p-1.5 text-white/70 hover:text-white rounded-lg hover:bg-white/10 transition-colors disabled:opacity-50 cursor-pointer"
             aria-label="Schließen"
-            className="p-1.5 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-4 sm:p-6 space-y-5 overflow-y-auto flex-1 min-h-0">
+        {/* Scrollable Content Body */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
 
-          {/* Prominent Optional & Experimental Callout */}
-          <div className="p-4 bg-amber-50/90 border border-amber-300/80 rounded-xl flex items-start gap-3 shadow-2xs">
-            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-            <div className="text-xs text-amber-950 space-y-1">
-              <span className="font-bold block text-sm text-amber-900">
-                Vollständig optional &amp; experimentell
+          {/* Hardware Detection Badge & Summary */}
+          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <Laptop className="w-4 h-4 text-indigo-600" />
+                <span className="text-xs font-bold text-slate-800">
+                  Erkannte Geräte-Hardware:
+                </span>
+                <span className="text-xs font-mono font-medium text-slate-700 bg-white px-2 py-0.5 rounded border border-slate-200">
+                  {hardwareProfile.hardwareSummary}
+                </span>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full border border-emerald-300">
+                Automatische Hardware-Optimierung
               </span>
-              <p className="leading-relaxed">
-                Die Nutzung lokaler neuronaler Sprachmodelle ist im Förderplan-Assistenten <strong>rein optional und experimentell</strong>. Der Förderplan-Assistent ist vollständig und ohne jegliche Funktionseinschränkungen <strong>ohne KI</strong> nutzbar: Sie können alle 107 amtlichen Berliner Förderrichtlinien-Bausteine direkt in Schritt 3 (Tab „Offizielle Richtlinien-Zuordnung“) übernehmen und in Schritt 4 beliebig manuell editieren. Ein Download ist für die reguläre Arbeit mit der Anwendung <u>nicht</u> erforderlich.
-              </p>
             </div>
+            <p className="text-[11px] text-slate-600 leading-relaxed">
+              {hardwareProfile.recommendationReason}
+            </p>
           </div>
 
           {/* WebAssembly Support Status */}
@@ -213,37 +238,60 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
           <div className="space-y-2">
             <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-indigo-600" />
-              Modell-Auswahl & Quantisierung:
+              Verfügbare Modelle (Auswahl wird gespeichert):
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {Object.entries(AVAILABLE_MODELS).map(([key, model]) => {
                 const isSelected = selectedKey === key;
+                const isHwRecommended = key === hardwareProfile.recommendedModelKey;
+                const isCachedLocally =
+                  typeof window !== 'undefined' &&
+                  localStorage.getItem(`foerderplaner_model_cached_${model.id}`) === 'true';
                 return (
                   <button
                     key={key}
                     type="button"
                     onClick={() => handleSelectModel(key)}
                     disabled={isDownloading}
-                    className={`p-3 rounded-xl border text-left transition relative cursor-pointer ${
+                    className={`p-3 rounded-xl border text-left transition relative cursor-pointer flex flex-col justify-between ${
                       isSelected
                         ? 'border-indigo-600 bg-indigo-50/70 ring-2 ring-indigo-500/20'
                         : 'border-slate-200 bg-white hover:border-slate-300'
                     }`}
                   >
-                    <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="font-bold text-xs text-slate-900">
-                        {model.shortName}
-                      </span>
-                      {model.isRecommended && (
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">
-                          Empfohlen
+                    <div>
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className="font-bold text-xs text-slate-900">
+                          {model.shortName}
                         </span>
-                      )}
+                        {isHwRecommended ? (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded" title="Empfohlen für Ihre Hardware-Ausstattung">
+                            Empfohlen für Ihr Gerät
+                          </span>
+                        ) : (
+                          <span className="text-[9px] font-mono px-1 py-0.5 bg-slate-100 text-slate-600 rounded">
+                            {model.quantization}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-slate-600 space-y-0.5">
+                        <div className="text-[10px] text-slate-500 font-medium">{model.parameters}</div>
+                        {isCachedLocally ? (
+                          <div className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                            Offline gespeichert
+                          </div>
+                        ) : (
+                          <div>Download: <strong className="text-slate-800">~{model.downloadSizeMB} MB</strong></div>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-[11px] text-slate-600 space-y-0.5">
-                      <div>Präzision: <strong className="text-slate-800">{model.quantization}</strong></div>
-                      <div>Download: <strong className="text-slate-800">~{model.downloadSizeMB} MB</strong></div>
-                    </div>
+                    {isSelected && (
+                      <div className="mt-2 pt-1 border-t border-indigo-200 text-[10px] font-semibold text-indigo-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-indigo-600" />
+                        Aktiv ausgewählt
+                      </div>
+                    )}
                   </button>
                 );
               })}
@@ -252,10 +300,10 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
 
           {/* Model Specification Card */}
           <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
-                  {activeModel.isRecommended ? 'Empfohlen für hohe Textqualität' : 'Kompakte Variante'}
+                  {selectedKey === hardwareProfile.recommendedModelKey ? 'Hardware-Empfehlung für Ihr Gerät' : 'Alternative Modelloption'}
                 </span>
                 <h3 className="font-bold text-slate-800 text-base mt-1">
                   {activeModel.name}
@@ -286,17 +334,17 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
                 </span>
               </div>
               <div className="p-2.5 bg-white rounded-lg border border-slate-200">
-                <span className="text-slate-400 block text-[11px]">Kontextfenster:</span>
+                <span className="text-slate-400 block text-[11px]">Kontext (dynamisch):</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                   <Cpu className="w-3.5 h-3.5 text-blue-600" />
-                  {activeModel.contextWindow.toLocaleString('de-DE')} Tokens
+                  Bedarfsgerecht
                 </span>
               </div>
               <div className="p-2.5 bg-white rounded-lg border border-slate-200">
-                <span className="text-slate-400 block text-[11px]">KV-Cache:</span>
+                <span className="text-slate-400 block text-[11px]">Ausführung:</span>
                 <span className="font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  {activeModel.kvCacheQuantization || '8-Bit (q8_0)'}
+                  On-Demand (RAM frei)
                 </span>
               </div>
             </div>
@@ -309,30 +357,30 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
             </div>
           </div>
 
-          {/* Storage & Volume Notice */}
+          {/* Architecture & On-Demand Lifecycle Notice */}
           <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2">
             <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
               <Wifi className="w-4 h-4 text-amber-700" />
-              Hinweis zu Speicher, Präzision & Inferenz
+              Automatische Wllama-Optimierungen & On-Demand Lifecycle
             </div>
             <ul className="text-xs text-amber-800 space-y-1.5 list-disc list-inside">
               <li>
-                <strong>Einmaliger Download:</strong> Es werden einmalig ca. <strong>{activeModel.downloadSizeMB} Megabyte (MB)</strong> Daten geladen.
+                <strong>On-Demand Ausführung:</strong> Das Modell wird nur bei der aktiven Generierung geladen und <u>sofort danach vollständig aus dem Arbeitsspeicher entladen</u>. Ihr Browser-RAM bleibt im Ruhebetrieb frei.
               </li>
               <li>
-                <strong>Präzision & Vermeidung von Repetitionen:</strong> Das 8-Bit quantisierte Modell (bartowski Q8_0) bietet nahezu verlustfreie Genauigkeit und verhindert Sprachverflachung oder Textwiederholungen gegenüber stark komprimierten 4-Bit-Modellen.
+                <strong>Embeddings deaktiviert:</strong> Unnötige Einbettungsvektoren werden abgeschaltet (<code>embeddings: false</code>), um Rechenzeit und Speicher zu minimieren.
               </li>
               <li>
-                <strong>Speichertechnologie:</strong> Die Speicherung erfolgt geschützt im <strong>OPFS (Origin Private File System)</strong> bzw. in <strong>IndexedDB</strong> – die instabile Cache API wird bewusst nicht verwendet.
+                <strong>Adaptive CPU-Threads:</strong> Die Thread-Anzahl wird automatisch an die physischen Kerne Ihres Prozessors ({hardwareProfile.physicalCores} Threads) angepasst.
               </li>
               <li>
-                <strong>Quantisierter KV-Cache & 4.096 Tokens Kontext:</strong> Der Key-Value-Cache wird mit 8-Bit (q8_0) quantisiert. Dies spart ca. 50% Arbeitsspeicher und verhindert Token-Limit-Abbrüche auch bei umfangreichen Schülerprofilen.
+                <strong>Dynamisches Kontextfenster:</strong> Der KV-Cache wird für jeden Lauf exakt auf die tatsächlich benötigten Prompt- und Antworttokens skaliert, was den Speicherbedarf drastisch reduziert.
               </li>
               <li>
-                <strong>CPU-Ausführung:</strong> Funktioniert zuverlässig auf jedem Rechner ohne WebGPU-Voraussetzung.
+                <strong>Optimale Sampling-Parameter:</strong> Konfiguriert mit <code>temp: 0.3</code>, <code>top_p: 0.85</code>, <code>top_k: 40</code>, <code>repeat_penalty: 1.15</code> und <code>repeat_last_n: 64</code> für deterministische, wiederholungsfreie Förderplan-Bausteine.
               </li>
               <li>
-                <strong>Permanente Offline-Nutzung:</strong> Nach dem Download arbeitet die KI komplett autark offline ohne Internetkontakt.
+                <strong>Permanente Offline-Speicherung:</strong> Modellgewichte werden geschützt im <strong>OPFS (Origin Private File System)</strong> abgelegt und arbeiten nach dem ersten Download 100% offline.
               </li>
             </ul>
           </div>
@@ -343,7 +391,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-indigo-900 flex items-center gap-1.5">
                   <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-600" />
-                  Lade Modell in Hintergrund-Worker...
+                  Lade Modell in OPFS / IndexedDB...
                 </span>
                 <span className="font-mono font-bold text-indigo-700">
                   {Math.round((progressReport.progress || 0) * 100)}%
@@ -388,7 +436,7 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
                 Speicherort: <strong className="text-slate-800">{cacheStatus.storageBackend}</strong>
                 {cacheStatus.isCached ? (
                   <span className="text-emerald-700 font-medium ml-2">
-                    (Modell liegt lokal vor)
+                    (Modell liegt lokal im OPFS vor)
                   </span>
                 ) : (
                   <span className="text-slate-500 ml-2">
@@ -432,17 +480,12 @@ export const ModelConsentModal: React.FC<Props> = ({ isOpen, onClose, onModelRea
             {isDownloading ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                Wird geladen...
-              </>
-            ) : cacheStatus.isLoaded ? (
-              <>
-                <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-                Modell ist aktiv (Neu initialisieren)
+                Wird heruntergeladen...
               </>
             ) : cacheStatus.isCached ? (
               <>
-                <Cpu className="w-4 h-4" />
-                Aus OPFS/IndexedDB initialisieren
+                <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+                Lokal gespeichert (Neu herunterladen)
               </>
             ) : (
               <>

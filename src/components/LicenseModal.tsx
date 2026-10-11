@@ -166,26 +166,23 @@ of this license document, but changing it is not allowed.
                   Die vorliegende GPLv3-Lizenz gilt für den <strong>Quellcode, die Algorithmen, Benutzeroberflächen und Build-Skripte</strong> des Förderplan-Assistenten.
                 </p>
                 <p className="text-amber-900 leading-relaxed font-medium">
-                  <strong>Wichtiger Hinweis:</strong> Das neuronale Sprachmodell (z. B. <code>Qwen2.5-0.5B-Instruct</code> im GGUF-Format, ca. 397 MB), das optional zur Laufzeit durch die Lehrkraft interaktiv heruntergeladen und lokal im Browser (OPFS / IndexedDB) gespeichert werden kann, ist <u>kein</u> Bestandteil des Anwendungsquellcodes und <u>kein</u> abgeleitetes Werk der Software.
+                  <strong>Wichtiger Hinweis:</strong> Die wählbaren neuronalen Sprachmodelle (<code>Llama-3.2-3B-Instruct-Q4_K_S</code>, <code>Qwen2.5-1.5b-Instruct-Q8_0</code> und <code>Llama-3.2-1B-Instruct-Q8_0</code> im GGUF-Format), die optional zur Laufzeit durch die Lehrkraft interaktiv heruntergeladen und lokal im Browser (OPFS / IndexedDB) gespeichert werden können, sind <u>kein</u> Bestandteil des Anwendungsquellcodes und <u>kein</u> abgeleitetes Werk der Software.
                 </p>
               </div>
 
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
                 <h4 className="font-bold text-slate-800 text-xs">
-                  Lizenz des optionalen Sprachmodells:
+                  Lizenzen der optionalen Sprachmodelle:
                 </h4>
-                <ul className="space-y-1.5 text-slate-600 list-disc list-inside">
+                <ul className="space-y-1.5 text-slate-600 list-disc list-inside text-xs">
                   <li>
-                    <strong>Modell:</strong> Qwen2.5-0.5B-Instruct (GGUF-Quantisierung Q4_K_M)
+                    <strong>Llama 3.2 (3B &amp; 1B Instruct):</strong> Meta Llama 3.2 Community License (Meta Platforms, Inc.)
                   </li>
                   <li>
-                    <strong>Urheber:</strong> Alibaba Cloud / Qwen Team
+                    <strong>Qwen 2.5 (1.5B Instruct):</strong> Apache License 2.0 (Alibaba Cloud / Qwen Team)
                   </li>
                   <li>
-                    <strong>Modell-Lizenz:</strong> <span className="font-semibold text-slate-800">Apache License 2.0</span> (gestattet freie kommerzielle und nicht-kommerzielle Nutzung)
-                  </li>
-                  <li>
-                    <strong>Separater Download:</strong> Die Gewichte werden ausschließlich auf expliziten Benutzerwunsch (Einwilligungs-Dialog) direkt aus dem HuggingFace-Repository geladen und unterliegen deren eigener Lizenz.
+                    <strong>Separater On-Demand-Download:</strong> Die Modellgewichte werden ausschließlich auf expliziten Benutzerwunsch (Einwilligungs-Dialog) direkt von Hugging Face geladen und unterliegen den jeweiligen Modell-Lizenzen.
                   </li>
                 </ul>
               </div>
